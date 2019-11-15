@@ -4,7 +4,14 @@
 		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"
     </head>
     <body>
-	    <h1> Bienvenue {{ message }} </h1>
+	    <h1> Assigner un employé au chantier {{ message }} </h1>
     </body>
+    
+    <form>
+    <select name="Disponibles" size="1">
+    <option> {{ employe }}
+    </option>
+	</select>
+    </form>
     <a href="{{ url_for('home') }}"> Retourner à la page d'accueil </a>
 </html>
