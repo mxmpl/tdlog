@@ -1,8 +1,8 @@
-### Emploi du temps
+# Emploi du temps
 
 Feuille de route 
 
-# Prototype
+## Prototype
 * Boutons cliquables
 * Lister tous les employés disponibles
 * Assigner un chantier pour chaque employé
