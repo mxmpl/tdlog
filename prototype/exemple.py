@@ -1,53 +1,55 @@
 from flask import Flask
 from flask import request
 from flask import render_template
+import pandas as pd
 import csv
-
-
 app = Flask(__name__)
 
-nombre_chantiers = 2 
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
-@app.route("/", methods=["POST"])
-def choix_chantier_ouvier1():
-    chantier_ouv1 = request.form["chantierouvrier1"]
-    with open('chantiers.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=' ',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(chantier_ouv1)
+@app.route("/ouvrier0", methods=["POST"])
+def assigner_chantier_a_ouvrier0():
+    ouvriers = pd.read_csv("employes.csv", header = 0)
+    chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep=",")
+    chantier_a_traiter = request.form["chantier_pour_ouvrier0"]
+    chantiers.at[chantier_a_traiter,"Ouvrier"] = ouvriers.at[0,"Nom"]
+    chantiers.to_csv("chantiers.csv", sep=",")
     return render_template("home.html")
 
-#@app.route("/", methods=["POST"])
-#def choix_chantier_ouvier2():
-#    chantier_ouv2 = request.form["chantierouvrier2"]
-#    with open('chantiers.csv', 'w', newline='') as csvfile:
-#        spamwriter = csv.writer(csvfile, delimiter=' ',
-#                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-#        spamwriter.writerow(chantier_ouv2)
-#    return render_template("home.html")
+
+@app.route("/ouvrier1", methods=["POST"])
+def assigner_chantier_a_ouvrier1():
+    ouvriers = pd.read_csv("employes.csv", header = 0)
+    chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep=",")
+    chantier_a_traiter = request.form["chantier_pour_ouvrier1"]
+    chantiers.at[chantier_a_traiter,"Ouvrier"] = ouvriers.at[1,"Nom"]
+    chantiers.to_csv("chantiers.csv", sep=",")
+    return render_template("home.html")
+
+
+@app.route("/ouvrier2", methods=["POST"])
+def assigner_chantier_a_ouvrier2():
+    ouvriers = pd.read_csv("employes.csv", header = 0)
+    chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep=",")
+    chantier_a_traiter = request.form["chantier_pour_ouvrier2"]
+    chantiers.at[chantier_a_traiter,"Ouvrier"] = ouvriers.at[2,"Nom"]
+    chantiers.to_csv("chantiers.csv", sep=",")
+    return render_template("home.html")
+
 
 @app.route("/affichage_planning")
 def affichage_planning(): 
-    with open('chantiers.csv', newline='') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        for row in spamreader:
-            num_chantier = ', '.join(row)
-    return render_template("planning.html", message=num_chantier)   
+    chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep=",")
+    html = chantiers.to_html()
+    text_file = open("templates/dataframe.html", "w")
+    text_file.write(html)
+    text_file.close()
+    return render_template("dataframe.html")
          
-#@app.route("/", methods=["POST"])
-#def text_box():
-#    text = request.form["text"]
-#    with open("chantiers.csv","a") as open_csv:
-#        open_csv.write("\n"+text)
-#    df = pandas.read_csv("employes.csv")
-#    processed_text = text.upper()
-#    return render_template("bienvenue.html" , message = processed_text, employe = df["Nom"][0])
-
-
 
 if __name__ == "__main__":
     app.run()
+

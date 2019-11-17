@@ -7,20 +7,27 @@
 
 <body>
     <h1>Veuillez attribuer un chantier à chaque ouvrier.</h1>
-    <h3> Ouvrier 1 </h3>
-    <form action="." method="POST">
-    	<input type="radio" name="chantierouvrier1" value="1"> Chantier 1 
-    	<input type="radio" name="chantierouvrier1" value="2"> Chantier 2 
-    	<input type="radio" name="chantierouvrier1" value="3"> Chantier 3 
+    <h3> Maxime </h3>
+    <form action="/ouvrier0" method="POST">
+    	<input type="radio" name="chantier_pour_ouvrier0" value="Noisy"> Noisy
+    	<input type="radio" name="chantier_pour_ouvrier0" value="Champs"> Champs
+    	<input type="radio" name="chantier_pour_ouvrier0" value="Paris"> Paris
         <button type="submit">OK</button>    	
     </form> 
-    <!--<h3> Ouvrier 2 </h3>
-    <form action="." method="POST">
-    	<input type="radio" name="chantierouvrier2" value="1"> Chantier 1 
-    	<input type="radio" name="chantierouvrier2" value="2"> Chantier 2 
-    	<input type="radio" name="chantierouvrier2" value="3"> Chantier 3 
+    <h3> Margot </h3>
+    <form action="/ouvrier1" method="POST">
+    	<input type="radio" name="chantier_pour_ouvrier1" value="Noisy"> Noisy
+    	<input type="radio" name="chantier_pour_ouvrier1" value="Champs"> Champs
+    	<input type="radio" name="chantier_pour_ouvrier1" value="Paris"> Paris
         <button type="submit">OK</button>    	
-    </form> -->
+    </form>
+    <h3> Raph </h3>
+    <form action="/ouvrier2" method="POST">
+        <input type="radio" name="chantier_pour_ouvrier2" value="Noisy"> Noisy
+        <input type="radio" name="chantier_pour_ouvrier2" value="Champs"> Champs
+        <input type="radio" name="chantier_pour_ouvrier2" value="Paris"> Paris 
+        <button type="submit">OK</button>       
+    </form>
     <br>
     <a href="/affichage_planning"> <input type="button" value="Cliquez pour afficher le planning"></a>
 <!--     <form action="." method="POST">
