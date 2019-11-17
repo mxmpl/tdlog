@@ -1,14 +1,31 @@
 <!doctype html>
 <html lang="en">
   <head>
-			<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-		</head>
+		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+		<title> Planning des chantiers </title>
+	</head>
 
 <body>
-    <h1>Ajouter un chantier</h1>
+    <h1>Veuillez attribuer un chantier à chaque ouvrier.</h1>
+    <h3> Ouvrier 1 </h3>
     <form action="." method="POST">
+    	<input type="radio" name="chantierouvrier1" value="1"> Chantier 1 
+    	<input type="radio" name="chantierouvrier1" value="2"> Chantier 2 
+    	<input type="radio" name="chantierouvrier1" value="3"> Chantier 3 
+        <button type="submit">OK</button>    	
+    </form> 
+    <!--<h3> Ouvrier 2 </h3>
+    <form action="." method="POST">
+    	<input type="radio" name="chantierouvrier2" value="1"> Chantier 1 
+    	<input type="radio" name="chantierouvrier2" value="2"> Chantier 2 
+    	<input type="radio" name="chantierouvrier2" value="3"> Chantier 3 
+        <button type="submit">OK</button>    	
+    </form> -->
+    <br>
+    <a href="/affichage_planning"> <input type="button" value="Cliquez pour afficher le planning"></a>
+<!--     <form action="." method="POST">
         <input type="text" name="text">
         <button type="submit">OK</button>
-    </form>
+    </form> -->
 </body>
 </html>
