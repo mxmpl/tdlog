@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, request, render_template
 import pandas as pd
 import os 
 
@@ -23,14 +21,7 @@ def assigner_chantier_a_ouvrier():
 @app.route("/affichage_planning")
 def affichage_planning():
     chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep=",")
-    html = chantiers.to_html()
-    if os.path.exists("templates/dataframe.html"):
-        print("ok")
-        os.remove("templates/dataframe.html") 
-    text_file = open("templates/dataframe.html", "w")
-    text_file.write(html)
-    text_file.close()
-    return render_template("dataframe.html")
+    return chantiers.to_html()
          
 @app.route("/reset")
 def reset():
