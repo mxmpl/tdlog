@@ -4,14 +4,16 @@
 		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"
     </head>
     <body>
-	    <h1> Assigner un employé au chantier {{ message }} </h1>
-    </body>
+	    <h1> Bienvenue sur l'outil de gestion de plannings </h1>
+    <!-- </body> -->
     
-    <form>
-    <select name="Disponibles" size="1">
-    <option> {{ employe }}
-    </option>
-	</select>
-    </form>
-    <a href="{{ url_for('home') }}"> Retourner à la page d'accueil </a>
+    <!-- <form> -->
+    <!-- <select name="Disponibles" size="1"> -->
+    <!-- <option> {{ employe }} -->
+    <!-- </option> -->
+	<!-- </select> -->
+    <!-- </form> -->
+	
+	</body>
+    <a href="{{ url_for('editer') }}"> Editer le planning </a>
 </html>

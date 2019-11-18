@@ -7,6 +7,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
+    return render_template("bienvenue.html")
+    
+@app.route("/home")
+def editer():
     return render_template("home.html")
 
 @app.route("/ouvrier", methods=["POST"])
