@@ -3,9 +3,13 @@
   <head>
 		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 		<title> Planning des chantiers </title>
-	</head>
+		</head>
 
 <body>
+	<h1>Indiquer le chantier à rajouter</h1> 
+	<form action="/ouvrier" method="POST">
+	<input type="text" name=" "> <button type="submit" >OK</button>
+	</form>
     <h1>Veuillez attribuer un chantier à chaque ouvrier.</h1>
     <form action="/ouvrier" method="POST">
     <h3> Maxime </h3>
