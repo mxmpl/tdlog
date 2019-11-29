@@ -13,13 +13,19 @@
     <!-- CHOIX PLANNING --> 
     <h1>Veuillez attribuer un chantier à chaque ouvrier.</h1>
     <form action="/ouvrier" method="POST">
-    {% for noms_ouvriers in ouvriers : %}
-    <h3> {{ noms_ouvriers }} </h3>
+    <h3> Maxime </h3>
         {% for noms_chantiers in chantiers : %}
-    	<input type="radio" name="{{noms_ouvriers}}" value="{{noms_chantiers}}"> {{ noms_chantiers }}
+    	<input type="radio" name="Maxime" value="{{noms_chantiers}}"> {{ noms_chantiers }}
         {% endfor %}
-    {% endfor %} 
-    <button type="submit">OK</button>     
+    <h3> Margot </h3>
+        {% for noms_chantiers in chantiers : %}
+        <input type="radio" name="Margot" value="{{noms_chantiers}}"> {{ noms_chantiers }}
+        {% endfor %}
+    <h3> Raph </h3>
+        {% for noms_chantiers in chantiers : %}
+        <input type="radio" name="Raph" value="{{noms_chantiers}}"> {{ noms_chantiers }}
+        {% endfor %}
+        <button type="submit">OK</button>       
     </form>
     <br>
     <a href="/affichage_planning"> <input type="button" value="Cliquez pour afficher le planning"></a>
