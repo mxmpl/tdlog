@@ -3,7 +3,7 @@ import pandas as pd
 import os 
 
 app = Flask(__name__)
-chantiers = ["Champs-sur-Marne", "Creteil", "Saint-Maurice"]
+chantiers_ = ["Champs-sur-Marne", "Creteil", "Saint-Maurice"]
 
 @app.route("/")
 def home():
@@ -12,7 +12,7 @@ def home():
     
 @app.route("/home")
 def editer():
-    return render_template("home.html", chantiers=chantiers)
+    return render_template("home.html", chantiers=chantiers_)
 
 @app.route("/ouvrier", methods=["POST"])
 def assigner_chantier_a_ouvrier():
@@ -21,7 +21,7 @@ def assigner_chantier_a_ouvrier():
     for ouvrier in chantiers_a_traiter.keys():
         chantiers.at[chantiers_a_traiter[ouvrier],"Ouvrier"] = ouvrier
     chantiers.to_csv("chantiers.csv", sep=",")
-    return render_template("home.html")
+    return render_template("home.html", chantiers=chantiers_)
 
 @app.route("/affichage_planning")
 def affichage_planning():
