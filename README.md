@@ -3,6 +3,6 @@
 Feuille de route 
 
 ## Prototype
-* Boutons cliquables
-* Lister tous les employés disponibles
-* Assigner un chantier pour chaque employé
+* Pouvoir ajouter/supprimer un chantier/ouvrier
+* Inclure des tests quand on essaie d’affecter un ouvrier à un chantier pour pas qu’il y ait un ouvrier a deux endroits en même temps par exemple.
+* Commencer avec Angular
