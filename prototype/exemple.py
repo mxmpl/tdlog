@@ -12,7 +12,7 @@ for index in dictionnaire_chantiers["Index"]:
 dictionnaire_ouvrier = pd.read_csv("liste_ouvriers.csv", index_col = None, sep = ",")
 liste_ouvriers = []
 for index in dictionnaire_ouvrier["Index"]: 
-    liste_ouvriers.append(dictionnaire_chantiers["Noms"][index])
+    liste_ouvriers.append(dictionnaire_ouvrier["Noms"][index])
 
 @app.route("/")
 def home():
@@ -27,14 +27,23 @@ def editer():
 def assigner_chantier_a_ouvrier():
     chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep = ",")
     chantiers_a_traiter = request.form
-    for ouvrier in chantiers_a_traiter.keys():
-        chantiers.at[chantiers_a_traiter[ouvrier],"Ouvrier"] = ouvrier
+    for element in chantiers_a_traiter.keys():
+        if(chantiers_a_traiter[element] not in liste_chantiers):
+            indice_nouveau_chantier = len(liste_chantiers)
+            liste_chantiers.append(chantiers_a_traiter[element])
+            ligne_ajout_csv = [[indice_nouveau_chantier,chantiers_a_traiter[element]]]
+            liste_dataframe = pd.DataFrame(ligne_ajout_csv)
+            fichier = open("chantiers.csv", 'a')
+            fichier.write('')
+            fichier.close()
+            liste_dataframe.to_csv("liste_chantiers.csv", header = False, index = False, mode = 'a')
+        chantiers.at[chantiers_a_traiter[element],"Ouvrier"] = element
     chantiers.to_csv("chantiers.csv", sep=",")
     return render_template("home.html", chantiers = liste_chantiers)
-
+    
 @app.route("/affichage_planning")
 def affichage_planning():
-    chantiers = pd.read_csv("chantiers.csv", index_col = "Nom", sep=",")
+    chantiers = pd.read_csv("chantiers.csv", index_col = False, sep=",")
     return chantiers.to_html()
          
 @app.route("/reset")
