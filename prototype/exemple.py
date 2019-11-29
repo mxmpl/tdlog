@@ -13,6 +13,10 @@ dictionnaire_ouvrier = pd.read_csv("liste_ouvriers.csv", index_col = None, sep =
 liste_ouvriers = []
 for index in dictionnaire_ouvrier["Index"]: 
     liste_ouvriers.append(dictionnaire_ouvrier["Noms"][index])
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 54be18f99db96e84efa650b972298e97af049e59
 
 @app.route("/")
 def home():
@@ -21,7 +25,7 @@ def home():
     
 @app.route("/home")
 def editer():
-    return render_template("home.html", chantiers = liste_chantiers)
+    return render_template("home.html", chantiers = liste_chantiers, ouvriers = liste_ouvriers)
 
 @app.route("/ouvrier", methods=["POST"])
 def assigner_chantier_a_ouvrier():
@@ -39,8 +43,13 @@ def assigner_chantier_a_ouvrier():
             liste_dataframe.to_csv("liste_chantiers.csv", header = False, index = False, mode = 'a')
         chantiers.at[chantiers_a_traiter[element],"Ouvrier"] = element
     chantiers.to_csv("chantiers.csv", sep=",")
+<<<<<<< HEAD
     return render_template("home.html", chantiers = liste_chantiers)
     
+=======
+    return render_template("home.html", chantiers = liste_chantiers, ouvriers = liste_ouvriers)
+
+>>>>>>> 54be18f99db96e84efa650b972298e97af049e59
 @app.route("/affichage_planning")
 def affichage_planning():
     chantiers = pd.read_csv("chantiers.csv", index_col = False, sep=",")
@@ -52,7 +61,7 @@ def reset():
     for i in range(len(chantiers.loc[:,"Ouvrier"])):
         chantiers.loc[:,"Ouvrier"][i] = " "
     chantiers.to_csv("chantiers.csv", sep=",")
-    return render_template("home.html", chantiers = liste_chantiers)
+    return render_template("home.html", chantiers = liste_chantiers, ouvriers = liste_ouvriers)
 
     
 
