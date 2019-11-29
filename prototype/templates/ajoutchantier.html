@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+   <head>
+		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+		<title> Ajout d'un chantier </title>
+	</head>
+
+<body>
+	<h1> Ajouter un chantier, indiquez son lieu : </h1>
+		<form action="/ajout_chantier" method="POST">
+			<input type="text" name ="text">		
+        	<button type="submit">OK</button>			
+		</form>
+    <br>
+    <a href="/home"> <input type="button" value="Cliquez pour revenir aux choix des plannings"></a>
+</body>
+</html>

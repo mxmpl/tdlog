@@ -3,15 +3,16 @@ import pandas as pd
 import os 
 
 app = Flask(__name__)
-
+chantiers = ["Champs-sur-Marne", "Creteil", "Saint-Maurice"]
 
 @app.route("/")
 def home():
-    return render_template("bienvenue.html")
+    user = {'username': 'Bernard'}
+    return render_template("bienvenue.html", user = user)
     
 @app.route("/home")
 def editer():
-    return render_template("home.html")
+    return render_template("home.html", chantiers=chantiers)
 
 @app.route("/ouvrier", methods=["POST"])
 def assigner_chantier_a_ouvrier():
@@ -35,7 +36,11 @@ def reset():
     chantiers.to_csv("chantiers.csv", sep=",")
     return render_template("home.html")
 
+    
+
+
 
 if __name__ == "__main__":
+    app.debug = True 
     app.run()
 

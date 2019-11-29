@@ -4,34 +4,31 @@
 		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 		<title> Planning des chantiers </title>
 		</head>
-
 <body>
+    <!-- AJOUTER UN CHANTIER --> 
 	<h1>Indiquer le chantier à rajouter</h1> 
 	<form action="/ouvrier" method="POST">
 	<input type="text" name=" "> <button type="submit" >OK</button>
 	</form>
+    <!-- CHOIX PLANNING --> 
     <h1>Veuillez attribuer un chantier à chaque ouvrier.</h1>
     <form action="/ouvrier" method="POST">
     <h3> Maxime </h3>
-    	<input type="radio" name="Maxime" value="Noisy"> Noisy
-    	<input type="radio" name="Maxime" value="Champs"> Champs
-    	<input type="radio" name="Maxime" value="Paris"> Paris
+        {% for noms_chantiers in chantiers : %}
+    	<input type="radio" name="Maxime" value="{{noms_chantiers}}"> {{ noms_chantiers }}
+        {% endfor %}
     <h3> Margot </h3>
-    	<input type="radio" name="Margot" value="Noisy"> Noisy
-    	<input type="radio" name="Margot" value="Champs"> Champs
-    	<input type="radio" name="Margot" value="Paris"> Paris
+        {% for noms_chantiers in chantiers : %}
+        <input type="radio" name="Margot" value="{{noms_chantiers}}"> {{ noms_chantiers }}
+        {% endfor %}
     <h3> Raph </h3>
-        <input type="radio" name="Raph" value="Noisy"> Noisy
-        <input type="radio" name="Raph" value="Champs"> Champs
-        <input type="radio" name="Raph" value="Paris"> Paris 
+        {% for noms_chantiers in chantiers : %}
+        <input type="radio" name="Raph" value="{{noms_chantiers}}"> {{ noms_chantiers }}
+        {% endfor %}
         <button type="submit">OK</button>       
     </form>
     <br>
     <a href="/affichage_planning"> <input type="button" value="Cliquez pour afficher le planning"></a>
     <a href="/reset"> <input type="button" value="Reset"></a>
-<!--     <form action="." method="POST">
-        <input type="text" name="text">
-        <button type="submit">OK</button>
-    </form> -->
 </body>
 </html>
