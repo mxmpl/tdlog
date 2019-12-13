@@ -3,7 +3,7 @@
 '''
 Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et Maxime POLI, 2019-2020
 
-Le but de ce script python est de traiter les bases de données (chantiers et ouvriers principalement).
+Le but de ce script python est de traiter les bases de données relatives aux chantiers.
 
 '''
 
@@ -11,9 +11,9 @@ Le but de ce script python est de traiter les bases de données (chantiers et ou
 
 import sqlite3
 
-###################################################### Création de la base de données liste_chantiers
+###################################################### Création de la base de données bdd_chantiers
 
-db = sqlite3.connect('liste_chantiers') # La base de données listant tous les chantiers
+db = sqlite3.connect('bdd_chantiers') # La base de données listant tous les chantiers
 cursor = db.cursor() # On se place sur cette bdd
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY,
@@ -59,28 +59,34 @@ def Select_condition (command: str):
 #     return tuple(list_days)
         
     
+print ("On renvoie tous les noms, et adresses des chantiers dans la bdd")
 Select_condition('''SELECT name, adress 
                     FROM chantiers''') # On renvoie tous les noms, et adresses des chantiers dans la bdd
                     
+print("\nOn renvoie le nom des chantiers ayant une adresse donnée")
 Select_condition('''SELECT name 
                     FROM chantiers 
                     WHERE adress = "20 rue des lillas"''') # On renvoie le nom des chantiers ayant une adresse donnée
                     
+print("\nOn renvoie toutes les infos du chantier nommé 'Marseille'")
 Select_condition('''SELECT * 
                     FROM chantiers 
                     WHERE name = "Marseille"''') # On renvoie toutes les infos du chantier nommé "Marseille"
-                    
+
+print("\nOn compte combien de chantiers sont dans la table")            
 Select_condition('''SELECT COUNT(*) 
                     FROM chantiers 
-                    WHERE name = "Marseille"''') # On compte combien de chantiers
-                    
+                    ''') # On compte combien de chantiers sont dans la table
+ 
+print("\nOn renvoie tous les chantiers ordonnés par nom")
 Select_condition('''SELECT * 
                     FROM chantiers 
                     ORDER BY name''') # On renvoie tous les chantiers ordonnés par nom
                     
+print("\nOn renvoie tous les chantiers commençant à une date donnée")
 Select_condition('''SELECT * 
                     FROM chantiers 
-                    WHERE date_debut = ("2018-10-09 08:00:00") ''')
+                    WHERE date_debut = ("2018-10-09 08:00:00") ''') # On renvoie tous les chantiers commençant à une date donnée
 
 ###################################################### Supression de la table entière
 
