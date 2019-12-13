@@ -16,10 +16,8 @@ import sqlite3
 db = sqlite3.connect('liste_chantiers') # La base de données listant tous les chantiers
 cursor = db.cursor() # On se place sur cette bdd
 
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY, name TEXT,
-                       day DAY, adress TEXT
-                       ''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY,
+                                                    name TEXT, day DAY, adress TEXT)''')
 # cursor.execute('''
 #     CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY, name TEXT,
 #                                          adress TEXT, monday TEXT, tuesday TEXT,
