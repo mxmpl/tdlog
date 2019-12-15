@@ -40,16 +40,20 @@ def Select_condition (command: str):
     for row in rows:
         print(list(row[:]))
     
+print("On renvoie tous les couples d'attribution (ouvrier,chantier) présents dans la table.")
 Select_condition('''SELECT id_ouvrier, id_chantier 
                     FROM attribution''') 
                     
+print("\nOn renvoie les chantiers de l'ouvrier 1")
 Select_condition('''SELECT id_chantier 
                     FROM attribution 
                     WHERE id_ouvrier = "1"''') 
-                    
+
+print("\nOn renvoie toutes les informations de la table")
 Select_condition('''SELECT * 
                     FROM attribution''') 
                     
+print("\nOn renvoie le nombre de chantier de l'ouvrier 1")
 Select_condition('''SELECT COUNT(*) 
                     FROM attribution 
                     WHERE id_ouvrier = "1"''') 
