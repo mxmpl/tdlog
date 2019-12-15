@@ -70,10 +70,6 @@ Select_condition('''SELECT *
                     FROM ouvriers 
                     ORDER BY name''') # On renvoie tous les ouvriers triés par noms
 
-Select_condition('''SELECT * 
-                    FROM ouvriers 
-                    WHERE statut ="0"''') # On renvoie tous les ouvriers triés par noms
-
 ###################################################### Supression de la table entière
 
 # On supprime la table
