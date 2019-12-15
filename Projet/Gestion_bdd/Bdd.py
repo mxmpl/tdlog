@@ -86,16 +86,16 @@ def Insert_ouvrier(new_ouvrier: list):
                       VALUES(?,?,?)''',(new_ouvrier[0], new_ouvrier[1], new_ouvrier[2]))
 
 # ouvrier = get_data() # A terme pouvoir utiliser cette fct qui crée une liste comme l'exemple de la ligne suivante 
-ouvrier = ["Jean", "horticulture", "DISPONIBLE"]
+ouvrier = ["Jean", "horticulture", DISPONIBLE]
 Insert_ouvrier(ouvrier)
                   
-ouvrier = ["Lucie", "fleuriste", "INDISPONIBLE"]
+ouvrier = ["Lucie", "fleuriste", INDISPONIBLE]
 Insert_ouvrier(ouvrier)
     
-ouvrier = ["Marcel", "élagueur", "DISPONIBLE"]
+ouvrier = ["Marcel", "élagueur", DISPONIBLE]
 Insert_ouvrier(ouvrier)
 
-ouvrier = ["Julie", "cheffe de chantier", "DISPONIBLE"]
+ouvrier = ["Julie", "cheffe de chantier", DISPONIBLE]
 Insert_ouvrier(ouvrier)
 
 db.commit()
@@ -105,7 +105,7 @@ db.commit()
 def Insert_attribution(new_attribution: list): #new_attribution = ["id_ouvrier","id_chantier"]
     ouvriers_disponible = Select_condition('''SELECT id
                                               FROM ouvriers 
-                                              WHERE statut = "DISPONIBLE" ''')
+                                              WHERE statut = 0 ''') # Idem comment mettre DISPONIBLE ici ? 
     if [int(new_attribution[0])] in ouvriers_disponible:  # manipulation avec les listes encore, à voir avec Raphael 
         cursor.execute('''INSERT INTO attribution(id_ouvrier, id_chantier)
                           VALUES(?,?)''', (new_attribution[0], new_attribution[1]))
@@ -113,83 +113,83 @@ def Insert_attribution(new_attribution: list): #new_attribution = ["id_ouvrier",
         print("Vous ne pouvez pas associer cet ouvrier à ce chantier car l'ouvrier n'est pas disponible")
                       
 # new_attribution = get_data() # données à récupérer depuis Python 
-attribution = ["1", "2"]
+attribution = [1, 2]
 Insert_attribution(attribution)
                   
-attribution = ["4", "1"]
+attribution = [4, 1]
 Insert_attribution(attribution)
 
-attribution = ["3", "1"] #Attribution impossible (ouvrier non disponible)
+attribution = [3, 1] #Attribution impossible (ouvrier non disponible)
 Insert_attribution(attribution)
 
-attribution = ["1", "5"]
+attribution = [1, 5]
 Insert_attribution(attribution)
 
-attribution = ["2", "2"]
+attribution = [2, 2]
 Insert_attribution(attribution)
 
-attribution = ["3", "3"]
+attribution = [3, 3]
 Insert_attribution(attribution)
 
 
 db.commit()
 
 ###################################################### Exemple de requetes sur les chantiers
-#    
-#print ("On renvoie tous les noms, et adresses des chantiers dans la bdd")
-#Print_condition('''SELECT name, adress 
-#                    FROM chantiers''') # On renvoie tous les noms, et adresses des chantiers dans la bdd
-#                    
-#print("\nOn renvoie le nom des chantiers ayant une adresse donnée")
-#Print_condition('''SELECT name 
-#                    FROM chantiers 
-#                    WHERE adress = "20 rue des lillas"''') # On renvoie le nom des chantiers ayant une adresse donnée
-#                    
-#print("\nOn renvoie toutes les infos du chantier nommé 'Marseille'")
-#Print_condition('''SELECT * 
-#                    FROM chantiers 
-#                    WHERE name = "Marseille"''') # On renvoie toutes les infos du chantier nommé "Marseille"
-#
-#print("\nOn compte combien de chantiers sont dans la table")            
-#Print_condition('''SELECT COUNT(*) 
-#                    FROM chantiers''') # On compte combien de chantiers sont dans la table
-# 
-#print("\nOn renvoie tous les chantiers ordonnés par nom")
-#Print_condition('''SELECT * 
-#                    FROM chantiers 
-#                    ORDER BY name''') # On renvoie tous les chantiers ordonnés par nom
-#                    
-#print("\nOn renvoie tous les chantiers commençant à une date donnée")
-#Print_condition('''SELECT * 
-#                    FROM chantiers 
-#                    WHERE date_debut = ("2018-10-09 08:00:00") ''') # On renvoie tous les chantiers commençant à une date donnée
-#
-####################################################### Exemple de requetes sur les ouvriers
-#                    
-#print("\nOn renvoie tous les noms et spécialités des ouvriers dans la bdd")
-#Print_condition('''SELECT name, specialite
-#                    FROM ouvriers''') # On renvoie tous les noms et spécialités des ouvriers dans la bdd
-#                    
-#print("\nOn renvoie tous les noms des ouvriers ayant une spécialité donnée")
-#Print_condition('''SELECT name 
-#                    FROM ouvriers 
-#                    WHERE specialite = "horticulture"''') # On renvoie tous les noms des ouvriers ayant une spécialité donnée
-#                    
-#print("\nOn renvoie toutes les infos d'un ouvrier ayant un nom donné")
-#Print_condition('''SELECT * 
-#                    FROM ouvriers 
-#                    WHERE name = "Jean"''') # On renvoie toutes les infos d'un ouvrier ayant un nom donné
-#                
-#print("\nOn compte combien d'ouvriers sont dans la table")
-#Print_condition('''SELECT COUNT(*) 
-#                    FROM ouvriers 
-#                    ''') # On compte combien d'ouvriers sont dans la table
-#
-#print("\nOn renvoie tous les ouvriers triés par noms")
-#Print_condition('''SELECT * 
-#                    FROM ouvriers 
-#                    ORDER BY name''') # On renvoie tous les ouvriers triés par noms
-#                
+    
+print ("On renvoie tous les noms, et adresses des chantiers dans la bdd")
+Print_condition('''SELECT name, adress 
+                    FROM chantiers''') # On renvoie tous les noms, et adresses des chantiers dans la bdd
+                    
+print("\nOn renvoie le nom des chantiers ayant une adresse donnée")
+Print_condition('''SELECT name 
+                    FROM chantiers 
+                    WHERE adress = "20 rue des lillas"''') # On renvoie le nom des chantiers ayant une adresse donnée
+                    
+print("\nOn renvoie toutes les infos du chantier nommé 'Marseille'")
+Print_condition('''SELECT * 
+                    FROM chantiers 
+                    WHERE name = "Marseille"''') # On renvoie toutes les infos du chantier nommé "Marseille"
+
+print("\nOn compte combien de chantiers sont dans la table")            
+Print_condition('''SELECT COUNT(*) 
+                    FROM chantiers''') # On compte combien de chantiers sont dans la table
+ 
+print("\nOn renvoie tous les chantiers ordonnés par nom")
+Print_condition('''SELECT * 
+                    FROM chantiers 
+                    ORDER BY name''') # On renvoie tous les chantiers ordonnés par nom
+                    
+print("\nOn renvoie tous les chantiers commençant à une date donnée")
+Print_condition('''SELECT * 
+                    FROM chantiers 
+                    WHERE date_debut = ("2018-10-09 08:00:00") ''') # On renvoie tous les chantiers commençant à une date donnée
+
+###################################################### Exemple de requetes sur les ouvriers
+                    
+print("\nOn renvoie tous les noms et spécialités des ouvriers dans la bdd")
+Print_condition('''SELECT name, specialite
+                    FROM ouvriers''') # On renvoie tous les noms et spécialités des ouvriers dans la bdd
+                    
+print("\nOn renvoie tous les noms des ouvriers ayant une spécialité donnée")
+Print_condition('''SELECT name 
+                    FROM ouvriers 
+                    WHERE specialite = "horticulture"''') # On renvoie tous les noms des ouvriers ayant une spécialité donnée
+                    
+print("\nOn renvoie toutes les infos d'un ouvrier ayant un nom donné")
+Print_condition('''SELECT * 
+                    FROM ouvriers 
+                    WHERE name = "Jean"''') # On renvoie toutes les infos d'un ouvrier ayant un nom donné
+                
+print("\nOn compte combien d'ouvriers sont dans la table")
+Print_condition('''SELECT COUNT(*) 
+                    FROM ouvriers 
+                    ''') # On compte combien d'ouvriers sont dans la table
+
+print("\nOn renvoie tous les ouvriers triés par noms")
+Print_condition('''SELECT * 
+                    FROM ouvriers 
+                    ORDER BY name''') # On renvoie tous les ouvriers triés par noms
+                
 ####################################################### Exemple de requetes sur les ouvriers/chantiers
 
 print("\nOn renvoie tous les id des ouvriers/chantiers dans la bdd")
@@ -211,12 +211,12 @@ Print_condition('''SELECT COUNT(*)
                     WHERE id_ouvrier = "1"''') 
                     
 ####################################################### Exemple de requetes couplées sur les tables
-#
-#print("\nOn renvoie les noms et spécialités des ouvriers étant affectés à des chantiers") 
-#Print_condition('''SELECT name, specialite
-#                    FROM ouvriers
-#                    JOIN attribution
-#                    WHERE id = id_ouvrier''')
+
+print("\nOn renvoie les noms et spécialités des ouvriers étant affectés à des chantiers") 
+Print_condition('''SELECT name, specialite
+                    FROM ouvriers
+                    JOIN attribution
+                    WHERE id = id_ouvrier''')
 
 ###################################################### Supression de la table entière
 

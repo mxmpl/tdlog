@@ -1,3 +1,4 @@
+
 ######################################################
 
 '''
@@ -28,11 +29,11 @@ db.commit() # On termine de creer la table
 # Ici il faudrait pouvoir récupérer les données depuis le site
 
 # new_ouvrier = get_data() # A terme pouvoir utiliser cette fct qui crée une liste comme l'exemple de la ligne suivante 
-new_ouvrier = ["Jean", "horticulture", "DISPONIBLE"]
+new_ouvrier = ["Jean", "horticulture", DISPONIBLE]
 cursor.execute('''INSERT INTO ouvriers(name, specialite, statut)
                   VALUES(?,?,?)''', (new_ouvrier[0], new_ouvrier[1], new_ouvrier[2]))
                   
-new_ouvrier = ["Lucie", "fleuriste", "INDISPONIBLE"]
+new_ouvrier = ["Lucie", "fleuriste", INDISPONIBLE]
 cursor.execute('''INSERT INTO ouvriers(name, specialite, statut)
                   VALUES(?,?,?)''', (new_ouvrier[0], new_ouvrier[1], new_ouvrier[2]))
                   
@@ -69,6 +70,11 @@ print("\nOn renvoie tous les ouvriers triés par noms")
 Select_condition('''SELECT * 
                     FROM ouvriers 
                     ORDER BY name''') # On renvoie tous les ouvriers triés par noms
+
+print("\nOn renvoie tous les ouvriers disponibles")
+Select_condition('''SELECT * 
+                    FROM ouvriers 
+                    WHERE statut = 0''') # Comment mettre DISPONIBLE ici ? 
 
 ###################################################### Supression de la table entière
 
