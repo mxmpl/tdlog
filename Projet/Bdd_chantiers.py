@@ -43,21 +43,7 @@ def Select_condition (command: str):
     cursor.execute(command)
     rows = cursor.fetchall()
     for row in rows:
-        print(list(row[:]))
-
-# list_of_days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"]   
-#      
-# def Select_days(days: str): # Cette fonction permet
-#     list_days = []
-#     for day in days:
-#         for day_ in list_of_days:
-#             if (day!=day_):
-#                 if list_of_days.index(day) < list_of_days.index(day_):
-#                     list_days.append(day + " ; " + day_)
-#                 else :
-#                     list_days.append(day_ + " ; " + day)
-#     return tuple(list_days)
-        
+        print(list(row[:]))  
     
 print ("On renvoie tous les noms, et adresses des chantiers dans la bdd")
 Select_condition('''SELECT name, adress 
