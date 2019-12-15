@@ -11,83 +11,206 @@ Le but de ce script python est de traiter les bases de données (chantiers et ou
 
 import sqlite3
 
-###################################################### Création de la base de données liste_chantiers
 
-db = sqlite3.connect('liste_chantiers') # La base de données listant tous les chantiers
-cursor = db.cursor() # On se place sur cette bdd
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY,
-                                                    name TEXT, day DAY, adress TEXT)''')
-# cursor.execute('''
-#     CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY, name TEXT,
-#                                          adress TEXT, monday TEXT, tuesday TEXT,
-#                                          wednesday TEXT, thursday TEXT, friday TEXT,
-#                                          satudrady TEXT, sunday TEXT)
-# ''') # La table possède 4 arguments, la clef primaire, le nom du chantier, le jour où l'on souhaite y aller, ainsi que l'adresse du chantier
-
-db.commit() # On termine de creer la table
-
-###################################################### Ajout d'un nouveau chantier à notre base de données
-
-# Ici il faudrait pouvoir récupérer les données sous forme d'un tableau avec le nom, les jours (optionnel ?) et l'adresse
-
-# new_chantier = get_data() # A terme pouvoir utiliser cette fct qui crée une liste comme l'exemple de la ligne suivante 
-new_chantier = ["Paris", "Lundi ; Mercredi", "20 rue des lillas"]
-cursor.execute('''INSERT INTO chantiers(name, day, adress)
-                  VALUES(?,?,?)''', (new_chantier[0], new_chantier[1], new_chantier[2]))
-                  
-new_chantier = ["Marseille", "Lundi ; Mardi", "20 rue des lillas"]
-cursor.execute('''INSERT INTO chantiers(name, day, adress)
-                  VALUES(?,?,?)''', (new_chantier[0], new_chantier[1], new_chantier[2]))
-                  
-db.commit()
-
-###################################################### Séléction de certains chantiers particuliers
+###################################################### Requetes
     
-def Select_condition (command: str):
+def Select_condition (command: str): # On séléctionne les lignes demandées et on les récupère sous forme de liste
     cursor.execute(command)
     rows = cursor.fetchall()
     for row in rows:
         print(list(row[:]))
 
-# list_of_days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"]   
-#      
-# def Select_days(days: str): # Cette fonction permet
-#     list_days = []
-#     for day in days:
-#         for day_ in list_of_days:
-#             if (day!=day_):
-#                 if list_of_days.index(day) < list_of_days.index(day_):
-#                     list_days.append(day + " ; " + day_)
-#                 else :
-#                     list_days.append(day_ + " ; " + day)
-#     return tuple(list_days)
-        
+###################################################### Création des bases de données 
+db = sqlite3.connect('liste_chantiers') # La base de données listant tous les chantiers
+cursor = db.cursor() # On se place sur cette bdd
+
+cursor.execute('''CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY,
+                                                    name TEXT, date_debut SMALLDATETIME, date_fin SMALLDATETIME, adress TEXT)''')
+# La table possède 4 arguments, la clef primaire, le nom du chantier, le jour de début du chantier, le jour de sa fin, ainsi que l'adresse du chantier
+
+DISPONIBLE = 0
+INDISPONIBLE = 1
+cursor.execute('''CREATE TABLE IF NOT EXISTS ouvriers(id INTEGER PRIMARY KEY,
+                                                    name TEXT, specialite TEXT, statut BIT)''') # Statut permet de dire s'il est disponible ou pas avec DISPONIBLE si oui, INDISPONIBLE si non
+                                                    
+cursor.execute('''CREATE TABLE IF NOT EXISTS attribution(id_ouvrier INTEGER, id_chantier INTEGER,
+                                                        FOREIGN KEY(id_ouvrier) REFERENCES ouvriers(id),
+                                                        FOREIGN KEY(id_chantier) REFERENCES chantiers(id))''')
+
+db.commit() # On termine de creer les tables
+
+###################################################### Ajout d'un nouveau chantier à notre base de données
+
+# Ici il faudrait pouvoir récupérer les données sous forme d'un tableau avec le nom, les jours (optionnel ?) et l'adresse
+
+def Insert_chantier(new_chantier: list):
+    cursor.execute('''INSERT INTO chantiers(name, date_debut, date_fin, adress)
+                      VALUES(?,?,?,?)''',(new_chantier[0], new_chantier[1], new_chantier[2], new_chantier[3]))
+
+# chantier = get_data() # A terme pouvoir utiliser cette fct qui crée une liste comme l'exemple de la ligne suivante 
+chantier = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
+Insert_chantier(chantier)
+                  
+chantier = ["Marseille", "2018-10-09 08:00:00", "2018-10-09 12:00:00", "20 rue des lillas"]
+Insert_chantier(chantier)
+                  
+chantier = ["Noisy", "2019-12-09 08:00:00", "2020-02-09 12:00:00", "6-8 Avenue Blaise Pascal"]
+Insert_chantier(chantier)
+
+chantier = ["Noisy", "2019-12-09 08:00:00", "2020-02-09 12:00:00", "6-8 Avenue Blaise Pascal"]
+Insert_chantier(chantier) # Chantier identique
+
+chantier = ["Paris", "2019-11-21 09:00:00", "2019-12-09 13:00:00", "3 Avenue Foch"]
+Insert_chantier(chantier)
+
+chantier = ["Boulogne", "2014-06-25 08:00:00", "2021-08-07 12:00:00", "70 rue du point du jour"]
+Insert_chantier(chantier)
+
+db.commit()
+
+###################################################### Ajout d'un nouveau ouvrier à notre base de données
+
+# Ici il faudrait pouvoir récupérer les données depuis le site
+
+def Insert_ouvrier(new_ouvrier: list):
+    cursor.execute('''INSERT INTO ouvriers(name, specialite, statut)
+                      VALUES(?,?,?)''',(new_ouvrier[0], new_ouvrier[1], new_ouvrier[2]))
+
+# ouvrier = get_data() # A terme pouvoir utiliser cette fct qui crée une liste comme l'exemple de la ligne suivante 
+ouvrier = ["Jean", "horticulture", "DISPONIBLE"]
+Insert_ouvrier(ouvrier)
+                  
+ouvrier = ["Lucie", "fleuriste", "INDISPONIBLE"]
+Insert_ouvrier(ouvrier)
     
+ouvrier = ["Marcel", "élagueur", "DISPONIBLE"]
+Insert_ouvrier(ouvrier)
+
+ouvrier = ["Julie", "cheffe de chantier", "DISPONIBLE"]
+Insert_ouvrier(ouvrier)
+
+              
+db.commit()
+
+###################################################### Ajout d'un nouveau couple à notre base de données
+
+def Insert_attribution(new_attribution: list):
+    disponibilite = Select_condition('''SELECT statut
+                                        FROM ouvriers
+                                        WHERE id = VALUES(?)''', new_attribution[0])[0] # PROBLEME
+    if (disponnibilite):
+        cursor.execute('''INSERT INTO attribution(id_ouvrier, id_chantier)
+                          VALUES(?,?)''', (new_attribution[0], new_attribution[1]))
+                      
+# new_attribution = get_data() # données à récupérer depuis Python 
+attribution = ["1", "2"]
+Insert_attribution(attribution)
+                  
+attribution = ["4", "1"]
+Insert_attribution(attribution)
+
+attribution = ["3", "1"]
+Insert_attribution(attribution)
+
+attribution = ["1", "5"]
+Insert_attribution(attribution)
+
+attribution = ["2", "2"]
+Insert_attribution(attribution)
+
+attribution = ["3", "3"]
+Insert_attribution(attribution)
+
+db.commit()
+
+###################################################### Exemple de requetes sur les chantiers
+    
+print ("On renvoie tous les noms, et adresses des chantiers dans la bdd")
 Select_condition('''SELECT name, adress 
                     FROM chantiers''') # On renvoie tous les noms, et adresses des chantiers dans la bdd
                     
+print("\nOn renvoie le nom des chantiers ayant une adresse donnée")
 Select_condition('''SELECT name 
                     FROM chantiers 
                     WHERE adress = "20 rue des lillas"''') # On renvoie le nom des chantiers ayant une adresse donnée
                     
+print("\nOn renvoie toutes les infos du chantier nommé 'Marseille'")
 Select_condition('''SELECT * 
                     FROM chantiers 
                     WHERE name = "Marseille"''') # On renvoie toutes les infos du chantier nommé "Marseille"
-                    
+
+print("\nOn compte combien de chantiers sont dans la table")            
 Select_condition('''SELECT COUNT(*) 
                     FROM chantiers 
-                    WHERE name = "Marseille"''') # On compte combien de chantiers
-                    
+                    ''') # On compte combien de chantiers sont dans la table
+ 
+print("\nOn renvoie tous les chantiers ordonnés par nom")
 Select_condition('''SELECT * 
                     FROM chantiers 
                     ORDER BY name''') # On renvoie tous les chantiers ordonnés par nom
                     
+print("\nOn renvoie tous les chantiers commençant à une date donnée")
 Select_condition('''SELECT * 
                     FROM chantiers 
-                    WHERE day = ("Mercredi ; Lundi") ''')
+                    WHERE date_debut = ("2018-10-09 08:00:00") ''') # On renvoie tous les chantiers commençant à une date donnée
+
+###################################################### Exemple de requetes sur les ouvriers
+                    
+print("\nOn renvoie tous les noms et spécialités des ouvriers dans la bdd")
+Select_condition('''SELECT name, specialite
+                    FROM ouvriers''') # On renvoie tous les noms et spécialités des ouvriers dans la bdd
+                    
+print("\nOn renvoie tous les noms des ouvriers ayant une spécialité donnée")
+Select_condition('''SELECT name 
+                    FROM ouvriers 
+                    WHERE specialite = "horticulture"''') # On renvoie tous les noms des ouvriers ayant une spécialité donnée
+                    
+print("\nOn renvoie toutes les infos d'un ouvrier ayant un nom donné")
+Select_condition('''SELECT * 
+                    FROM ouvriers 
+                    WHERE name = "Jean"''') # On renvoie toutes les infos d'un ouvrier ayant un nom donné
+                
+print("\nOn compte combien d'ouvriers sont dans la table")
+Select_condition('''SELECT COUNT(*) 
+                    FROM ouvriers 
+                    ''') # On compte combien d'ouvriers sont dans la table
+
+print("\nOn renvoie tous les ouvriers triés par noms")
+Select_condition('''SELECT * 
+                    FROM ouvriers 
+                    ORDER BY name''') # On renvoie tous les ouvriers triés par noms
+                    
+###################################################### Exemple de requetes sur les ouvriers/chantiers
+
+print("\nOn renvoie tous les id des ouvriers/chantiers dans la bdd")
+Select_condition('''SELECT id_ouvrier, id_chantier 
+                    FROM attribution''') 
+                
+print("\nOn renvoie l'id d'un chantier ou se trouve un id_ouvrier donné")
+Select_condition('''SELECT id_chantier 
+                    FROM attribution 
+                    WHERE id_ouvrier = "1"''') 
+                 
+print("\nOn renvoie toute la table")   
+Select_condition('''SELECT * 
+                    FROM attribution''') 
+                    
+print("\nOn compte le nombre de chantiers où est présent l'ouvrier 1")
+Select_condition('''SELECT COUNT(*) 
+                    FROM attribution 
+                    WHERE id_ouvrier = "1"''') 
+                    
+###################################################### Exemple de requetes couplées sur les tables
+
+print("\nOn renvoie les noms et spécialités des ouvriers étant affectés à des chantiers")
+Select_condition('''SELECT name, specialite
+                    FROM ouvriers
+                    JOIN attribution
+                    WHERE id = id_ouvrier''')
 
 ###################################################### Supression de la table entière
 
-# On supprime la table
+# On supprime les table
 cursor.execute('''DROP TABLE chantiers''')
+cursor.execute('''DROP TABLE ouvriers''')
+cursor.execute('''DROP TABLE attribution''')
