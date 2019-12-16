@@ -13,11 +13,19 @@ import sqlite3
 
 ###################################################### Requetes
     
+def Commit_condition(command: str):
+    """
+    Permet d'executer une commande.
+    """
+    cursor.execute(command)
+    db.commit()
+    
 def Select_condition (command: str): # On séléctionne les lignes demandées et on les récupère sous forme de liste
     """
     Permet à partir d'une commande d'enregistrer les informations correspondantes de la base de données. 
     """
     cursor.execute(command)
+    db.commit()
     rows = cursor.fetchall()
     sortie = [] # permet de ne pas obtenir une liste de tuple en sortie => voir avec raphael si on peut pas changer fetchall pour éviter cette astuce 
     for row in rows:
@@ -29,9 +37,11 @@ def Print_condition (command: str):
     Permet à partir d'une commande d'afficher les informations correspondantes de la base de données. 
     """
     cursor.execute(command)
+    db.commit()
     rows = cursor.fetchall()
     for row in rows:
         print(list(row[:]))
+        
         
 ###################################################### Création des bases de données 
 db = sqlite3.connect('Bdd_principale') # La base de données avec 3 tables (informations sur les chantiers, ouvriers et attributions)
@@ -48,7 +58,8 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS ouvriers(id INTEGER PRIMARY KEY,
                                                     
 cursor.execute('''CREATE TABLE IF NOT EXISTS attribution(id_ouvrier INTEGER, id_chantier INTEGER,
                                                         FOREIGN KEY(id_ouvrier) REFERENCES ouvriers(id),
-                                                        FOREIGN KEY(id_chantier) REFERENCES chantiers(id))''')
+                                                        FOREIGN KEY(id_chantier) REFERENCES chantiers(id))
+                                                        ''')
 
 db.commit() # On termine de creer les tables
 
@@ -162,7 +173,7 @@ Print_condition('''SELECT *
 print("\nOn renvoie tous les chantiers commençant à une date donnée")
 Print_condition('''SELECT * 
                     FROM chantiers 
-                    WHERE date_debut = ("2018-10-09 08:00:00") ''') # On renvoie tous les chantiers commençant à une date donnée
+                    WHERE date_debut = "2018-10-09 08:00:00" ''') # On renvoie tous les chantiers commençant à une date donnée
 
 ###################################################### Exemple de requetes sur les ouvriers
                     
@@ -199,28 +210,48 @@ Print_condition('''SELECT id_ouvrier, id_chantier
 print("\nOn renvoie tous les chantiers de l'ouvrier 1")
 Print_condition('''SELECT id_chantier 
                     FROM attribution 
-                    WHERE id_ouvrier = "1"''') 
+                    WHERE id_ouvrier = 1''') 
                  
-print("\nOn renvoie toute la table")   #Pourquoi ça n'affiche pas les indices ? 
+print("\nOn renvoie toute la table")    
 Print_condition('''SELECT * 
                     FROM attribution''') 
                     
 print("\nOn compte le nombre de chantiers où est présent l'ouvrier 1")
 Print_condition('''SELECT COUNT(*) 
                     FROM attribution 
-                    WHERE id_ouvrier = "1"''') 
+                    WHERE id_ouvrier = 1''') 
                     
 ####################################################### Exemple de requetes couplées sur les tables
 
 print("\nOn renvoie les noms et spécialités des ouvriers étant affectés à des chantiers") 
-Print_condition('''SELECT name, specialite
+Print_condition('''SELECT DISTINCT name, specialite
                     FROM ouvriers
                     JOIN attribution
-                    WHERE id = id_ouvrier''')
+                    ON id = id_ouvrier''')
+                
+print("\nOn renvoie toutes les informations sur les chantiers d'un ouvrier, sorte de planning en texte")
+Print_condition('''SELECT DISTINCT chantiers.id, chantiers.name, chantiers.date_debut, chantiers.date_fin, chantiers.adress
+                    FROM chantiers
+                    JOIN attribution
+                    ON chantiers.id = attribution.id_chantier
+                    JOIN ouvriers 
+                    ON (attribution.id_ouvrier = ouvriers.id AND ouvriers.name = "Jean") ''')
+                    
+# print("\nOn renvoie tous les ouvriers à un chantier en particulier")
+    
+####################################################### Modification d'une ligne d'une des tables
+
+print("\nModification d'une ligne")
+Commit_condition('''UPDATE ouvriers 
+                    SET name = 'Jeanne' 
+                    WHERE id = 1''')
+                    
+Print_condition('''SELECT * 
+                   FROM ouvriers''')
 
 ###################################################### Supression de la table entière
 
 # On supprime les table
-cursor.execute('''DROP TABLE chantiers''')
-cursor.execute('''DROP TABLE ouvriers''')
-cursor.execute('''DROP TABLE attribution''')
+cursor.execute('''DROP TABLE IF EXISTS attribution''')
+cursor.execute('''DROP TABLE IF EXISTS chantiers''')
+cursor.execute('''DROP TABLE IF EXISTS ouvriers''')
