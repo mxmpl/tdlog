@@ -7,59 +7,19 @@ Maxime POLI, 2019-2020
 Le but de ce script python est de traiter les bases de données
 (chantiers et ouvriers principalement).
 
+Fichier conforme à la norme PEP8.
 """
 
 ############################ Import des bibliothèques utiles
 
 import sqlite3
 
-############################ Requetes
-
-
-def commit_condition(command: str):
-    """
-    Permet d'executer une commande.
-    """
-    CURSOR.execute(command)
-    DB.commit()
-
-
-def select_condition(
-        command: str
-):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
-    """
-    Permet à partir d'une commande d'enregistrer les informations
-    correspondantes de la base de données.
-    """
-    CURSOR.execute(command)
-    DB.commit()
-    rows = CURSOR.fetchall()
-    sortie = (
-        []
-    )  # Permet de ne pas obtenir une liste de tuple en sortie =>
-    # Voir avec raphael si on peut pas changer fetchall pour éviter cette astuce
-    for row in rows:
-        sortie.append(list(row[:]))
-    return sortie
-
-
-def print_condition(command: str):
-    """
-    Permet à partir d'une commande d'afficher les informations correspondantes
-    de la base de données.
-    """
-    CURSOR.execute(command)
-    DB.commit()
-    rows = CURSOR.fetchall()
-    for row in rows:
-        print(list(row[:]))
-
-
 ############################ Création des bases de données
+
 DB = sqlite3.connect(
     "Bdd_principale"
 )  # La base de données avec 3 tables (informations sur les chantiers, ouvriers et attributions)
-CURSOR = DB.CURSOR()  # On se place sur cette bdd
+CURSOR = DB.cursor()  # On se place sur cette bdd
 
 CURSOR.execute(
     """CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY,
@@ -95,8 +55,45 @@ CURSOR.execute(
 
 DB.commit()  # On termine de creer les tables
 
-############################ Ajout d'un nouveau chantier à notre base de données
+############################ Requetes
 
+def commit_condition(command: str):
+    """
+    Permet d'executer une commande.
+    """
+    CURSOR.execute(command)
+    DB.commit()
+
+
+def select_condition(
+        command: str
+):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
+    """
+    Permet à partir d'une commande d'enregistrer les informations
+    correspondantes de la base de données.
+    """
+    CURSOR.execute(command)
+    DB.commit()
+    rows = CURSOR.fetchall()
+    sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie =>
+    # Voir avec raphael si on peut pas changer fetchall pour éviter cette astuce
+    for row in rows:
+        sortie.append(list(row[:]))
+    return sortie
+
+
+def print_condition(command: str):
+    """
+    Permet à partir d'une commande d'afficher les informations correspondantes
+    de la base de données.
+    """
+    CURSOR.execute(command)
+    DB.commit()
+    rows = CURSOR.fetchall()
+    for row in rows:
+        print(list(row[:]))
+
+############################ Ajout d'un nouveau chantier à notre base de données
 
 def insert_chantier(new_chantier: list):
     """
@@ -112,12 +109,7 @@ def insert_chantier(new_chantier: list):
 # CHANTIER = get_data() # A terme pouvoir utiliser cette fct
 # Qui crée une liste comme l'exemple de la ligne suivante
 
-CHANTIER = [
-    "Paris",
-    "2016-10-09 08:00:00",
-    "2016-10-09 12:00:00",
-    "20 rue des lillas"
-]
+CHANTIER = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
 
 insert_chantier(CHANTIER)
 
@@ -148,12 +140,7 @@ CHANTIER = [
 
 insert_chantier(CHANTIER)  # Chantier identique
 
-CHANTIER = [
-    "Paris",
-    "2019-11-21 09:00:00",
-    "2019-12-09 13:00:00",
-    "3 Avenue Foch"
-]
+CHANTIER = ["Paris", "2019-11-21 09:00:00", "2019-12-09 13:00:00", "3 Avenue Foch"]
 
 insert_chantier(CHANTIER)
 
@@ -169,9 +156,7 @@ insert_chantier(CHANTIER)
 
 DB.commit()
 
-
 ############################ Ajout d'un nouveau ouvrier à notre base de données
-
 
 def insert_ouvrier(new_ouvrier: list):
     """
@@ -188,21 +173,24 @@ def insert_ouvrier(new_ouvrier: list):
 # Comme l'exemple de la ligne suivante
 
 OUVRIER = ["Jean", "horticulture", DISPONIBLE]
+
 insert_ouvrier(OUVRIER)
 
 OUVRIER = ["Lucie", "fleuriste", INDISPONIBLE]
+
 insert_ouvrier(OUVRIER)
 
 OUVRIER = ["Marcel", "élagueur", DISPONIBLE]
+
 insert_ouvrier(OUVRIER)
 
 OUVRIER = ["Julie", "cheffe de chantier", DISPONIBLE]
+
 insert_ouvrier(OUVRIER)
 
 DB.commit()
 
 ############################ Ajout d'un nouveau couple à notre base de données
-
 
 def insert_attribution(
         new_attribution: list
@@ -212,13 +200,13 @@ def insert_attribution(
     """
     ouvriers_disponible = select_condition(
         """SELECT id
-                                              FROM ouvriers
-                                              WHERE statut = 0 """
-    )  # Idem comment mettre DISPONIBLE ici ?
+                     FROM ouvriers
+                     WHERE statut = """ + str(DISPONIBLE)
+    )
     if [
             int(new_attribution[0])
     ] in ouvriers_disponible:  # Manipulation avec les listes encore,
-                               # À voir avec Raphael
+        # À voir avec Raphael
         CURSOR.execute(
             """INSERT INTO attribution(id_ouvrier, id_chantier)
                           VALUES(?,?)""",
@@ -227,27 +215,33 @@ def insert_attribution(
     else:
         print(
             "Vous ne pouvez pas associer cet ouvrier à ",
-            "ce chantier car l'ouvrier n'est pas disponible"
+            "ce chantier car l'ouvrier n'est pas disponible",
         )
 
 
 # new_attribution = get_data() # données à récupérer depuis Python
 ATTRIBUTION = [1, 2]
+
 insert_attribution(ATTRIBUTION)
 
 ATTRIBUTION = [4, 1]
+
 insert_attribution(ATTRIBUTION)
 
 ATTRIBUTION = [3, 1]  # Attribution impossible (ouvrier non disponible)
+
 insert_attribution(ATTRIBUTION)
 
 ATTRIBUTION = [1, 5]
+
 insert_attribution(ATTRIBUTION)
 
 ATTRIBUTION = [2, 2]
+
 insert_attribution(ATTRIBUTION)
 
 ATTRIBUTION = [3, 3]
+
 insert_attribution(ATTRIBUTION)
 
 
@@ -373,7 +367,7 @@ print_condition(
 
 print(
     "\nOn renvoie toutes les informations sur les chantiers d'un ouvrier, ",
-    "sorte de planning en texte"
+    "sorte de planning en texte",
 )
 print_condition(
     """SELECT DISTINCT chantiers.id,
