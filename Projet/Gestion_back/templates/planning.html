@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"
+    </head>
+    <body>
+	    <h3> L'ouvrier 1 est assigné au chantier {{ message }} </h3>
+    </body>
+    
+<!--    <form>
+    <select name="Disponibles" size="1">
+    <option> {{ employe }}
+    </option>
+	</select>
+    </form> -->
+    <a href="{{ url_for('home') }}"> Retourner à la page d'accueil </a>
+</html>
