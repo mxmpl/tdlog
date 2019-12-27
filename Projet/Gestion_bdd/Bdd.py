@@ -13,6 +13,7 @@ Fichier conforme à la norme PEP8.
 ############################ Import des bibliothèques utiles
 
 import sqlite3
+import doctest
 
 ############################ Création des bases de données
 
@@ -20,6 +21,14 @@ DB = sqlite3.connect(
     "Bdd_principale"
 )  # La base de données avec 3 tables (informations sur les chantiers, ouvriers et attributions)
 CURSOR = DB.cursor()  # On se place sur cette bdd
+
+CURSOR.execute(
+    """CREATE TABLE IF NOT EXISTS test(id INTEGER PRIMARY KEY,
+                                                    name TEXT,
+                                                    data TEXT)"""
+)
+
+# La table test va nous permettre d'effectuer des test sur nos requetes
 
 CURSOR.execute(
     """CREATE TABLE IF NOT EXISTS chantiers(id INTEGER PRIMARY KEY,
@@ -57,6 +66,7 @@ DB.commit()  # On termine de creer les tables
 
 ############################ Requetes
 
+
 def commit_condition(command: str):
     """
     Permet d'executer une commande.
@@ -72,8 +82,7 @@ def select_condition(
     Permet à partir d'une commande d'enregistrer les informations
     correspondantes de la base de données.
     """
-    CURSOR.execute(command)
-    DB.commit()
+    commit_condition(command)
     rows = CURSOR.fetchall()
     sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie =>
     # Voir avec raphael si on peut pas changer fetchall pour éviter cette astuce
@@ -87,17 +96,105 @@ def print_condition(command: str):
     Permet à partir d'une commande d'afficher les informations correspondantes
     de la base de données.
     """
-    CURSOR.execute(command)
-    DB.commit()
+    commit_condition(command)
     rows = CURSOR.fetchall()
     for row in rows:
         print(list(row[:]))
 
+
+############################ Ajout d'un nouveau test à notre base de données
+
+
+def insert_test(new_test: list):
+    """
+    Permet d'inserer un nouveau test dans la base de données.
+    """
+    CURSOR.execute(
+        """INSERT INTO test(name, data)
+                      VALUES(?,?)""",
+        (new_test[0], new_test[1]),
+    )
+
+
+TEST = ["Margot COSSON", "Test pour vérifier la fonction insert_condition"]
+
+insert_test(TEST)
+
+TEST = ["Maxime BRISINGER", "Test pour vérifier la fonction select_condition"]
+
+insert_test(TEST)
+
+TEST = ["Maxime POLI", "Test pour vérifier la fonction print_condition"]
+
+insert_test(TEST)
+
+############################ Test des fonctions
+
+
+def test_insert():
+    """
+    On va tester ici la fonction insert_test.
+
+    >>> test_insert()
+    True
+    """
+    nombre_elements_initial = select_condition(
+        """SELECT COUNT(*)
+                                                            FROM test"""
+    )
+    test = ["Nom", "Donnée"]
+    insert_test(test)
+    nombre_elements_final = select_condition(
+        """SELECT COUNT(*)
+                                                        FROM test"""
+    )
+    return nombre_elements_final[0][0] == nombre_elements_initial[0][0] + 1
+
+
+test_insert()
+
+
+def test_select():
+    """
+    On va tester ici la fonction select_condition.
+
+    >>> test_select()
+    True
+    """
+    donnee = select_condition(
+        '''SELECT data
+                                        FROM test
+                                        WHERE name = "Maxime BRISINGER"'''
+    )
+    return donnee[0][0] == "Test pour vérifier la fonction select_condition"
+
+
+test_select()
+
+
+def test_print():
+    """
+    On va tester ici la fonction print_condition.
+
+    >>> test_print()
+    ['Maxime POLI']
+    """
+    print_condition(
+        """SELECT name
+                            FROM test
+                            WHERE data like "%print_condition%" """
+    )
+
+
+if __name__ == "__main__":
+    doctest.testmod()
+
 ############################ Ajout d'un nouveau chantier à notre base de données
+
 
 def insert_chantier(new_chantier: list):
     """
-    Permet d'inserer un nouveau chantier dans la base de données
+    Permet d'inserer un nouveau chantier dans la base de données.
     """
     CURSOR.execute(
         """INSERT INTO chantiers(name, date_debut, date_fin, adress)
@@ -158,9 +255,10 @@ DB.commit()
 
 ############################ Ajout d'un nouveau ouvrier à notre base de données
 
+
 def insert_ouvrier(new_ouvrier: list):
     """
-    Permet d'inserer un ouvrier dans la base de données
+    Permet d'inserer un ouvrier dans la base de données.
     """
     CURSOR.execute(
         """INSERT INTO ouvriers(name, specialite, statut)
@@ -192,16 +290,18 @@ DB.commit()
 
 ############################ Ajout d'un nouveau couple à notre base de données
 
+
 def insert_attribution(
         new_attribution: list
 ):  # new_attribution = ["id_ouvrier","id_chantier"]
     """
-    Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données
+    Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
     """
     ouvriers_disponible = select_condition(
         """SELECT id
                      FROM ouvriers
-                     WHERE statut = """ + str(DISPONIBLE)
+                     WHERE statut = """
+        + str(DISPONIBLE)
     )
     if [
             int(new_attribution[0])
@@ -384,6 +484,20 @@ print_condition(
                     ouvriers.name = "Jean") """
 )
 
+print(
+    "\nOn renvoie toutes les informations sur les chantiers de tous les ouvrier, ",
+    "sorte de planning en texte",
+)
+print_condition(
+    """SELECT DISTINCT c.name,
+                    o.name
+                    FROM chantiers AS c, ouvriers AS o
+                    JOIN attribution
+                    ON c.id = attribution.id_chantier
+                    JOIN ouvriers
+                    ON (attribution.id_ouvrier = o.id) """
+)  # Attention aux alias
+
 # print("\nOn renvoie tous les ouvriers à un chantier en particulier")
 
 ############################ Modification d'une ligne d'une des tables
@@ -406,3 +520,4 @@ print_condition(
 CURSOR.execute("""DROP TABLE IF EXISTS attribution""")
 CURSOR.execute("""DROP TABLE IF EXISTS chantiers""")
 CURSOR.execute("""DROP TABLE IF EXISTS ouvriers""")
+CURSOR.execute("""DROP TABLE IF EXISTS test""")
