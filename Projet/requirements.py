@@ -26,3 +26,6 @@ os.system("pip install doctest-cli")
 os.system("pip install pandas")
 
 ############################ Telechargement des bibliothèques liées au front
+
+os.system("pip install pipenv")
+os.system("npm install")
