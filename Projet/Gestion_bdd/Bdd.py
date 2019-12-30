@@ -19,7 +19,9 @@ import doctest
 
 DB = sqlite3.connect(
     "Bdd_principale"
-)  # La base de données avec 3 tables (informations sur les chantiers, ouvriers et attributions)
+)  
+# La base de données avec 3 tables 
+# (informations sur les chantiers, ouvriers et attributions)
 CURSOR = DB.cursor()  # On se place sur cette bdd
 
 CURSOR.execute(
@@ -84,8 +86,7 @@ def select_condition(
     """
     commit_condition(command)
     rows = CURSOR.fetchall()
-    sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie =>
-    # Voir avec raphael si on peut pas changer fetchall pour éviter cette astuce
+    sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie 
     for row in rows:
         sortie.append(list(row[:]))
     return sortie
@@ -305,8 +306,7 @@ def insert_attribution(
     )
     if [
             int(new_attribution[0])
-    ] in ouvriers_disponible:  # Manipulation avec les listes encore,
-        # À voir avec Raphael
+    ] in ouvriers_disponible:  
         CURSOR.execute(
             """INSERT INTO attribution(id_ouvrier, id_chantier)
                           VALUES(?,?)""",
