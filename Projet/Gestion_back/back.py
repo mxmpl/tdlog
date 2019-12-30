@@ -18,8 +18,9 @@ from flask import Flask, request, render_template  # Bibliothèque permettant de
 ############################ Choix de la maniere dont on gere les données
 
 # Variables globales
-HTML_CSV = True
-JAVASCRIPT_BDD = not HTML_CSV
+
+global HTML_CSV = True
+global JAVASCRIPT_BDD = not HTML_CSV
 
 ############################ Import des bibliothèques utiles
 
