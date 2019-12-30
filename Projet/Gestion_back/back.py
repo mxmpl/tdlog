@@ -12,15 +12,18 @@ Fichier conforme à la norme PEP8.
 ############################ Module Flask
 
 from flask import Flask, request, render_template  # Bibliothèque permettant de
-
 # génerer le site
 
 ############################ Choix de la maniere dont on gere les données
 
 # Variables globales
 
-global HTML_CSV = True
-global JAVASCRIPT_BDD = not HTML_CSV
+global HTML_CSV 
+HTML_CSV = True
+global JAVASCRIPT_BDD 
+JAVASCRIPT_BDD = not HTML_CSV
+global JAVASCRIPT_BDD_HTML
+JAVASCRIPT_BDD_HTML = True 
 
 ############################ Import des bibliothèques utiles
 
@@ -150,7 +153,7 @@ def assigner_chantier_a_ouvrier():
             # Est-ce vraiment utile d'avoir deux CSV différents ?
             chantiers.at[chantiers_a_traiter[element], "Ouvrier"] = element
     if HTML_CSV:
-        chantiers.to_csv("chantiers.csv", sep=",")
+        chantiers.to_csv("csv/chantiers.csv", sep=",")
         return render_template("home.html", chantiers=LISTE_CHANTIERS)
     # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
     return None
