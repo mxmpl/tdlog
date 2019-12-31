@@ -19,7 +19,7 @@ from flask import Flask, request, render_template  # Bibliothèque permettant de
 # Variables globales
 
 global HTML_CSV 
-HTML_CSV = False
+HTML_CSV = True
 global JAVASCRIPT_BDD 
 JAVASCRIPT_BDD = not HTML_CSV
 global JAVASCRIPT_BDD_HTML
