@@ -102,6 +102,11 @@ def print_condition(command: str):
     for row in rows:
         print(list(row[:]))
 
+def test2(): 
+    return select_condition(
+    """SELECT *
+                   FROM ouvriers""")
+print(test2())
 
 ############################ Ajout d'un nouveau test à notre base de données
 
@@ -363,7 +368,7 @@ print_condition(
 )  # On renvoie le nom des chantiers ayant une adresse donnée
 
 print("\nOn renvoie toutes les infos du chantier nommé 'Marseille'")
-print_condition(
+select_condition(
     '''SELECT *
                     FROM chantiers
                     WHERE name = "Marseille"'''
