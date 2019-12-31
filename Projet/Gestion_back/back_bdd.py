@@ -67,8 +67,9 @@ def set_new_attribution(new_attributions):
     """
     for ouvrier in new_attributions.keys(): # ouvrier est un type str
         bdd.insert_attribution([bdd.get_id_from_name_ouvrier(ouvrier),bdd.get_id_from_name_chantier(new_attributions[ouvrier])])
-        # Problemes avec get_id_from_name_chantier et ouvrier (+str(name) ne fonctionne pas) donc pour le moment tjrs la même attribution cad [1,6]
-
+    c = bdd.return_table_attribution()
+    print(c)
+    
 def set_new_chantier(dict_new_chantier): 
     """
     dict_new_chantier est un dictionnaire qui associe à " " le nom du nouveau chantier

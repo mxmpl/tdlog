@@ -203,7 +203,7 @@ def get_id_from_name_ouvrier(name: str):
     return select_condition(
             """SELECT id
                     FROM ouvriers
-                    WHERE name = "Maxime" """ 
+                    WHERE name = '""" + name + "'"
         )[0][0]
     
 def get_id_from_name_chantier(name :str): 
@@ -214,7 +214,7 @@ def get_id_from_name_chantier(name :str):
     return select_condition(
             """SELECT id
                     FROM chantiers
-                    WHERE name = "Boulogne" """ #Pourquoi je ne peux pas mettre + name ou + str(name)
+                    WHERE name = '""" + name + "'" 
         )[0][0]
         
 def return_table_attribution(): 
