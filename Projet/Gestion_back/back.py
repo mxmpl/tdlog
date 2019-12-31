@@ -19,18 +19,19 @@ from flask import Flask, request, render_template  # Bibliothèque permettant de
 # Variables globales
 
 global HTML_CSV 
-HTML_CSV = True
+HTML_CSV = False
 global JAVASCRIPT_BDD 
 JAVASCRIPT_BDD = not HTML_CSV
 global JAVASCRIPT_BDD_HTML
-JAVASCRIPT_BDD_HTML = True 
+JAVASCRIPT_BDD_HTML = False 
 
 ############################ Import des bibliothèques utiles
-
 if HTML_CSV:
     import pandas as pd  # Bibliothèque permettant de gérer les CSV
 elif JAVASCRIPT_BDD:
-    from ..Gestion_bdd import Bdd as bdd  # Fichier permettant de gérer les requetes SQL
+    import sys
+    sys.path.append("..")
+    from Gestion_bdd import Bdd as bdd  # Fichier permettant de gérer les requetes SQL
 # Probleme pour PEP8 lié à la localisation du fichier
 
 ############################ Creation du site

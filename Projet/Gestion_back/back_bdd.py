@@ -11,8 +11,7 @@ Fichier conforme à la norme PEP8.
 
 ############################ Module Flask
 
-from flask import Flask, request, render_template  # Bibliothèque permettant de
-# génerer le site
+from flask import Flask, request, render_template
 
 ############################ Choix de la maniere dont on gere les données
 
@@ -24,77 +23,56 @@ global JAVASCRIPT_BDD
 JAVASCRIPT_BDD = not HTML_CSV
 global JAVASCRIPT_BDD_HTML
 JAVASCRIPT_BDD_HTML = True 
-# Si on veut utiliser le prototype html avec les bdd on met JAVASCRIPT_BDD en True
-# puis JAVASCRIPT_BDD_HTML en True aussi 
 
 ############################ Import des bibliothèques utiles
+import sys
+sys.path.append("..")
+from Gestion_bdd import Bdd as bdd
 
-if HTML_CSV:
-    import pandas as pd  # Bibliothèque permettant de gérer les CSV
-elif JAVASCRIPT_BDD:
-    from ..Gestion_bdd import Bdd as bdd  # Fichier permettant de gérer les requetes SQL
-# Probleme pour PEP8 lié à la localisation du fichier
+import pandas as pd  # Bibliothèque permettant de gérer les CSV
 
 ############################ Creation du site
 
 APP = Flask(__name__)  # Creation du site
 
-############################ Utilisation de csv
-
-if HTML_CSV:
-    DICTIONNAIRE_CHANTIERS = pd.read_csv(
-        "csv/liste_chantiers.csv", index_col=None, sep=","
-    )  # Lecture du CSV et recuperation des éléments
-    LISTE_CHANTIERS = []
-    # Creation d'une liste listant tous les noms des chantiers
-    for index in DICTIONNAIRE_CHANTIERS["Index"]:
-        LISTE_CHANTIERS.append(DICTIONNAIRE_CHANTIERS["Noms"][index])
-
-    DICTIONNAIRE_OUVRIERS = pd.read_csv(
-        "csv/liste_ouvriers.csv", index_col=None, sep=","
-    )  # Lecture du CSV et recuperation des éléments
-    LISTE_OUVRIERS = []
-    # Creation d'une liste listant tous les noms des ouvriers
-    for index in DICTIONNAIRE_OUVRIERS["Index"]:
-        LISTE_OUVRIERS.append(DICTIONNAIRE_OUVRIERS["Noms"][index])
-
 ############################ Utilisation de bdd
 
-if JAVASCRIPT_BDD:
-    DICTIONNAIRE_CHANTIERS = bdd.select_condition(
-        """SELECT id, name
-                                                FROM chantiers"""
-    )  # Lecture de la table et recuperation de l'id et du nom des chantiers
-    LISTE_CHANTIERS = []
-    for index in DICTIONNAIRE_CHANTIERS:
-        # Creation d'une liste listant tous les noms des chantiers
-        LISTE_CHANTIERS.append(DICTIONNAIRE_CHANTIERS[index][1])
+def get_id_names_dates_chantiers(): 
+    """
+    Renvoie une liste de listes telles que [index, nom, date_debut, date_fin]
+    """
+    return bdd.select_condition("""SELECT id, name, date_debut, date_fin
+                                                FROM chantiers""")
+def get_list_of_names_chantiers():
+    """
+    Renvoie la liste des noms des chantiers telle que ["chantier1", "chantier2", ...]
+    """
+    list_of_list_names = bdd.select_condition("""SELECT name FROM chantiers""")
+    names = []
+    for list_names in list_of_list_names: 
+        names.append(list_names[0])
+    return names
+    
+def get_id_names_ouvriers(): 
+    """
+    Renvoie une liste de listes telles que [index, nom]
+    """
+    return bdd.select_condition(
+        """SELECT id, name FROM ouvriers""") 
 
-    DICTIONNAIRE_OUVRIERS = bdd.select_condition(
-        """SELECT id, name
-                                                FROM ouvriers"""
-    )  # Lecture de la table et recuperation de l'id et du nom des ouvriers
-    LISTE_OUVRIERS = []
-    for index in DICTIONNAIRE_OUVRIERS:
-        # Creation d'une liste listant tous les noms des ouvriers
-        LISTE_OUVRIERS.append(DICTIONNAIRE_OUVRIERS[index][1])
+
+print(bdd.test2())
+
 
 ############################ Page principale
 
-@APP.route("/")
+@APP.route("/") # a modif pour mettre un bouton nouveau planning et un bouton modifier ancien planning
 def home():
     """
     Permet de creer la page d'accueil.
     """
-    if HTML_CSV:
-        user = {"username": "Bernard"}
-        return render_template("bienvenue.html", user=user)
-    if JAVASCRIPT_BDD: 
-        if JAVASCRIPT_BDD_HTML: 
-            user = {"username": "Bernard"}
-            return render_template("bienvenue.html", user=user)
-        # else : Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
-    return None
+    user = {"username": "Bernard"}
+    return render_template("bienvenue.html", user=user)
 
 ############################ Page home
 
@@ -103,25 +81,19 @@ def editer():
     """
     Permet de d'afficher la page home.
     """
-    if HTML_CSV:
-        return render_template("home.html", chantiers=LISTE_CHANTIERS)
-    if JAVASCRIPT_BDD: 
-        if JAVASCRIPT_BDD_HTML:
-            return render_template("home.html", chantiers=LISTE_CHANTIERS)
-        # else : Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
-    return None
+    return render_template("home.html", chantiers=get_list_of_names_chantiers())
 
 ############################ Page principale : affectation des ouvriers
 
 def recup_chantiers():
     """
-    Permet de récupérer les chantiers sous forme : [nom_chantier, nom_ouvrier].
+    Permet de récupere les chantiers sous forme : [nom_chantier, nom_ouvrier].
     """
     # On récupère les couples chantiers/ouvriers
     if HTML_CSV:
-        planning_chantiers = pd.read_csv("csv/chantiers.csv", index_col="Nom", sep=",")
+        chantiers = pd.read_csv("csv/chantiers.csv", index_col="Nom", sep=",")
     elif JAVASCRIPT_BDD:
-        planning_chantiers = bdd.select_condition(
+        chantiers = bdd.select_condition(
             """SELECT DISTINCT c.name,
                             o.name
                             FROM chantiers AS c, ouvriers AS o
@@ -130,17 +102,17 @@ def recup_chantiers():
                             JOIN ouvriers
                             ON (attribution.id_ouvrier = o.id) """
         )  # Attention aux alias
-    return planning_chantiers
+    return chantiers
 
 @APP.route("/ouvrier", methods=["POST"])
-def assigner_chantier_a_ouvrier(): # A MODIFIER 
+def assigner_chantier_a_ouvrier():
     """
     Permet de coupler les ouvriers avec les chantiers.
     """
     chantiers = recup_chantiers()
     # Si la personne souhaite ajouter un chantier non existant
     chantiers_a_traiter = request.form  # On récupère les infos de la requete
-    for element in chantiers_a_traiter.keys(): #element les noms et chantiers_a_traiter[element] le nom du chantier
+    for element in chantiers_a_traiter.keys():
         # On suppose qu'on ne rajoute pas deux fois un chantier identique
         if chantiers_a_traiter[element] not in LISTE_CHANTIERS:
             indice_nouveau_chantier = len(LISTE_CHANTIERS)
@@ -177,9 +149,6 @@ def affichage_planning():
     chantiers = recup_chantiers()
     if HTML_CSV:
         return chantiers.to_html()
-    if JAVASCRIPT_BDD: 
-        if JAVASCRIPT_BDD_HTML:
-            return chantiers.to_html()
     # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
     return None
 
@@ -196,10 +165,6 @@ def reset():
             chantiers.loc[:, "Ouvrier"][i] = " "
         chantiers.to_csv("csv/chantiers.csv", sep=",")
         return render_template("home.html", chantiers=LISTE_CHANTIERS)
-    if JAVASCRIPT_BDD: 
-        if JAVASCRIPT_BDD_HTML:
-            pass
-            # ici il faut supprimer les attributions précédentes 
     # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
         # Ici on ne supprime pas la table, on séléctionnera simplement aucun chantier
     return None
