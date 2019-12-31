@@ -132,8 +132,11 @@ def assigner_chantier_a_ouvrier():
     chantiers = recup_chantiers()
     # Si la personne souhaite ajouter un chantier non existant
     chantiers_a_traiter = request.form  # On récupère les infos de la requete
+    print(chantiers_a_traiter.keys()[0])
     for element in chantiers_a_traiter.keys():
         # On suppose qu'on ne rajoute pas deux fois un chantier identique
+        print(element == " ")
+        print("chantier", chantiers_a_traiter[element])
         if chantiers_a_traiter[element] not in LISTE_CHANTIERS:
             indice_nouveau_chantier = len(LISTE_CHANTIERS)
             LISTE_CHANTIERS.append(chantiers_a_traiter[element])

@@ -58,16 +58,40 @@ print(a)
 print(b)
 print(c)
 
-########################### Page principale : affectation des ouvriers et rajout d'un chantier 
-@APP.route("/ouvrier", methods=["POST"])
-def new_attribution(): # On suppose pour le moment que deux chantiers n'ont pas le mêmes noms
-    new_attributions = request.form 
+########################### Page principale : affectation des ouvriers et rajout d'un chantier
+
+def set_new_attribution(new_attributions): 
+    """
+    new_attributions doit être un dictionnaire qui associe 
+    un nom d'ouvrier à un nom de chantier
+    """
     for ouvrier in new_attributions.keys(): # ouvrier est un type str
         bdd.insert_attribution([bdd.get_id_from_name_ouvrier(ouvrier),bdd.get_id_from_name_chantier(new_attributions[ouvrier])])
         # Problemes avec get_id_from_name_chantier et ouvrier (+str(name) ne fonctionne pas) donc pour le moment tjrs la même attribution cad [1,6]
+
+def set_new_chantier(dict_new_chantier): 
+    """
+    dict_new_chantier est un dictionnaire qui associe à " " le nom du nouveau chantier
+    """
+    for clef in dict_new_chantier.keys(): 
+        new_chantier = [str(dict_new_chantier[clef]), "NULL", "NULL", "NULL"]
+        bdd.insert_chantier(new_chantier)
+    
+    
+@APP.route("/ouvrier", methods=["POST"])
+def new_attribution(): # On suppose pour le moment que deux chantiers n'ont pas le mêmes noms
+    requete = request.form 
+    if (" " not in requete.keys()): # un dictionnaire avec comme clef " " est le signe d'une requete pour creer un nouveau chantier
+        set_new_attribution(requete)
+    else : 
+        set_new_chantier(requete)
     return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())   
 
 
+    
+    
+    
+    
 # À FAIRE : new_chantier ; new_ouvrier ; reset et affichage_planning 
 #
 #@APP.route("/ouvrier", methods=["POST"])
