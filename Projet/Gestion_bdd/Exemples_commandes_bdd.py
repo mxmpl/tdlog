@@ -53,7 +53,7 @@ OUVRIER = ["Lucie", "fleuriste", INDISPONIBLE]
 
 insert_ouvrier(OUVRIER)
 
-OUVRIER = ["Marcel", "élagueur", DISPONIBLE]
+OUVRIER = ["Marcel", "Elagueur", DISPONIBLE]
 
 insert_ouvrier(OUVRIER)
 
@@ -93,19 +93,19 @@ print_condition(
                     FROM chantiers"""
 )  # On renvoie tous les noms, et adresses des chantiers dans la bdd
 
-print("\nOn renvoie le nom des chantiers ayant une adresse donnée")
+print("\nOn renvoie le nom des chantiers ayant une adresse donnee")
 print_condition(
     '''SELECT name
                     FROM chantiers
                     WHERE adress = "20 rue des lillas"'''
 )  # On renvoie le nom des chantiers ayant une adresse donnée
 
-print("\nOn renvoie toutes les infos du chantier nommé 'Marseille'")
-select_condition(
+print("\nOn renvoie toutes les infos du chantier nomme 'Marseille'")
+print_condition(
     '''SELECT *
                     FROM chantiers
                     WHERE name = "Marseille"'''
-)  # On renvoie toutes les infos du chantier nommé "Marseille"
+)  # On renvoie toutes les infos du chantier nomme "Marseille"
 
 print("\nOn compte combien de chantiers sont dans la table")
 print_condition(
@@ -113,19 +113,19 @@ print_condition(
                     FROM chantiers"""
 )  # On compte combien de chantiers sont dans la table
 
-print("\nOn renvoie tous les chantiers ordonnés par nom")
+print("\nOn renvoie tous les chantiers ordonnes par nom")
 print_condition(
     """SELECT *
                     FROM chantiers
                     ORDER BY name"""
-)  # On renvoie tous les chantiers ordonnés par nom
+)  # On renvoie tous les chantiers ordonnes par nom
 
-print("\nOn renvoie tous les chantiers commençant à une date donnée")
+print("\nOn renvoie tous les chantiers commencant a une date donnée")
 print_condition(
     """SELECT *
                     FROM chantiers
                     WHERE date_debut = "2018-10-09 08:00:00" """
-)  # On renvoie tous les chantiers commençant à une date donnée
+)  # On renvoie tous les chantiers commencant a  une date donnee
 
 ############################ Exemple de requetes sur les ouvriers
 
@@ -184,17 +184,17 @@ print_condition(
                     FROM attribution"""
 )
 
-print("\nOn compte le nombre de chantiers où est présent l'ouvrier 1")
+print("\nOn compte le nombre de chantiers ou est present l'ouvrier 1")
 print_condition(
     """SELECT COUNT(*)
                     FROM attribution
                     WHERE id_ouvrier = 1"""
 )
 
-############################ Exemple de requetes couplées sur les tables
+########################### Exemple de requetes couplées sur les tables
 
 print(
-    "\nOn renvoie les noms et spécialités des ouvriers étant affectés à des chantiers"
+    "\nOn renvoie les noms et specialites des ouvriers etant affectes a  des chantiers"
 )
 print_condition(
     """SELECT DISTINCT name, specialite
@@ -236,8 +236,6 @@ print_condition(
                     ON (attribution.id_ouvrier = o.id) """
 )  # Attention aux alias
 
-# print("\nOn renvoie tous les ouvriers à un chantier en particulier")
-
 ############################ Modification d'une ligne d'une des tables
 
 print("\nModification d'une ligne")
@@ -252,11 +250,13 @@ print_condition(
                    FROM ouvriers"""
 )
 
-# Suppression des tables créées
-
-suppression_table_test()
-suppression_table_chantiers()
-suppression_table_ouvriers()
-suppression_table_attribution()
+if __name__ == "__main__":
+    print("On teste les commandes SQL")
+    # Y'a des chantiers en double, car certains sont ajout�s dans Bdd.py pour tester pour le moment 
+    # Suppression des tables créées
+    suppression_table_test()
+    suppression_table_chantiers()
+    suppression_table_ouvriers()
+    suppression_table_attribution()
 
 

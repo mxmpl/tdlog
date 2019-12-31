@@ -60,7 +60,6 @@ DB.commit()  # On termine de creer les tables
 
 ############################ Fonctions de requetes
 
-
 def commit_condition(command: str):
     """
     Permet d'executer une commande.
@@ -100,7 +99,8 @@ def print_condition(command: str):
 
 def insert_chantier(new_chantier: list):
     """
-    Permet d'inserer un nouveau chantier dans la base de données.
+    Permet d'inserer un nouveau chantier dans la base de données. Le format d'entrée 
+    doit être de la forme [nom, date_debut, date_fin, adresse]. 
     """
     CURSOR.execute(
         """INSERT INTO chantiers(name, date_debut, date_fin, adress)
@@ -114,7 +114,8 @@ def insert_chantier(new_chantier: list):
 
 def insert_ouvrier(new_ouvrier: list):
     """
-    Permet d'inserer un ouvrier dans la base de données.
+    Permet d'inserer un ouvrier dans la base de données. Le format d'entrée doit 
+    être de la forme [nom, specialite, statut]. 
     """
     CURSOR.execute(
         """INSERT INTO ouvriers(name, specialite, statut)
@@ -128,10 +129,12 @@ def insert_ouvrier(new_ouvrier: list):
 
 def insert_attribution(
         new_attribution: list
-):  # new_attribution = ["id_ouvrier","id_chantier"]
+):
     """
     Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
+    Format d'entrée : new_attribution = [id_ouvrier,id_chantier]
     """
+    # À FAIRE : un test qui vérifie le format de new_attribution cad [int, int]
     ouvriers_disponible = select_condition(
         """SELECT id
                      FROM ouvriers
@@ -139,7 +142,7 @@ def insert_attribution(
         + str(DISPONIBLE)
     )
     if [
-            int(new_attribution[0])
+            new_attribution[0]
     ] in ouvriers_disponible:  
         CURSOR.execute(
             """INSERT INTO attribution(id_ouvrier, id_chantier)
@@ -178,6 +181,117 @@ def get_id_names_ouvriers():
     return select_condition(
         """SELECT id, name FROM ouvriers""") 
 
+def get_all_attribution(): 
+    """ 
+    Renvoie les attributions sous la forme [nom_chantier, nom_ouvrier]
+    """
+    return select_condition(
+            """SELECT DISTINCT c.name,
+                            o.name
+                            FROM chantiers AS c, ouvriers AS o
+                            JOIN attribution
+                            ON c.id = attribution.id_chantier
+                            JOIN ouvriers
+                            ON (attribution.id_ouvrier = o.id) """
+        )
+
+def get_id_from_name_ouvrier(name: str): 
+    """
+    Renvoie l'id d'un ouvrier avec un nom donné. Le [0][0] permet de renvoyer l'entier 
+    directement et non pas une liste. 
+    """
+    return select_condition(
+            """SELECT id
+                    FROM ouvriers
+                    WHERE name = "Maxime" """ 
+        )[0][0]
+    
+def get_id_from_name_chantier(name :str): 
+    """
+    Renvoie l'id d'un chantier avec un nom donné. Le [0][0] permet de renvoyer l'entier 
+    directement et non pas une liste. 
+    """
+    return select_condition(
+            """SELECT id
+                    FROM chantiers
+                    WHERE name = "Boulogne" """ #Pourquoi je ne peux pas mettre + name ou + str(name)
+        )[0][0]
+        
+def return_table_attribution(): 
+    return select_condition(
+    """SELECT *
+                    FROM attribution"""
+                    )
+def return_table_ouvriers(): 
+    return select_condition(
+    """SELECT name
+                    FROM ouvriers"""
+                    )
+    
+def return_table_chantiers(): 
+    return select_condition(
+    """SELECT name
+                    FROM chantiers"""
+                    )
+    
+############################ A effacer
+
+CHANTIER = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
+
+insert_chantier(CHANTIER)
+
+CHANTIER = [
+    "Marseille",
+    "2018-10-09 08:00:00",
+    "2018-10-09 12:00:00",
+    "20 rue des lillas",
+]
+
+insert_chantier(CHANTIER)
+
+CHANTIER = [
+    "Noisy",
+    "2019-12-09 08:00:00",
+    "2020-02-09 12:00:00",
+    "6-8 Avenue Blaise Pascal",
+]
+
+insert_chantier(CHANTIER)
+
+CHANTIER = [
+    "Noisy",
+    "2019-12-09 08:00:00",
+    "2020-02-09 12:00:00",
+    "6-8 Avenue Blaise Pascal",
+]
+
+insert_chantier(CHANTIER)  # Chantier identique
+
+CHANTIER = ["Paris", "2019-11-21 09:00:00", "2019-12-09 13:00:00", "3 Avenue Foch"]
+
+insert_chantier(CHANTIER)
+
+CHANTIER = [
+    "Boulogne",
+    "2014-06-25 08:00:00",
+    "2021-08-07 12:00:00",
+    "70 rue du point du jour",
+]
+
+insert_chantier(CHANTIER)
+
+OUVRIER = ["Maxime", "horticulture", DISPONIBLE]
+
+insert_ouvrier(OUVRIER)
+
+OUVRIER = ["Margot", "fleuriste", DISPONIBLE]
+
+insert_ouvrier(OUVRIER)
+
+OUVRIER = ["Raph", "élagueur", DISPONIBLE]
+
+insert_ouvrier(OUVRIER)
+    
 
 ############################ Supression 
     
