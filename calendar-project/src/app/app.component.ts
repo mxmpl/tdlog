@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import dayGridView from '@fullcalendar/daygrid';
-import { CalendarService } from './calendar.service';
-
+import { CalendarService } from './services/calendar.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +14,16 @@ export class AppComponent implements OnInit {
   calendarPlugins = [dayGridView];
   constructor(private svc:CalendarService){}
   ngOnInit(){
-  	this.svc.getData().subscribe(data=> this.calendarEvents=data);
+    this.svc.getData().subscribe
+      (
+        (data) => 
+        {
+          this.calendarEvents = data;
+        },
+        (error) =>
+        {
+          console.log("No Data Found" + error);
+        }
+      )
   }
 }

@@ -1,8 +1,6 @@
 # CalendarProject
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
-Run 'npm install' to install node_modules :
-npm install --save @fullcalendar/angular @fullcalendar/core @fullcalendar/daygrid
 
 ## Development server
 
