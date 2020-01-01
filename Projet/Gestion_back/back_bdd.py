@@ -27,7 +27,7 @@ JAVASCRIPT_BDD_HTML = True
 ############# Import des bibliothèques utiles
 
 sys.path.append("..")
-from Gestion_bdd import Bdd as bdd
+from Gestion_bdd import bdd
 
 ############# Creation du site
 
