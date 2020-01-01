@@ -1,38 +1,42 @@
-############################
+#############
 
 """
 Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
 Maxime POLI, 2019-2020
 
 Le but de ce script python est de traiter la partie back du site.
+Ce fichier va disparaître à terme.
 
 Fichier conforme à la norme PEP8.
 """
 
-############################ Module Flask
+############# Module sys
+
+import sys
+
+############# Module Flask
 
 from flask import Flask, request, render_template
 
-############################ Choix de la maniere dont on gere les données
-
+############# Choix de la maniere dont on gere les données
 
 HTML_CSV = True
 JAVASCRIPT_BDD = not HTML_CSV
-JAVASCRIPT_BDD_HTML = True 
+JAVASCRIPT_BDD_HTML = True
 
-############################ Import des bibliothèques utiles
-import sys
+############# Import des bibliothèques utiles
+
 sys.path.append("..")
 from Gestion_bdd import Bdd as bdd
 
-############################ Creation du site
+############# Creation du site
 
 APP = Flask(__name__)  # Creation du site
 
-############################ Page principale
+############# Page principale
 
-@APP.route("/") # a modif pour mettre un bouton nouveau planning 
-#et un bouton modifier ancien planning
+@APP.route("/")  # a modif pour mettre un bouton nouveau planning
+# Et un bouton modifier ancien planning
 def home():
     """
     Permet de creer la page d'accueil.
@@ -40,7 +44,7 @@ def home():
     user = {"username": "Bernard"}
     return render_template("bienvenue.html", user=user)
 
-############################ Page home
+############# Page home
 
 @APP.route("/home")
 def editer():
@@ -49,54 +53,60 @@ def editer():
     """
     return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
 
-########################### Affichage des tables, a supprimer dans le futur
+############# Affichage des tables, a supprimer dans le futur
 
-a = bdd.return_table_ouvriers()
-b = bdd.return_table_chantiers()
-c = bdd.return_table_attribution()
-print(a)
-print(b)
-print(c)
+print(bdd.return_table_ouvriers())
+print(bdd.return_table_chantiers())
+print(bdd.return_table_attribution())
 
-########################### Page principale : affectation des ouvriers et rajout d'un chantier
+############# Page principale : affectation des ouvriers et rajout d'un chantier
 
-def set_new_attribution(new_attributions): 
+def set_new_attribution(new_attributions: dict):
     """
-    new_attributions doit être un dictionnaire qui associe 
+    new_attributions doit être un dictionnaire qui associe
     un nom d'ouvrier à un nom de chantier
     """
-    for ouvrier in new_attributions.keys(): # ouvrier est un type str
-        bdd.insert_attribution([bdd.get_id_from_name_ouvrier(ouvrier),bdd.get_id_from_name_chantier(new_attributions[ouvrier])])
-    c = bdd.return_table_attribution()
-    print(c)
-    
-def set_new_chantier(dict_new_chantier): 
+    for ouvrier in new_attributions.keys():  # ouvrier est un type str
+        bdd.insert_attribution(
+            [
+                bdd.get_id_from_name_ouvrier(ouvrier),
+                bdd.get_id_from_name_chantier(new_attributions[ouvrier]),
+            ]
+        )
+    print(bdd.return_table_attribution())
+
+
+def set_new_chantier(dict_new_chantier: dict):
     """
-    dict_new_chantier est un dictionnaire qui associe à " " le nom du nouveau chantier
+    dict_new_chantier est un dictionnaire qui associe à " "
+    le nom du nouveau chantier.
     """
-    for clef in dict_new_chantier.keys(): 
+    for clef in dict_new_chantier.keys():
         new_chantier = [str(dict_new_chantier[clef]), "NULL", "NULL", "NULL"]
         bdd.insert_chantier(new_chantier)
-    
-    
+
+
 @APP.route("/ouvrier", methods=["POST"])
-def new_attribution(): # On suppose pour le moment que deux chantiers n'ont pas le mêmes noms
-    requete = request.form 
-    if (" " not in requete.keys()): # un dictionnaire avec comme clef " " est le signe d'une requete pour creer un nouveau chantier
+def new_attribution():
+    """
+    On suppose pour le moment que deux chantiers n'ont pas le mêmes noms.
+    On créer une nouvelle attribution.
+    """
+    requete = request.form
+    if (
+            " " not in requete.keys()
+    ):  # Un dictionnaire avec comme clef " " est le signe d'une requete
+        # pour creer un nouveau chantier
         set_new_attribution(requete)
-    else : 
+    else:
         set_new_chantier(requete)
-    return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())   
+    return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
 
 
-    
-    
-    
-    
-# À FAIRE : new_chantier ; new_ouvrier ; reset et affichage_planning 
+# À FAIRE : new_chantier ; new_ouvrier ; reset et affichage_planning
 #
-#@APP.route("/ouvrier", methods=["POST"])
-#def assigner_chantier_a_ouvrier():
+# @APP.route("/ouvrier", methods=["POST"])
+# def assigner_chantier_a_ouvrier():
 #    """
 #    Permet de coupler les ouvriers avec les chantiers.
 #    """
@@ -129,10 +139,10 @@ def new_attribution(): # On suppose pour le moment que deux chantiers n'ont pas 
 #        return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
 #    return None
 
-############################# Page d'affichage : on affiche le planning
+############# Page d'affichage : on affiche le planning
 #
-#@APP.route("/affichage_planning")
-#def affichage_planning():
+# @APP.route("/affichage_planning")
+# def affichage_planning():
 #    """
 #    Permet de visualiser le planning créé.
 #    """
@@ -142,10 +152,10 @@ def new_attribution(): # On suppose pour le moment que deux chantiers n'ont pas 
 #    # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
 #    return None
 #
-############################# Fonction pour réinitialiser le planning
+############# Fonction pour réinitialiser le planning
 #
-#@APP.route("/reset")
-#def reset():
+# @APP.route("/reset")
+# def reset():
 #    """
 #    Permet de réinitialiser le planning.
 #    """
@@ -159,21 +169,24 @@ def new_attribution(): # On suppose pour le moment que deux chantiers n'ont pas 
 #        # Ici on ne supprime pas la table, on séléctionnera simplement aucun chantier
 #    return None
 
-############################# PROBLÈME : POURQUOI ÇA NE MARCHE PAS sur spyder 
-#(alors que ok dans le terminal) 
+############# PROBLÈME : POURQUOI ÇA NE MARCHE PAS sur spyder
+# (alors que ok dans le terminal)
 # ALORS QUE appel_bdd est bien déclaré dans Bdd.py ??
-# alors que ça marche avec bdd.DISPONIBLE par ex ? 
-# ça marche quand Bdd.py est dans le même dossier 
+# alors que ça marche avec bdd.DISPONIBLE par ex ?
+# ça marche quand Bdd.py est dans le même dossier
 
-#print("ICI", bdd.appel_bdd)
+# print("ICI", bdd.appel_bdd)
 
-########################### Lancement du site
+############# Lancement du site
 
 if __name__ == "__main__":
-    APP.debug = False # Quand on met Debug = True, ça arrive pas en bas donc ça n'efface pas les tables, ATTENTION ! 
+    APP.debug = (
+        False
+    )  # Quand on met Debug = True,
+        # ça arrive pas en bas donc ça n'efface pas les tables, ATTENTION !
     APP.run()
-    
-# À la fin de l'utilisation, on supprime les tables 
+
+# À la fin de l'utilisation, on supprime les tables
 
 bdd.suppression_table_chantiers()
 bdd.suppression_table_ouvriers()
