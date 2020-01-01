@@ -31,7 +31,7 @@ if HTML_CSV:
 elif JAVASCRIPT_BDD:
     import sys
     sys.path.append("..")
-    from Gestion_bdd import bdd  # Fichier permettant de gérer les requetes SQL
+    from Gestion_bdd import Bdd as bdd  # Fichier permettant de gérer les requetes SQL
 # Probleme pour PEP8 lié à la localisation du fichier
 
 ############################ Creation du site
@@ -122,6 +122,8 @@ def recup_chantiers():
                             JOIN ouvriers
                             ON (attribution.id_ouvrier = o.id) """
         )  # Attention aux alias
+    print(chantiers)
+    print(type(chantiers))
     return chantiers
 
 @APP.route("/ouvrier", methods=["POST"])

@@ -27,11 +27,60 @@ JAVASCRIPT_BDD_HTML = True
 ############# Import des bibliothèques utiles
 
 sys.path.append("..")
-from Gestion_bdd import bdd
+from Gestion_bdd import Bdd as bdd
+# from Gestion_bdd import Bdd as bdd BONNE MANIERE DE L'ÉCRIRE MAIS SI PYLINT AIME PAS 
 
 ############# Creation du site
 
 APP = Flask(__name__)  # Creation du site
+
+#%% Fonctions du back 
+
+def set_new_attribution(dict_new_attributions: dict):
+    """
+    dict_new_attributions doit être un dictionnaire qui associe
+    un nom d'ouvrier à un nom de chantier
+    """
+    for ouvrier in dict_new_attributions.keys():  # ouvrier est un type str
+        bdd.insert_attribution(
+            [
+                bdd.get_id_from_name_ouvrier(ouvrier),
+                bdd.get_id_from_name_chantier(dict_new_attributions[ouvrier]),
+            ]
+        )
+    print(bdd.return_table_attribution()) # a supprimer après, pour afficher pour l'instant 
+
+
+def set_new_chantier(dict_new_chantier: dict):
+    """
+    dict_new_chantier est un dictionnaire qui associe à " "
+    le nom du nouveau chantier.
+    """
+    for clef in dict_new_chantier.keys():
+        new_chantier = [str(dict_new_chantier[clef]), "NULL", "NULL", "NULL"]
+        bdd.insert_chantier(new_chantier)
+
+def set_new_ouvrier(dict_new_ouvrier: dict): 
+    """
+    dict_new_ouvrier est un dictionnaire qui associe à " "
+    le nom du nouvel ouvrier.
+    """
+    for clef in dict_new_ouvrier.keys():
+        new_ouvrier = [str(dict_new_ouvrier[clef]), "NULL", bdd.DISPONIBLE]
+        bdd.insert_ouvrier(new_ouvrier)
+        
+def get_planning(): 
+    """
+    Cette fonction permet de renvoyer une liste de listes telles que 
+    [[nom_ouvrier1, nom_chantier1, date_debut, date_fin], 
+    [nom_ouvrier2, nom_chantier2, date_debut, date_fin], ...]
+    Attention, si aucune information n'a été remplie, cela renvoie une liste vide 
+    telle que []. 
+    """
+    return bdd.get_all_attribution()
+
+#%% Liens avec le front en HTML 
+
 
 ############# Page principale
 
@@ -53,39 +102,8 @@ def editer():
     """
     return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
 
-############# Affichage des tables, a supprimer dans le futur
-
-print(bdd.return_table_ouvriers())
-print(bdd.return_table_chantiers())
-print(bdd.return_table_attribution())
-
-############# Page principale : affectation des ouvriers et rajout d'un chantier
-
-def set_new_attribution(new_attributions: dict):
-    """
-    new_attributions doit être un dictionnaire qui associe
-    un nom d'ouvrier à un nom de chantier
-    """
-    for ouvrier in new_attributions.keys():  # ouvrier est un type str
-        bdd.insert_attribution(
-            [
-                bdd.get_id_from_name_ouvrier(ouvrier),
-                bdd.get_id_from_name_chantier(new_attributions[ouvrier]),
-            ]
-        )
-    print(bdd.return_table_attribution())
-
-
-def set_new_chantier(dict_new_chantier: dict):
-    """
-    dict_new_chantier est un dictionnaire qui associe à " "
-    le nom du nouveau chantier.
-    """
-    for clef in dict_new_chantier.keys():
-        new_chantier = [str(dict_new_chantier[clef]), "NULL", "NULL", "NULL"]
-        bdd.insert_chantier(new_chantier)
-
-
+############# Liens avec le front 
+        
 @APP.route("/ouvrier", methods=["POST"])
 def new_attribution():
     """
@@ -103,73 +121,26 @@ def new_attribution():
     return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
 
 
-# À FAIRE : new_chantier ; new_ouvrier ; reset et affichage_planning
-#
-# @APP.route("/ouvrier", methods=["POST"])
-# def assigner_chantier_a_ouvrier():
-#    """
-#    Permet de coupler les ouvriers avec les chantiers.
-#    """
-#    chantiers = recup_chantiers()
-#    # Si la personne souhaite ajouter un chantier non existant
-#    chantiers_a_traiter = request.form  # On récupère les infos de la requete
-#    for element in chantiers_a_traiter.keys():
-#        # On suppose qu'on ne rajoute pas deux fois un chantier identique
-#        if chantiers_a_traiter[element] not in LISTE_CHANTIERS:
-#            indice_nouveau_chantier = len(LISTE_CHANTIERS)
-#            LISTE_CHANTIERS.append(chantiers_a_traiter[element])
-#            ligne_ajout = [[indice_nouveau_chantier, chantiers_a_traiter[element]]]
-#            if HTML_CSV:
-#                liste_dataframe = pd.DataFrame(ligne_ajout)
-#                fichier = open("csv/chantiers.csv", "a")
-#                fichier.write("")
-#                fichier.close()
-#                liste_dataframe.to_csv(
-#                    "csv/liste_chantiers.csv", header=False, index=False, mode="a"
-#                )
-#            elif JAVASCRIPT_BDD:
-#                # Pour l'instant on ne demande que le nom du chantier
-#                chantier = [str(chantiers_a_traiter[element]), "NULL", "NULL", "NULL"]
-#                bdd.insert_chantier(chantier)
-#        if HTML_CSV:
-#            # Est-ce vraiment utile d'avoir deux CSV différents ?
-#            chantiers.at[chantiers_a_traiter[element], "Ouvrier"] = element
-#    if HTML_CSV:
-#        chantiers.to_csv("csv/chantiers.csv", sep=",")
-#        return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
-#    return None
-
 ############# Page d'affichage : on affiche le planning
-#
-# @APP.route("/affichage_planning")
-# def affichage_planning():
-#    """
-#    Permet de visualiser le planning créé.
-#    """
-#    chantiers = recup_chantiers()
-#    if HTML_CSV:
-#        return chantiers.to_html()
-#    # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
-#    return None
-#
-############# Fonction pour réinitialiser le planning
-#
-# @APP.route("/reset")
-# def reset():
-#    """
-#    Permet de réinitialiser le planning.
-#    """
-#    chantiers = recup_chantiers()
-#    if HTML_CSV:
-#        for i in range(len(chantiers.loc[:, "Ouvrier"])):
-#            chantiers.loc[:, "Ouvrier"][i] = " "
-#        chantiers.to_csv("csv/chantiers.csv", sep=",")
-#        return render_template("home.html", chantiers=LISTE_CHANTIERS)
-#    # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
-#        # Ici on ne supprime pas la table, on séléctionnera simplement aucun chantier
-#    return None
+    
+@APP.route("/affichage_planning")
+def affichage_planning():
+    """
+    Permet de visualiser le planning créé.
+    """
+    return render_template("planning.html", planning=get_planning())
 
-############# PROBLÈME : POURQUOI ÇA NE MARCHE PAS sur spyder
+############# Fonction pour réinitialiser le planning
+
+@APP.route("/reset")
+def reset():
+    """
+    Permet de réinitialiser le planning.
+    """
+    bdd.reset_table("attribution")
+    return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
+
+############# PROBLÈME (mail envoyé à clémentine) : POURQUOI ÇA NE MARCHE PAS sur spyder 
 # (alors que ok dans le terminal)
 # ALORS QUE appel_bdd est bien déclaré dans Bdd.py ??
 # alors que ça marche avec bdd.DISPONIBLE par ex ?

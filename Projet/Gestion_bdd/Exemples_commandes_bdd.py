@@ -11,19 +11,22 @@ Fichier conforme à la norme PEP8.
 
 ############################ Modules et fonctions
 
-from bdd import (
-    insert_chantier,
-    insert_ouvrier,
-    insert_attribution,
-    print_condition,
-    commit_condition,
-    get_id_from_name_chantier,
-    suppression_table_chantiers,
-    suppression_table_ouvriers,
-    suppression_table_attribution,
-    DISPONIBLE,
-    INDISPONIBLE
-)
+#from bdd import (
+#    insert_chantier,
+#    insert_ouvrier,
+#    insert_attribution,
+#    print_condition,
+#    commit_condition,
+#    get_id_from_name_chantier,
+#    suppression_table_chantiers,
+#    suppression_table_ouvriers,
+#    suppression_table_attribution,
+#    DISPONIBLE,
+#    INDISPONIBLE
+#)
+
+
+from Bdd import * 
 
 ############################ Remplissage des bases de données
 
@@ -276,7 +279,11 @@ print_condition(
                    FROM ouvriers"""
 )
 
+######################### Essai des fonctions get, set, supp
+
 print(get_id_from_name_chantier("Boulogne"))
+reset_table("attribution")
+print(len(get_all_attribution())== 0)
 
 if __name__ == "__main__":
     print("On teste les commandes SQL")

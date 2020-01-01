@@ -14,7 +14,7 @@ Fichier conforme à la norme PEP8.
 
 import sqlite3
 
-############################ Création des bases de données
+#%% Création des bases de données 
 
 DB = sqlite3.connect(
     "bdd_principale", check_same_thread=False
@@ -58,7 +58,9 @@ CURSOR.execute(
 
 DB.commit()  # On termine de creer les tables
 
-############################ Fonctions de requetes
+#%% Fonctions 
+
+#%% Fonctions de requetes
 
 def commit_condition(command: str):
     """
@@ -93,7 +95,8 @@ def print_condition(command: str):
     for row in rows:
         print(list(row[:]))
 
-
+#%% Fonctions de set 
+        
 ############################ Ajout d'un nouveau chantier à notre base de données
 
 
@@ -156,7 +159,7 @@ def insert_attribution(
         )
     DB.commit()
 
-############################ Fonctions utiles pour le back 
+#%% Fonctions de get 
 
 def get_id_names_dates_chantiers(): 
     """
@@ -183,11 +186,11 @@ def get_id_names_ouvriers():
 
 def get_all_attribution(): 
     """ 
-    Renvoie les attributions sous la forme [nom_chantier, nom_ouvrier]
+    Renvoie la liste des attributions sous la forme [nom_ouvrier, nom_chantier, date_debut, date_fin]
     """
     return select_condition(
-            """SELECT DISTINCT c.name,
-                            o.name
+            """SELECT DISTINCT o.name,
+                            c.name, c.date_debut, c.date_fin
                             FROM chantiers AS c, ouvriers AS o
                             JOIN attribution
                             ON c.id = attribution.id_chantier
@@ -216,7 +219,15 @@ def get_id_from_name_chantier(name :str):
                     FROM chantiers
                     WHERE name = '""" + name + "'" 
         )[0][0]
+    
+def get_name_dates_from_id_chantier(): 
+    pass 
+
+def get_name_from_id_ouvrier(): 
+    pass
         
+#%% Fonction return table 
+    
 def return_table_attribution(): 
     return select_condition(
     """SELECT *
@@ -233,8 +244,9 @@ def return_table_chantiers():
     """SELECT name
                     FROM chantiers"""
                     )
-    
-############################ A effacer
+
+#%%    
+############################ A effacer dans le futur 
 
 CHANTIER = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
 
@@ -292,8 +304,7 @@ OUVRIER = ["Raph", "élagueur", DISPONIBLE]
 
 insert_ouvrier(OUVRIER)
     
-
-############################ Supression 
+#%% Fonction de suppression
     
 def suppression_table_chantiers():
     CURSOR.execute("""DROP TABLE IF EXISTS chantiers""")
@@ -303,6 +314,9 @@ def suppression_table_ouvriers():
 
 def suppression_table_attribution():
     CURSOR.execute("""DROP TABLE IF EXISTS attribution""")
+    
+def reset_table(name_table :str): 
+    CURSOR.execute("""DELETE FROM """ +name_table)
     
 #suppression_table_chantiers()
 #suppression_table_ouvriers()
