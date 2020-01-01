@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import dayGridView from '@fullcalendar/daygrid';
-import { CalendarService } from './services/calendar.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,22 +6,6 @@ import { CalendarService } from './services/calendar.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'calendar-project';
-  calendarEvents:any[] = [];
-  calendarPlugins = [dayGridView];
-  constructor(private svc:CalendarService){}
-  ngOnInit(){
-    this.svc.getData().subscribe
-      (
-        (data) => 
-        {
-          this.calendarEvents = data;
-        },
-        (error) =>
-        {
-          console.log("No Data Found" + error);
-        }
-      )
-  }
 }
