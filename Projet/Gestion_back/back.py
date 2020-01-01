@@ -12,21 +12,26 @@ Fichier conforme à la norme PEP8.
 ############################ Module Flask
 
 from flask import Flask, request, render_template  # Bibliothèque permettant de
-
 # génerer le site
 
 ############################ Choix de la maniere dont on gere les données
 
 # Variables globales
+
+global HTML_CSV 
 HTML_CSV = True
+global JAVASCRIPT_BDD 
 JAVASCRIPT_BDD = not HTML_CSV
+global JAVASCRIPT_BDD_HTML
+JAVASCRIPT_BDD_HTML = False 
 
 ############################ Import des bibliothèques utiles
-
 if HTML_CSV:
     import pandas as pd  # Bibliothèque permettant de gérer les CSV
 elif JAVASCRIPT_BDD:
-    from ..Gestion_bdd import Bdd as bdd  # Fichier permettant de gérer les requetes SQL
+    import sys
+    sys.path.append("..")
+    from Gestion_bdd import Bdd as bdd  # Fichier permettant de gérer les requetes SQL
 # Probleme pour PEP8 lié à la localisation du fichier
 
 ############################ Creation du site
@@ -117,6 +122,8 @@ def recup_chantiers():
                             JOIN ouvriers
                             ON (attribution.id_ouvrier = o.id) """
         )  # Attention aux alias
+    print(chantiers)
+    print(type(chantiers))
     return chantiers
 
 @APP.route("/ouvrier", methods=["POST"])
@@ -149,7 +156,7 @@ def assigner_chantier_a_ouvrier():
             # Est-ce vraiment utile d'avoir deux CSV différents ?
             chantiers.at[chantiers_a_traiter[element], "Ouvrier"] = element
     if HTML_CSV:
-        chantiers.to_csv("chantiers.csv", sep=",")
+        chantiers.to_csv("csv/chantiers.csv", sep=",")
         return render_template("home.html", chantiers=LISTE_CHANTIERS)
     # Mettre ce que l'on ferait si JAVASCRIPT_BDD était True
     return None
