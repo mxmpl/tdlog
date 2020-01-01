@@ -1,5 +1,31 @@
-from Bdd import * 
-############################ Remplissage des bases de données 
+############################
+
+"""
+Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
+Maxime POLI, 2019-2020
+
+Le but de ce script python est de montrer quelques exemples de requetes SQL.
+
+Fichier conforme à la norme PEP8.
+"""
+
+############################ Modules et fonctions
+
+from bdd import (
+    insert_chantier,
+    insert_ouvrier,
+    insert_attribution,
+    print_condition,
+    commit_condition,
+    get_id_from_name_chantier,
+    suppression_table_chantiers,
+    suppression_table_ouvriers,
+    suppression_table_attribution,
+    DISPONIBLE,
+    INDISPONIBLE
+)
+
+############################ Remplissage des bases de données
 
 CHANTIER = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
 
@@ -250,13 +276,13 @@ print_condition(
                    FROM ouvriers"""
 )
 
+print(get_id_from_name_chantier("Boulogne"))
+
 if __name__ == "__main__":
     print("On teste les commandes SQL")
-    # Y'a des chantiers en double, car certains sont ajout�s dans Bdd.py pour tester pour le moment 
+    # Y'a des chantiers en double, car certains sont ajoutes dans Bdd.py pour tester pour le moment
     # Suppression des tables créées
-    suppression_table_test()
+    # suppression_table_test()
     suppression_table_chantiers()
     suppression_table_ouvriers()
     suppression_table_attribution()
-
-

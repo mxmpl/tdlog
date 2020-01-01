@@ -1,9 +1,26 @@
-from Bdd import *
-import doctest
+############################
 
-DB = sqlite3.connect(
-    "Bdd_principale", check_same_thread=False
-)  
+"""
+Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
+Maxime POLI, 2019-2020
+
+Le but de ce script python est de realiser quelques test sur nos fonctions.
+
+Fichier conforme à la norme PEP8.
+"""
+
+############################ Modules et fonctions
+
+import doctest
+import sqlite3
+from bdd import (
+    print_condition,
+    select_condition,
+)
+
+############################ Creation de la table test
+
+DB = sqlite3.connect("Bdd_principale", check_same_thread=False)
 CURSOR = DB.cursor()
 
 CURSOR.execute(
@@ -13,7 +30,10 @@ CURSOR.execute(
 )
 
 # La table test va nous permettre d'effectuer des test sur nos requetes
-DB.commit() 
+DB.commit()
+
+############################ Remplissage de la table test
+
 
 def insert_test(new_test: list):
     """
@@ -96,9 +116,12 @@ def test_print():
                             WHERE data like "%print_condition%" """
     )
 
+
 test_print()
- 
+
+############################ Test
+
 if __name__ == "__main__":
     doctest.testmod()
-    
-CURSOR.execute("""DROP TABLE IF EXISTS test""")
+
+CURSOR.execute("""DROP TABLE IF EXISTS test""")  # Suppression

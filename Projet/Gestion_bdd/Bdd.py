@@ -17,7 +17,7 @@ import sqlite3
 ############################ Création des bases de données
 
 DB = sqlite3.connect(
-    "Bdd_principale", check_same_thread=False
+    "bdd_principale", check_same_thread=False
 )  
 # La base de données avec 3 tables 
 # (informations sur les chantiers, ouvriers et attributions)
