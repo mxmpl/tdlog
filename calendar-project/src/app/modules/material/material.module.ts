@@ -4,7 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon'; 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MatListModule } from '@angular/material/list'
 
 @NgModule({
   declarations: [],
@@ -13,13 +13,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatSidenavModule,
 	MatToolbarModule,
 	MatIconModule,
-	BrowserAnimationsModule
+	BrowserAnimationsModule,
+	MatListModule
   ],
   exports: [
   	MatSidenavModule,
 	MatToolbarModule,
 	MatIconModule,
-	BrowserAnimationsModule
+	BrowserAnimationsModule,
+	MatListModule
   ],
 })
 export class MaterialModule { }

@@ -9,6 +9,9 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { OuvriersComponent } from './components/ouvriers/ouvriers.component';
 import { LayoutComponent } from './components/layout/layout.component'
+import { ChantiersComponent } from './components/chantiers/chantiers.component';
+import { SidenavListComponent } from './components/sidenav-list/sidenav-list.component'
+
 import { CalendarService } from './services/calendar.service';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './modules/material/material.module';
@@ -19,7 +22,9 @@ import { MaterialModule } from './modules/material/material.module';
     CalendarComponent,
     HeaderComponent,
     OuvriersComponent,
-    LayoutComponent
+    LayoutComponent,
+    SidenavListComponent,
+    ChantiersComponent
   ],
   imports: [
     BrowserModule,

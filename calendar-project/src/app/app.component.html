@@ -4,15 +4,15 @@
 <!-- routes will be rendered here -->
 <!-- <router-outlet></router-outlet> -->
 <app-layout>
-  <mat-sidenav-container>
+  <mat-sidenav-container fullscreen> 
     <mat-sidenav #sidenav role="navigation">
-      <!--this is a place for us to add side-nav code-->
+  		<app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
     </mat-sidenav>
     <mat-sidenav-content>
   		<app-header (sidenavToggle)="sidenav.toggle()"></app-header>
         <main>
         <router-outlet></router-outlet>
-      </main>
+      	</main>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </app-layout>
