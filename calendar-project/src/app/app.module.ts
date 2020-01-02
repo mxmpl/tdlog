@@ -1,23 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CalendarService } from './services/calendar.service';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { AppComponent } from './app.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { HeaderComponent } from './components/header/header.component';
+import { OuvriersComponent } from './components/ouvriers/ouvriers.component';
+import { LayoutComponent } from './components/layout/layout.component'
+import { CalendarService } from './services/calendar.service';
+import { AppRoutingModule } from './app-routing.module';
+import { MaterialModule } from './modules/material/material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CalendarComponent
+    CalendarComponent,
+    HeaderComponent,
+    OuvriersComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
     FullCalendarModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MaterialModule,
+    FlexLayoutModule
   ],
   providers: [CalendarService],
   bootstrap: [AppComponent]

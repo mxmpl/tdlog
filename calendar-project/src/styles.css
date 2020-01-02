@@ -2,3 +2,10 @@
 
 @import '~@fullcalendar/core/main.css';
 @import '@fullcalendar/daygrid/main.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body, material-app, mat-sidenav-container { 
+    margin: 0;
+    height: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
