@@ -12,7 +12,6 @@ import { LayoutComponent } from './components/layout/layout.component'
 import { ChantiersComponent } from './components/chantiers/chantiers.component';
 import { SidenavListComponent } from './components/sidenav-list/sidenav-list.component'
 
-import { CalendarService } from './services/calendar.service';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './modules/material/material.module';
 
@@ -34,7 +33,7 @@ import { MaterialModule } from './modules/material/material.module';
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [CalendarService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

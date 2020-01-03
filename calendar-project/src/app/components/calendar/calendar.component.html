@@ -1,1 +1,26 @@
-<full-calendar [events] = 'calendarEvents' [plugins]='calendarPlugins'></full-calendar>
+<div class='app'>
+  <div class='app-top'>
+    <button (click)='toggleWeekends()'>toggle weekends</button>
+    (also, click a date/time to add an event, drag and drop events)
+  </div>
+
+  <div class='app-calendar'>
+    <full-calendar
+      #calendar
+      defaultView="dayGridMonth"
+      [editable]="true"
+      [header]="{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+      [plugins]="calendarPlugins"
+      [weekends]="calendarWeekends"
+      [events]="calendarEvents"
+      (dateClick)="handleDateClick($event)"
+      (eventDragStart)="handleEventDragStart($event)"
+      (eventDragStop)="handleEventDragStop($event)"
+    ></full-calendar>
+  </div>
+
+</div>
