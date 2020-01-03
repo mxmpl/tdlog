@@ -5,7 +5,6 @@ Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
 Maxime POLI, 2019-2020
 
 Le but de ce script python est de traiter la partie back du site.
-Ce fichier va disparaître à terme.
 
 Fichier conforme à la norme PEP8.
 """
@@ -28,7 +27,6 @@ JAVASCRIPT_BDD_HTML = True
 
 sys.path.append("..")
 from Gestion_bdd import Bdd as bdd
-# from Gestion_bdd import Bdd as bdd BONNE MANIERE DE L'ÉCRIRE MAIS SI PYLINT AIME PAS 
 
 ############# Creation du site
 
