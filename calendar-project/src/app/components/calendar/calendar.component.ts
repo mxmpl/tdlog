@@ -4,6 +4,7 @@ import { EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGrigPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // for dateClick
+import frLocale from '@fullcalendar/core/locales/fr';
 
 @Component({
   selector: 'app-calendar',
@@ -20,6 +21,7 @@ export class CalendarComponent {
 	color: 'yellow',
 	textColor: 'black'
   };
+  calendarLocales = [frLocale];
 
   toggleWeekends() {
     this.calendarWeekends = !this.calendarWeekends;

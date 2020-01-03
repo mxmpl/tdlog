@@ -1,14 +1,18 @@
 <div class='app'>
   <div class='app-top'>
-    <button (click)='toggleWeekends()'>toggle weekends</button>
-    (also, click a date/time to add an event, drag and drop events)
+    <button (click)='toggleWeekends()'> Enlever les weekends</button>
+    (cliquer sur une date/heure pour ajouter un événement, drag and drop des événements)
   </div>
 
   <div class='app-calendar'>
-    <full-calendar
+
+  	<script src='fullcalendar/fullcalendar.js'></script>
+  	<script src='fullcalendar/locale-all.js'></script>
+  	<full-calendar
       #calendar
       defaultView="dayGridMonth"
       [editable]="true"
+      [locales]="calendarLocales"
       [header]="{
         left: 'prev,next today',
         center: 'title',
