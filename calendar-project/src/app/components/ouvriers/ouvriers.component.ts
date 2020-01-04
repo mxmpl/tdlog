@@ -1,4 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+export interface GoogleVolumeListResponse {
+  totalItems: number;
+  items: Array<{
+      //ouvrier:string;
+        ouvrier : string;
+  }>;
+}
+
+export class Ouvrier {
+
+  ouvrier?: string;
+
+  constructor(args: Ouvrier = {}) {
+      this.ouvrier = args.ouvrier;
+  }
+
+}
 
 @Component({
   selector: 'app-ouvriers',
@@ -6,10 +25,49 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ouvriers.component.css']
 })
 export class OuvriersComponent implements OnInit {
+  
+  ouvrierCount: number;
+  //bookList: Array<{ouvrier : string}>;
+  ouvrierList: Ouvrier[];
 
-  constructor() { }
+​
+  private _ouvrierListUrl = 'http://127.0.0.1:5000/listeOuvriers/';
+  //private _bookListUrl = 'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming';
+
+  constructor(private _httpClient: HttpClient) {
+  }
 
   ngOnInit() {
+      this._httpClient.get<GoogleVolumeListResponse>(this._ouvrierListUrl)
+          .subscribe(googleVolumeListResponse => {
+
+              this.ouvrierCount = googleVolumeListResponse.totalItems;​
+              this.ouvrierList = googleVolumeListResponse.items.map(item => new Ouvrier({
+                ouvrier: item.ouvrier
+            }));
+            
+          })
+}
+
+ /*
+  bookCount: number;
+
+​
+  private _bookListUrl = 'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming';
+
+  constructor(private _httpClient: HttpClient) {
   }
+
+  ngOnInit() {
+      this._httpClient.get<GoogleVolumeListResponse>(this._bookListUrl)
+          .subscribe(googleVolumeListResponse => {
+
+              this.bookCount = googleVolumeListResponse.totalItems;​
+             
+              
+
+          });
+  }
+  */
 
 }

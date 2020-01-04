@@ -1,1 +1,12 @@
 <p>ouvriers works!</p>
+<h1> Voici la liste des ouvriers </h1>
+
+
+
+<div *ngFor="let attribution of ouvrierList">
+    <p> {{attribution.ouvrier}} </p>
+  </div>
+
+<h3> Nombre total d'ouvriers : {{ atributionCount }} </h3>
+
+<p> Le plus moche est : {{ ouvrierList[1].ouvrier }} </p>
