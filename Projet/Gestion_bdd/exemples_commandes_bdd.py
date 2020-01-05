@@ -286,7 +286,7 @@ reset_table("attribution")
 print(len(get_all_attribution()) == 0)
 
 if __name__ == "__main__":
-    # Y'a des chantiers en double, car certains sont ajoutes dans Bdd.py pour tester pour le moment
+    # Y'a des chantiers en double, car certains sont ajoutes dans bdd.py pour tester pour le moment
     # Suppression des tables créées
     suppression_table_chantiers()
     suppression_table_ouvriers()

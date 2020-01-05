@@ -151,9 +151,9 @@ def reset():
 
 ############# PROBLÈME (mail envoyé à clémentine) : POURQUOI ÇA NE MARCHE PAS sur spyder
 # (alors que ok dans le terminal)
-# ALORS QUE appel_bdd est bien déclaré dans Bdd.py ??
+# ALORS QUE appel_bdd est bien déclaré dans bdd.py ??
 # alors que ça marche avec bdd.DISPONIBLE par ex ?
-# ça marche quand Bdd.py est dans le même dossier
+# ça marche quand bdd.py est dans le même dossier
 
 # print("ICI", bdd.APPEL_BDD)
 
