@@ -14,12 +14,10 @@ Fichier conforme à la norme PEP8.
 
 import sqlite3
 
-#%% Création des bases de données 
+#%% Création des bases de données
 
-DB = sqlite3.connect(
-    "bdd_principale", check_same_thread=False
-)  
-# La base de données avec 3 tables 
+DB = sqlite3.connect("bdd_principale", check_same_thread=False)
+# La base de données avec 3 tables
 # (informations sur les chantiers, ouvriers et attributions)
 CURSOR = DB.cursor()  # On se place sur cette bdd
 
@@ -36,7 +34,7 @@ CURSOR.execute(
 
 DISPONIBLE = 0
 INDISPONIBLE = 1
-appel_bdd = 2 # à supprimer après, c'est un essai 
+appel_bdd = 2  # à supprimer après, c'est un essai
 CURSOR.execute(
     """CREATE TABLE IF NOT EXISTS ouvriers(id INTEGER PRIMARY KEY,
                                                     name TEXT,
@@ -58,9 +56,10 @@ CURSOR.execute(
 
 DB.commit()  # On termine de creer les tables
 
-#%% Fonctions 
+#%% Fonctions
 
 #%% Fonctions de requetes
+
 
 def commit_condition(command: str):
     """
@@ -71,7 +70,7 @@ def commit_condition(command: str):
 
 
 def select_condition(
-        command: str
+    command: str
 ):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
     """
     Permet à partir d'une commande d'enregistrer les informations
@@ -79,7 +78,7 @@ def select_condition(
     """
     commit_condition(command)
     rows = CURSOR.fetchall()
-    sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie 
+    sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie
     for row in rows:
         sortie.append(list(row[:]))
     return sortie
@@ -95,8 +94,9 @@ def print_condition(command: str):
     for row in rows:
         print(list(row[:]))
 
-#%% Fonctions de set 
-        
+
+#%% Fonctions de set
+
 ############################ Ajout d'un nouveau chantier à notre base de données
 
 
@@ -111,6 +111,7 @@ def insert_chantier(new_chantier: list):
         (new_chantier[0], new_chantier[1], new_chantier[2], new_chantier[3]),
     )
     DB.commit()
+
 
 ############################ Ajout d'un nouveau ouvrier à notre base de données
 
@@ -127,12 +128,11 @@ def insert_ouvrier(new_ouvrier: list):
     )
     DB.commit()
 
+
 ############################ Ajout d'un nouveau couple à notre base de données
 
 
-def insert_attribution(
-        new_attribution: list
-):
+def insert_attribution(new_attribution: list):
     """
     Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
     Format d'entrée : new_attribution = [id_ouvrier,id_chantier]
@@ -144,9 +144,7 @@ def insert_attribution(
                      WHERE statut = """
         + str(DISPONIBLE)
     )
-    if [
-            new_attribution[0]
-    ] in ouvriers_disponible:  
+    if [new_attribution[0]] in ouvriers_disponible:
         CURSOR.execute(
             """INSERT INTO attribution(id_ouvrier, id_chantier)
                           VALUES(?,?)""",
@@ -159,94 +157,115 @@ def insert_attribution(
         )
     DB.commit()
 
-#%% Fonctions de get 
 
-def get_id_names_dates_chantiers(): 
+#%% Fonctions de get
+
+
+def get_id_names_dates_chantiers():
     """
     Renvoie une liste de listes telles que [index, nom, date_debut, date_fin]
     """
-    return select_condition("""SELECT id, name, date_debut, date_fin
-                                                FROM chantiers""")
+    return select_condition(
+        """SELECT id, name, date_debut, date_fin
+                                                FROM chantiers"""
+    )
+
+
 def get_list_of_names_chantiers():
     """
     Renvoie la liste des noms des chantiers telle que ["chantier1", "chantier2", ...]
     """
     list_of_list_names = select_condition("""SELECT name FROM chantiers""")
     names = []
-    for list_names in list_of_list_names: 
+    for list_names in list_of_list_names:
         names.append(list_names[0])
     return names
-    
-def get_id_names_ouvriers(): 
+
+
+def get_id_names_ouvriers():
     """
     Renvoie une liste de listes telles que [index, nom]
     """
-    return select_condition(
-        """SELECT id, name FROM ouvriers""") 
+    return select_condition("""SELECT id, name FROM ouvriers""")
 
-def get_all_attribution(): 
+
+def get_all_attribution():
     """ 
     Renvoie la liste des attributions sous la forme [nom_ouvrier, nom_chantier, date_debut, date_fin]
     """
     return select_condition(
-            """SELECT DISTINCT o.name,
+        """SELECT DISTINCT o.name,
                             c.name, c.date_debut, c.date_fin
                             FROM chantiers AS c, ouvriers AS o
                             JOIN attribution
                             ON c.id = attribution.id_chantier
                             JOIN ouvriers
                             ON (attribution.id_ouvrier = o.id) """
-        )
+    )
 
-def get_id_from_name_ouvrier(name: str): 
+
+def get_id_from_name_ouvrier(name: str):
     """
     Renvoie l'id d'un ouvrier avec un nom donné. Le [0][0] permet de renvoyer l'entier 
     directement et non pas une liste. 
     """
     return select_condition(
-            """SELECT id
+        """SELECT id
                     FROM ouvriers
-                    WHERE name = '""" + name + "'"
-        )[0][0]
-    
-def get_id_from_name_chantier(name :str): 
+                    WHERE name = '"""
+        + name
+        + "'"
+    )[0][0]
+
+
+def get_id_from_name_chantier(name: str):
     """
     Renvoie l'id d'un chantier avec un nom donné. Le [0][0] permet de renvoyer l'entier 
     directement et non pas une liste. 
     """
     return select_condition(
-            """SELECT id
+        """SELECT id
                     FROM chantiers
-                    WHERE name = '""" + name + "'" 
-        )[0][0]
-    
-def get_name_dates_from_id_chantier(): 
-    pass 
+                    WHERE name = '"""
+        + name
+        + "'"
+    )[0][0]
 
-def get_name_from_id_ouvrier(): 
+
+def get_name_dates_from_id_chantier():
     pass
-        
-#%% Fonction return table 
-    
-def return_table_attribution(): 
-    return select_condition(
-    """SELECT *
-                    FROM attribution"""
-                    )
-def return_table_ouvriers(): 
-    return select_condition(
-    """SELECT name
-                    FROM ouvriers"""
-                    )
-    
-def return_table_chantiers(): 
-    return select_condition(
-    """SELECT name
-                    FROM chantiers"""
-                    )
 
-#%%    
-############################ A effacer dans le futur 
+
+def get_name_from_id_ouvrier():
+    pass
+
+
+#%% Fonction return table
+
+
+def return_table_attribution():
+    return select_condition(
+        """SELECT *
+                    FROM attribution"""
+    )
+
+
+def return_table_ouvriers():
+    return select_condition(
+        """SELECT name
+                    FROM ouvriers"""
+    )
+
+
+def return_table_chantiers():
+    return select_condition(
+        """SELECT name
+                    FROM chantiers"""
+    )
+
+
+#%%
+############################ A effacer dans le futur
 
 CHANTIER = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
 
@@ -303,21 +322,26 @@ insert_ouvrier(OUVRIER)
 OUVRIER = ["Raph", "élagueur", DISPONIBLE]
 
 insert_ouvrier(OUVRIER)
-    
+
 #%% Fonction de suppression
-    
+
+
 def suppression_table_chantiers():
     CURSOR.execute("""DROP TABLE IF EXISTS chantiers""")
+
 
 def suppression_table_ouvriers():
     CURSOR.execute("""DROP TABLE IF EXISTS ouvriers""")
 
+
 def suppression_table_attribution():
     CURSOR.execute("""DROP TABLE IF EXISTS attribution""")
-    
-def reset_table(name_table :str): 
-    CURSOR.execute("""DELETE FROM """ +name_table)
-    
-#suppression_table_chantiers()
-#suppression_table_ouvriers()
-#suppression_table_attribution()
+
+
+def reset_table(name_table: str):
+    CURSOR.execute("""DELETE FROM """ + name_table)
+
+
+# suppression_table_chantiers()
+# suppression_table_ouvriers()
+# suppression_table_attribution()
