@@ -11,7 +11,7 @@ Fichier conforme à la norme PEP8.
 
 ############################ Modules et fonctions
 
-from Bdd import (
+from bdd import (
     insert_chantier,
     insert_ouvrier,
     insert_attribution,
