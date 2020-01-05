@@ -22,6 +22,7 @@ from bdd import (
     suppression_table_ouvriers,
     suppression_table_attribution,
     get_all_attribution,
+    get_attribution_hours_one_ouvrier,
     reset_table,
     DISPONIBLE,
     INDISPONIBLE
@@ -282,6 +283,10 @@ print_condition(
 ######################### Essai des fonctions get, set, supp
 
 print(get_id_from_name_chantier("Boulogne"))
+
+print(get_all_attribution())
+print(get_attribution_hours_one_ouvrier(1))
+
 reset_table("attribution")
 print(len(get_all_attribution()) == 0)
 

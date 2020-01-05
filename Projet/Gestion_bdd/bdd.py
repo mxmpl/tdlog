@@ -163,7 +163,7 @@ def insert_attribution(new_attribution: list):
 
 def get_id_names_dates_chantiers():
     """
-    Renvoie une liste de listes telles que [index, nom, date_debut, date_fin]
+    Renvoie une liste de listes telles que [[index, nom, date_debut, date_fin],]
     """
     return select_condition(
         """SELECT id, name, date_debut, date_fin
@@ -204,6 +204,19 @@ def get_all_attribution():
                             ON (attribution.id_ouvrier = o.id) """
     )
 
+def get_attribution_hours_one_ouvrier(id_ouvrier: int):
+    """
+    Renvoie toutes les attributions d'un ouvrier (à partir de son index) sous
+    la forme [[date_debut, date_fin],].
+    """
+    return select_condition(
+        """SELECT DISTINCT c.date_debut, c.date_fin
+                            FROM chantiers AS c
+                            JOIN attribution
+                            ON c.id = attribution.id_chantier
+                            WHERE attribution.id_ouvrier = """ + str(id_ouvrier)
+    )
+
 
 def get_id_from_name_ouvrier(name: str):
     """
@@ -233,8 +246,17 @@ def get_id_from_name_chantier(name: str):
     )[0][0]
 
 
-# def get_name_dates_from_id_chantier():
-#     pass
+def get_dates_from_id_chantier(id_chantier: int):
+    """
+    Renvoie une liste [date_debut, date_fin] du chantier (à partir de son index).
+    """
+    return select_condition(
+        """SELECT date_debut, date_fin
+                    FROM chantiers
+                    WHERE id = """
+        + str(id_chantier)
+    )[0]
+
 #
 #
 # def get_name_from_id_ouvrier():
