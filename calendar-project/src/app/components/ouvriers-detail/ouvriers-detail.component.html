@@ -1,0 +1,10 @@
+<div *ngIf="ouvrier">
+
+    <h2> Détails sur : {{ouvrier.ouvrier | uppercase}}</h2>
+    <div>
+      <label>Nom:
+        <input [(ngModel)]="ouvrier.ouvrier" placeholder="nom"/>
+      </label>
+    </div>
+  
+  </div>

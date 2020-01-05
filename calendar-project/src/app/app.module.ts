@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -14,6 +15,7 @@ import { SidenavListComponent } from './components/sidenav-list/sidenav-list.com
 
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './modules/material/material.module';
+import { OuvrierDetailComponent } from './components/ouvriers-detail/ouvriers-detail.component';
 
 @NgModule({
   declarations: [
@@ -23,11 +25,13 @@ import { MaterialModule } from './modules/material/material.module';
     OuvriersComponent,
     LayoutComponent,
     SidenavListComponent,
-    ChantiersComponent
+    ChantiersComponent,
+    OuvrierDetailComponent
   ],
   imports: [
     BrowserModule,
     FullCalendarModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     MaterialModule,

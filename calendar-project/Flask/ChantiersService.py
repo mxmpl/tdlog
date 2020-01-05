@@ -25,6 +25,10 @@ test = { "totalItems":5,"items":[
 for dico in attribution:
     dico["title"] = dico["ouvrier"] + " est a " + dico["chantier"]
     
+def set_new_ouvrier(ouvrier):
+    global test 
+    test["items"].append({"ouvrier":ouvrier})
+    
 @app.route("/", methods=['GET'])
 def index():
     return "Welcome";
@@ -37,6 +41,12 @@ def ListeChantiers():
 @app.route("/listeOuvriers/", methods = ['GET'])
 def ListeOuvriers():
     global test
+    return jsonify(test)
+    
+@app.route("/addOuvriers/", methods = ['GET'])
+def addOuvrier():
+    global test
+    set_new_ouvrier("Jordan")
     return jsonify(test)
     
 

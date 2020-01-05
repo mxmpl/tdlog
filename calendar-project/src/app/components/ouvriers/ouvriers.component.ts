@@ -30,8 +30,11 @@ export class OuvriersComponent implements OnInit {
   //bookList: Array<{ouvrier : string}>;
   ouvrierList: Ouvrier[];
 
+  ouvrierToAdd: string;
+
 ​
   private _ouvrierListUrl = 'http://127.0.0.1:5000/listeOuvriers/';
+  private _addOuvrierUrl = 'http://127.0.0.1:5000/addOuvriers/';
   //private _bookListUrl = 'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming';
 
   constructor(private _httpClient: HttpClient) {
@@ -47,7 +50,31 @@ export class OuvriersComponent implements OnInit {
             }));
             
           })
+  }
+
+  addOuvrier(){
+    this._httpClient.get<GoogleVolumeListResponse>(this._addOuvrierUrl)
+    .subscribe(googleVolumeListResponse => {
+
+      this.ouvrierCount = googleVolumeListResponse.totalItems;​
+      this.ouvrierList = googleVolumeListResponse.items.map(item => new Ouvrier({
+        ouvrier: item.ouvrier
+    }));
+    
+  })
+    
+  }
+
+  selectedOuvrier: Ouvrier;
+  ouvriers: Ouvrier[];
+  
+
+
+  onSelect(ouvrier: Ouvrier): void {
+  	this.selectedOuvrier = ouvrier;
+  }
 }
+
 
  /*
   bookCount: number;
@@ -70,4 +97,3 @@ export class OuvriersComponent implements OnInit {
   }
   */
 
-}

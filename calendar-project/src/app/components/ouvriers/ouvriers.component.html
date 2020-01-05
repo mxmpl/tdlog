@@ -7,6 +7,21 @@
     <p> {{attribution.ouvrier}} </p>
   </div>
 
-<h3> Nombre total d'ouvriers : {{ atributionCount }} </h3>
+<h3> Nombre total d'ouvriers : {{ ouvrierCount }} </h3>
 
 <p> Le plus moche est : {{ ouvrierList[1].ouvrier }} </p>
+
+<div>
+    <button (click)='addOuvrier()'> Ajouter Jordan </button>
+</div>
+
+<h2>Nos ouvriers</h2>
+<ul class="ouvrierList">
+  <li *ngFor="let ouvrier of ouvrierList" 
+  	[class.selected]="ouvrier === selectedOuvrier"
+  	(click)="onSelect(ouvrier)">
+    <span class="badge">{{ouvrier.ouvrier}}</span>
+  </li>
+</ul>
+
+<app-ouvriers-detail [ouvrier]="selectedOuvrier"></app-ouvriers-detail>
