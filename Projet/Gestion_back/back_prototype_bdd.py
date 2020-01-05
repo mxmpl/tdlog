@@ -34,18 +34,16 @@ APP = Flask(__name__)  # Creation du site
 def set_new_attribution(dict_new_attributions: dict):
     """
     dict_new_attributions doit être un dictionnaire qui associe
-    un nom d'ouvrier à un nom de chantier
+    un nom d'ouvrier à un nom de chantier.
+    Discuter du fait que si on déclare une nouvelle attribution avec les noms
+    du chantier et de l'ouvrier, cela peut etre problematique en cas de doublons
+    de noms.
     """
     for ouvrier in dict_new_attributions.keys():  # ouvrier est un type str
-        bdd.insert_attribution(
-            [
-                bdd.get_id_from_name_ouvrier(ouvrier),
-                bdd.get_id_from_name_chantier(dict_new_attributions[ouvrier]),
-            ]
-        )
-    print(
-        bdd.return_table_attribution()
-    )  # a supprimer après, pour afficher pour l'instant
+        id_ouvrier = bdd.get_id_from_name_ouvrier(ouvrier)
+        id_chantier = bdd.get_id_from_name_chantier(dict_new_attributions[ouvrier])
+        if verif_dispo_horaire_ouvrier(id_ouvrier, id_chantier):
+            bdd.insert_attribution([id_ouvrier, id_chantier])
 
 
 def set_new_chantier(dict_new_chantier: dict):
@@ -77,6 +75,19 @@ def get_planning():
     telle que [].
     """
     return bdd.get_all_attribution()
+
+
+def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
+    """
+    Permet via l'index d'un chantier et d'un ouvrier de vérifier que
+    l'ouvrier est disponible sur la plage horaire concernée pour ce
+    chantier. Return true si l'ouvrier n'est pas encore occupé sur ce créneau.
+    """
+    if bdd.get_dates_from_id_chantier(
+            id_chantier
+    ) not in bdd.get_attribution_hours_one_ouvrier(id_ouvrier):
+        return True
+    return False
 
 
 #%% Liens avec le front en HTML
