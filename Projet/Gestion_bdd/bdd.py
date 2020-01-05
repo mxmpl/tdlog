@@ -34,7 +34,7 @@ CURSOR.execute(
 
 DISPONIBLE = 0
 INDISPONIBLE = 1
-appel_bdd = 2  # à supprimer après, c'est un essai
+APPEL_BDD = 2  # à supprimer après, c'est un essai
 CURSOR.execute(
     """CREATE TABLE IF NOT EXISTS ouvriers(id INTEGER PRIMARY KEY,
                                                     name TEXT,
@@ -70,7 +70,7 @@ def commit_condition(command: str):
 
 
 def select_condition(
-    command: str
+        command: str
 ):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
     """
     Permet à partir d'une commande d'enregistrer les informations
@@ -102,8 +102,8 @@ def print_condition(command: str):
 
 def insert_chantier(new_chantier: list):
     """
-    Permet d'inserer un nouveau chantier dans la base de données. Le format d'entrée 
-    doit être de la forme [nom, date_debut, date_fin, adresse]. 
+    Permet d'inserer un nouveau chantier dans la base de données. Le format d'entrée
+    doit être de la forme [nom, date_debut, date_fin, adresse].
     """
     CURSOR.execute(
         """INSERT INTO chantiers(name, date_debut, date_fin, adress)
@@ -118,8 +118,8 @@ def insert_chantier(new_chantier: list):
 
 def insert_ouvrier(new_ouvrier: list):
     """
-    Permet d'inserer un ouvrier dans la base de données. Le format d'entrée doit 
-    être de la forme [nom, specialite, statut]. 
+    Permet d'inserer un ouvrier dans la base de données. Le format d'entrée doit
+    être de la forme [nom, specialite, statut].
     """
     CURSOR.execute(
         """INSERT INTO ouvriers(name, specialite, statut)
@@ -190,8 +190,9 @@ def get_id_names_ouvriers():
 
 
 def get_all_attribution():
-    """ 
-    Renvoie la liste des attributions sous la forme [nom_ouvrier, nom_chantier, date_debut, date_fin]
+    """
+    Renvoie la liste des attributions sous la forme [nom_ouvrier, nom_chantier,
+    date_debut, date_fin]
     """
     return select_condition(
         """SELECT DISTINCT o.name,
@@ -206,8 +207,8 @@ def get_all_attribution():
 
 def get_id_from_name_ouvrier(name: str):
     """
-    Renvoie l'id d'un ouvrier avec un nom donné. Le [0][0] permet de renvoyer l'entier 
-    directement et non pas une liste. 
+    Renvoie l'id d'un ouvrier avec un nom donné. Le [0][0] permet de renvoyer l'entier
+    directement et non pas une liste.
     """
     return select_condition(
         """SELECT id
@@ -220,8 +221,8 @@ def get_id_from_name_ouvrier(name: str):
 
 def get_id_from_name_chantier(name: str):
     """
-    Renvoie l'id d'un chantier avec un nom donné. Le [0][0] permet de renvoyer l'entier 
-    directement et non pas une liste. 
+    Renvoie l'id d'un chantier avec un nom donné. Le [0][0] permet de renvoyer l'entier
+    directement et non pas une liste.
     """
     return select_condition(
         """SELECT id
@@ -232,37 +233,25 @@ def get_id_from_name_chantier(name: str):
     )[0][0]
 
 
-def get_name_dates_from_id_chantier():
-    pass
-
-
-def get_name_from_id_ouvrier():
-    pass
+# def get_name_dates_from_id_chantier():
+#     pass
+#
+#
+# def get_name_from_id_ouvrier():
+#     pass
 
 
 #%% Fonction return table
 
 
 def return_table_attribution():
+    """
+    Renvoie toute la table attribution.
+    """
     return select_condition(
         """SELECT *
                     FROM attribution"""
     )
-
-
-def return_table_ouvriers():
-    return select_condition(
-        """SELECT name
-                    FROM ouvriers"""
-    )
-
-
-def return_table_chantiers():
-    return select_condition(
-        """SELECT name
-                    FROM chantiers"""
-    )
-
 
 #%%
 ############################ A effacer dans le futur
@@ -327,18 +316,30 @@ insert_ouvrier(OUVRIER)
 
 
 def suppression_table_chantiers():
+    """
+    Supprime la table chantiers, attention ne la reset pas seulement.
+    """
     CURSOR.execute("""DROP TABLE IF EXISTS chantiers""")
 
 
 def suppression_table_ouvriers():
+    """
+    Supprime la table ouvriers, attention ne la reset pas seulement.
+    """
     CURSOR.execute("""DROP TABLE IF EXISTS ouvriers""")
 
 
 def suppression_table_attribution():
+    """
+    Supprime la table attribution, attention ne la reset pas seulement.
+    """
     CURSOR.execute("""DROP TABLE IF EXISTS attribution""")
 
 
 def reset_table(name_table: str):
+    """
+    Reset la table, attention ne la supprime pas.
+    """
     CURSOR.execute("""DELETE FROM """ + name_table)
 
 
