@@ -87,11 +87,6 @@ def get_planning():
     """
     return bdd.get_all_attribution()
 
-def conversion_liste_dict(liste: list): 
-    """
-    Cette fonction permet de convertir une liste d'attribution [nom_ouvrier1, nom_chantier1, date_debut, date_fin] en dictionnaire 
-    """
-
 def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
     """
     Permet via l'index d'un chantier et d'un ouvrier de vérifier que

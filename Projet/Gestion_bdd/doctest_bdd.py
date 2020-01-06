@@ -20,7 +20,7 @@ from bdd import (
 
 ############################ Creation de la table test
 
-DB = sqlite3.connect("bdd_principale", check_same_thread=False)
+DB = sqlite3.connect("bdd", check_same_thread=False)
 CURSOR = DB.cursor()
 
 CURSOR.execute(

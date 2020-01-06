@@ -5,8 +5,6 @@ Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
 Maxime POLI, 2019-2020
 
 Le but de ce script python est de traiter la partie back du site.
-Ce script gère pour l'instant le back du prototype en html avec les bases de
-données.
 
 Fichier conforme à la norme PEP8.
 """
@@ -89,8 +87,10 @@ def get_planning():
 
 def conversion_liste_dict(liste: list): 
     """
-    Cette fonction permet de convertir une liste d'attribution [nom_ouvrier1, nom_chantier1, date_debut, date_fin] en dictionnaire 
+    Cette fonction permet de convertir une liste d'attribution [nom_ouvrier1, 
+    nom_chantier1, date_debut, date_fin] en dictionnaire 
     """
+    pass
 
 def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
     """
@@ -105,80 +105,9 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
     return False
 
 
-#%% Liens avec le front en HTML
-
-
-############# Page principale
-
-
-@APP.route("/")  # a modif pour mettre un bouton nouveau planning
-# Et un bouton modifier ancien planning
-def home():
-    """
-    Permet de creer la page d'accueil.
-    """
-    user = {"username": "Bernard"}
-    return render_template("bienvenue.html", user=user)
-
-
-############# Page home
-
-
-@APP.route("/home")
-def editer():
-    """
-    Permet de d'afficher la page home.
-    """
-    return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
-
-
-############# Liens avec le front
-
-
-@APP.route("/ouvrier", methods=["POST"])
-def new_attribution():
-    """
-    On suppose pour le moment que deux chantiers n'ont pas le mêmes noms.
-    On créer une nouvelle attribution.
-    """
-    requete = request.form
-    if (
-            " " not in requete.keys()
-    ):  # Un dictionnaire avec comme clef " " est le signe d'une requete
-        # pour creer un nouveau chantier
-        set_new_attribution_name(requete)
-    else:
-        set_new_chantier(requete)
-    return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
-
-
-############# Page d'affichage : on affiche le planning
-
-
-@APP.route("/affichage_planning")
-def affichage_planning():
-    """
-    Permet de visualiser le planning créé.
-    """
-    return render_template("planning.html", planning=get_planning())
-
-
-############# Fonction pour réinitialiser le planning
-
-
-@APP.route("/reset")
-def reset():
-    """
-    Permet de réinitialiser le planning.
-    """
-    bdd.reset_table("attribution")
-    return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
-
-############# Lancement du site
 
 if __name__ == "__main__":
-    APP.debug = False  # Quand on met Debug = True,
-    # ça arrive pas en bas donc ça n'efface pas les tables, ATTENTION !
+    APP.debug = False  
     APP.run()
 
 # À la fin de l'utilisation, on supprime les tables
