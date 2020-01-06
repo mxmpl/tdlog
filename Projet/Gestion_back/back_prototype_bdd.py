@@ -31,7 +31,7 @@ APP = Flask(__name__)  # Creation du site
 #%% Fonctions du back
 
 
-def set_new_attribution(dict_new_attributions: dict):
+def set_new_attribution_name(dict_new_attributions: dict):
     """
     dict_new_attributions doit être un dictionnaire qui associe
     un nom d'ouvrier à un nom de chantier.
@@ -44,6 +44,17 @@ def set_new_attribution(dict_new_attributions: dict):
         id_chantier = bdd.get_id_from_name_chantier(dict_new_attributions[ouvrier])
         if verif_dispo_horaire_ouvrier(id_ouvrier, id_chantier):
             bdd.insert_attribution([id_ouvrier, id_chantier])
+
+def set_new_attribution_id(dict_new_attributions: dict): 
+    """
+    dict_new_attributions doit être un dictionnaire qui associe
+    un id d'ouvrier à un id de chantier.
+    """
+    for id_ouvrier in dict_new_attributions.keys():  # id est un type int
+        id_chantier = dict_new_attributions[id_ouvrier]
+        if verif_dispo_horaire_ouvrier(id_ouvrier, id_chantier):
+            bdd.insert_attribution([id_ouvrier, id_chantier])
+
 
 
 def set_new_chantier(dict_new_chantier: dict):
@@ -76,6 +87,10 @@ def get_planning():
     """
     return bdd.get_all_attribution()
 
+def conversion_liste_dict(liste: list): 
+    """
+    Cette fonction permet de convertir une liste d'attribution [nom_ouvrier1, nom_chantier1, date_debut, date_fin] en dictionnaire 
+    """
 
 def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
     """
@@ -131,7 +146,7 @@ def new_attribution():
             " " not in requete.keys()
     ):  # Un dictionnaire avec comme clef " " est le signe d'une requete
         # pour creer un nouveau chantier
-        set_new_attribution(requete)
+        set_new_attribution_name(requete)
     else:
         set_new_chantier(requete)
     return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
@@ -159,15 +174,6 @@ def reset():
     bdd.reset_table("attribution")
     return render_template("home.html", chantiers=bdd.get_list_of_names_chantiers())
 
-
-############# PROBLÈME (mail envoyé à clémentine) : POURQUOI ÇA NE MARCHE PAS sur spyder
-# (alors que ok dans le terminal)
-# ALORS QUE appel_bdd est bien déclaré dans bdd.py ??
-# alors que ça marche avec bdd.DISPONIBLE par ex ?
-# ça marche quand bdd.py est dans le même dossier
-
-# print("ICI", bdd.APPEL_BDD)
-
 ############# Lancement du site
 
 if __name__ == "__main__":
@@ -177,6 +183,9 @@ if __name__ == "__main__":
 
 # À la fin de l'utilisation, on supprime les tables
 
-bdd.suppression_table_chantiers()
-bdd.suppression_table_ouvriers()
-bdd.suppression_table_attribution()
+#bdd.suppression_table_chantiers()
+#bdd.suppression_table_ouvriers()
+#bdd.suppression_table_attribution()
+#bdd.reset_table("chantiers")
+#bdd.reset_table("ouvriers")
+#bdd.reset_table("attribution")
