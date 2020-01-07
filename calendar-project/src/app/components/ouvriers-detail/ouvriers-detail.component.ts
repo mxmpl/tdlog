@@ -15,4 +15,6 @@ export class OuvrierDetailComponent implements OnInit {
   ngOnInit() {
   }
 
+  addChantier(obj){}
+
 }

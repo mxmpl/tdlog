@@ -5,15 +5,24 @@ import { Observable } from 'rxjs';
 export interface GoogleVolumeListResponse {
  // totalItems: number;
   items: Array<{
-        ouvrier : string;
+        ouvrier : string
+        chantier : string
+        start : string
+        end : string;
   }>;
 }
 
 export class Ouvrier {
-  ouvrier?: string;
+  ouvrier? : string
+  chantier? : string
+  start? : string
+  end? : string;
 
   constructor(args: Ouvrier = {}) {
-      this.ouvrier = args.ouvrier;
+      this.ouvrier = args.ouvrier
+      this.chantier = args.chantier
+      this.end = args.end
+      this.start = args.start;
   }
 }
 
@@ -43,7 +52,7 @@ export class OuvriersComponent implements OnInit {
 
               //this.ouvrierCount = googleVolumeListResponse.totalItems;​
               this.ouvrierList = googleVolumeListResponse.items.map(item => new Ouvrier({
-                ouvrier: item.ouvrier
+                ouvrier: item.ouvrier, start: item.start, end: item.end, chantier : item.chantier
             }));
             
           })
@@ -56,12 +65,9 @@ export class OuvriersComponent implements OnInit {
                error  => {console.log("Error", error);});
   }
 
-  deleteOuvrier(obj){}
+  addChantier(obj){}
 
-  addAff(obj){
-    this.addOuvrier(obj)
-    this.ngOnInit();
-  }
+  deleteOuvrier(obj){}
 
   selectedOuvrier: Ouvrier;
   ouvriers: Ouvrier[];

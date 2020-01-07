@@ -15,10 +15,10 @@ attribution = {"items":[
 }
 
 test = { "totalItems":5,"items":[
-{"start":"2020-01-05", "chantier":"Champs-sur-Marne", "ouvrier":"Max"},
-{"start":"2020-01-08", "chantier":"Paris", "ouvrier":"Raph"},
-{"start":"2020-01-10", "chantier":"Bordeaux", "ouvrier":"Margot"},
-{"start":"2020-01-08", "chantier":"Noisy", "ouvrier":"Max2"},
+{"start":"2020-01-05", "chantier":"Champs-sur-Marne", "ouvrier":"Max","end":"2020-01-06"},
+{"start":"2020-01-08", "chantier":"Paris", "ouvrier":"Raph","end":"2020-01-09"},
+{"start":"2020-01-10", "chantier":"Bordeaux", "ouvrier":"Margot","end":"2020-01-11"},
+{"start":"2020-01-08", "chantier":"Noisy", "ouvrier":"Max2","end":"2020-01-09"},
 {"start":"2020-01-12", "chantier":"Mulhouse", "ouvrier":"Fredo", "end":"2020-01-15"}
 ]
 }
@@ -45,10 +45,11 @@ def ListeOuvriers():
     global attribution
     return jsonify(attribution)
     
+
 @app.route("/addOuvriers/", methods = ['POST'])
 def addOuvrier():
 	data = request.get_json()
-	new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07", "ouvrier":data["nom"]}
+	new_evenement = {"start":"2020-01-07", "chantier":"", "title":data["nom"]+" est a Paris", "end":"2020-01-07", "ouvrier":data["nom"]}
 	global attribution
 	attribution["items"].append(new_evenement)
 	return jsonify(attribution["items"])
