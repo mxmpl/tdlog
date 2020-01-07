@@ -17,7 +17,12 @@ from bdd import (
         insert_ouvrier,
         return_table, 
         reset_table,
-        suppression_table
+        suppression_table,
+        get_info_from_id_chantier,
+        get_info_from_id_ouvrier,
+        get_list_of_names_chantiers,
+        get_all_attribution,
+        get_planning_individuel
         )
 
 
@@ -34,8 +39,6 @@ insert_chantier(CHANTIER)
 CHANTIER = {"name_chantier": "Noisy", "start": "2019-12-09 08:00:00", "end": "2020-02-09 12:00:00", "adress": "6-8 Avenue Blaise Pascal"}
 
 insert_chantier(CHANTIER)
-
-print(return_table("chantiers"))
 
 OUVRIER = {"name_ouvrier" :"Maxime"}
 
@@ -67,182 +70,18 @@ insert_attribution(ATTRIBUTION)
 
 ############################ Exemple de requetes sur les chantiers
 
+print("On retourne les tables")
 print(return_table("ouvriers"))
+print(return_table("chantiers"))
 print(return_table("attribution"))
-#print_condition(
-#    """SELECT name, adress
-#                    FROM chantiers"""
-#)  # On renvoie tous les noms, et adresses des chantiers dans la bdd
-#
-#print("\nOn renvoie le nom des chantiers ayant une adresse donnee")
-#print_condition(
-#    '''SELECT name_
-#                    FROM chantiers
-#                    WHERE adress = "20 rue des lillas"'''
-#)  # On renvoie le nom des chantiers ayant une adresse donnée
-#
-#print("\nOn renvoie toutes les infos sur les chantiers'")
-#print_condition(
-#    '''SELECT *
-#                    FROM chantiers'''
-#)  
-#
-#print("\nOn compte combien de chantiers sont dans la table")
-#print_condition(
-#    """SELECT COUNT(*)
-#                    FROM chantiers"""
-#)  # On compte combien de chantiers sont dans la table
-#
-#print("\nOn renvoie tous les chantiers ordonnes par nom")
-#print_condition(
-#    """SELECT *
-#                    FROM chantiers
-#                    ORDER BY name"""
-#)  # On renvoie tous les chantiers ordonnes par nom
-#
-#print("\nOn renvoie tous les chantiers commencant a une date donnée")
-#print_condition(
-#    """SELECT *
-#                    FROM chantiers
-#                    WHERE date_debut = "2018-10-09 08:00:00" """
-#)  # On renvoie tous les chantiers commencant a  une date donnee
-#
-############################# Exemple de requetes sur les ouvriers
-#
-#print("\nOn renvoie tous les noms et spécialités des ouvriers dans la bdd")
-#print_condition(
-#    """SELECT name, specialite
-#                    FROM ouvriers"""
-#)  # On renvoie tous les noms et spécialités des ouvriers dans la bdd
-#
-#print("\nOn renvoie tous les noms des ouvriers ayant une spécialité donnée")
-#print_condition(
-#    '''SELECT name
-#                    FROM ouvriers
-#                    WHERE specialite = "horticulture"'''
-#)  # On renvoie tous les noms des ouvriers ayant une spécialité donnée
-#
-#print("\nOn renvoie toutes les infos d'un ouvrier ayant un nom donné")
-#print_condition(
-#    '''SELECT *
-#                    FROM ouvriers
-#                    WHERE name = "Jean"'''
-#)  # On renvoie toutes les infos d'un ouvrier ayant un nom donné
-#
-#print("\nOn compte combien d'ouvriers sont dans la table")
-#print_condition(
-#    """SELECT COUNT(*)
-#                    FROM ouvriers
-#                    """
-#)  # On compte combien d'ouvriers sont dans la table
-#
-#print("\nOn renvoie tous les ouvriers triés par noms")
-#print_condition(
-#    """SELECT *
-#                    FROM ouvriers
-#                    ORDER BY name"""
-#)  # On renvoie tous les ouvriers triés par noms
-#
-############################# Exemple de requetes sur les ouvriers/chantiers
-#
-#print("\nOn renvoie tous les id des ouvriers/chantiers dans la bdd")
-#print_condition(
-#    """SELECT id_ouvrier, id_chantier
-#                    FROM attribution"""
-#)
-#
-#print("\nOn renvoie tous les chantiers de l'ouvrier 1")
-#print_condition(
-#    """SELECT id_chantier
-#                    FROM attribution
-#                    WHERE id_ouvrier = 1"""
-#)
-#
-#print("\nOn renvoie toute la table")
-#print_condition(
-#    """SELECT *
-#                    FROM attribution"""
-#)
-#
-#print("\nOn compte le nombre de chantiers ou est present l'ouvrier 1")
-#print_condition(
-#    """SELECT COUNT(*)
-#                    FROM attribution
-#                    WHERE id_ouvrier = 1"""
-#)
-#
-############################ Exemple de requetes couplées sur les tables
-#
-#print(
-#    "\nOn renvoie les noms et specialites des ouvriers etant affectes a  des chantiers"
-#)
-#print_condition(
-#    """SELECT DISTINCT name, specialite
-#                    FROM ouvriers
-#                    JOIN attribution
-#                    ON id = id_ouvrier"""
-#)
-#
-#print(
-#    "\nOn renvoie toutes les informations sur les chantiers d'un ouvrier, ",
-#    "sorte de planning en texte",
-#)
-#print_condition(
-#    """SELECT DISTINCT chantiers.id,
-#                    chantiers.name,
-#                    chantiers.date_debut,
-#                    chantiers.date_fin,
-#                    chantiers.adress
-#                    FROM chantiers
-#                    JOIN attribution
-#                    ON chantiers.id = attribution.id_chantier
-#                    JOIN ouvriers
-#                    ON (attribution.id_ouvrier = ouvriers.id
-#                    AND
-#                    ouvriers.name = "Jean") """
-#)
-#
-#print(
-#    "\nOn renvoie toutes les informations sur les chantiers de tous les ouvrier, ",
-#    "sorte de planning en texte",
-#)
-#print_condition(
-#    """SELECT DISTINCT c.name,
-#                    o.name
-#                    FROM chantiers AS c, ouvriers AS o
-#                    JOIN attribution
-#                    ON c.id = attribution.id_chantier
-#                    JOIN ouvriers
-#                    ON (attribution.id_ouvrier = o.id) """
-#)  # Attention aux alias
-#
-############################# Modification d'une ligne d'une des tables
-#
-#print("\nModification d'une ligne")
-#commit_condition(
-#    """UPDATE ouvriers
-#                    SET name = 'Jeanne'
-#                    WHERE id = 1"""
-#)
-#
-#print_condition(
-#    """SELECT *
-#                   FROM ouvriers"""
-#)
-#
-########################## Essai des fonctions get, set, supp
-#
-#print(get_id_from_name_chantier("Boulogne"))
-#
-#print(get_all_attribution())
-#print(get_attribution_hours_one_ouvrier(1))
-#
-#reset_table("attribution")
-#print(len(get_all_attribution()) == 0)
 
-if __name__ == "__main__":
-    # Y'a des chantiers en double, car certains sont ajoutes dans bdd.py pour tester pour le moment
-    # Suppression des tables créées
-    suppression_table("chantiers")
-    suppression_table("ouvriers")
-    suppression_table("attribution")
+print("get_info_from_id_chantier", get_info_from_id_chantier(1))
+print("get_info_from_id_ouvrier", get_info_from_id_ouvrier(1))
+print("get_all_attribution", get_all_attribution())
+print("get_list_of_names_chantiers", get_list_of_names_chantiers())
+print("get_planning_individuel", get_planning_individuel(2))
+
+
+reset_table("chantiers")
+reset_table("ouvriers")
+reset_table("attribution")
