@@ -3,20 +3,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface GoogleVolumeListResponse {
-  totalItems: number;
+ // totalItems: number;
   items: Array<{
         ouvrier : string;
   }>;
 }
 
 export class Ouvrier {
-
   ouvrier?: string;
 
   constructor(args: Ouvrier = {}) {
       this.ouvrier = args.ouvrier;
   }
-
 }
 
 @Component({
@@ -26,7 +24,7 @@ export class Ouvrier {
 })
 export class OuvriersComponent implements OnInit {
   
-  ouvrierCount: number;
+  //ouvrierCount: number;
   //bookList: Array<{ouvrier : string}>;
   ouvrierList: Ouvrier[];
 
@@ -43,7 +41,7 @@ export class OuvriersComponent implements OnInit {
       this.http.get<GoogleVolumeListResponse>(this._ouvrierListUrl)
           .subscribe(googleVolumeListResponse => {
 
-              this.ouvrierCount = googleVolumeListResponse.totalItems;​
+              //this.ouvrierCount = googleVolumeListResponse.totalItems;​
               this.ouvrierList = googleVolumeListResponse.items.map(item => new Ouvrier({
                 ouvrier: item.ouvrier
             }));
@@ -59,6 +57,11 @@ export class OuvriersComponent implements OnInit {
   }
 
   deleteOuvrier(obj){}
+
+  addAff(obj){
+    this.addOuvrier(obj)
+    this.ngOnInit();
+  }
 
   selectedOuvrier: Ouvrier;
   ouvriers: Ouvrier[];

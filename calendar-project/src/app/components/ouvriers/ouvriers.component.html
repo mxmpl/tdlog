@@ -1,15 +1,16 @@
 <h1> Voici la liste des ouvriers </h1>
 <div>
-	<input #name/>
-    <button (click)='addOuvrier(name.value); name.value ="" '> Ajouter </button>
+	<input #name placeholder="Entrez un nom à ajouter"/>
+    <button (click)='addOuvrier(name.value) ; name.value ="" '> Ajouter </button>
 </div>
 
-<h2>Nos ouvriers</h2>
+<h2>Nos ouvriers</h2>  
+<button (click)='ngOnInit()'> Mettre à jour la liste </button>
 <ul class="ouvrierList">
   <li *ngFor="let ouvrier of ouvrierList" 
   	[class.selected]="ouvrier === selectedOuvrier"
   	(click)="onSelect(ouvrier)">
-    <span class="badge">{{ouvrier.ouvrier}}</span>
+    <span class="badge"> o </span> {{ouvrier.ouvrier}}
   </li>
 </ul>
 
