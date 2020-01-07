@@ -82,15 +82,17 @@ export class OuvrierService {
 
     return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted ouvrier id=${id}`)),
-      catchError(this.handleError<Ouvrier>('deleteHero'))
+      catchError(this.handleError<Ouvrier>('deleteOuvrier'))
     );
   }
 
   /** PUT: update the ouvrier on the server */
   updateOuvrier (ouvrier: Ouvrier): Observable<any> {
-    return this.http.put(this.listeOuvriersUrl, ouvrier, this.httpOptions).pipe(
+    const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id;
+    const url = `${this.listeOuvriersUrl}${id}`;
+    return this.http.put(url, ouvrier, this.httpOptions).pipe(
       tap(_ => this.log(`updated ouvrier id=${ouvrier.id}`)),
-      catchError(this.handleError<any>('updateHero'))
+      catchError(this.handleError<any>('updateOuvrier'))
     );
   }
 

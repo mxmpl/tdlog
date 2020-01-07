@@ -40,16 +40,33 @@ def ListeChantiers():
 @app.route("/listeOuvriers/", methods = ['GET', 'POST', 'DELETE', 'PUT'])
 def ListeOuvriers():
     global ouvriers
-    print("liste",request.get_json())
+    print("liste",ouvriers)
+    data = request.get_json()
+    
+    if (request.method == "POST"):
+        lastId = int(ouvriers[-1]["id"])
+        ouvriers.append({"id":str(lastId + 1), "name": data["name"]})
+        
     return jsonify(ouvriers)
  
 @app.route("/listeOuvriers/<id>", methods = ['GET', 'POST', 'DELETE', 'PUT'])
 def OuvrierId(id):
     global ouvriers
-    print("par id",request.get_json())
-    for ouvrier in ouvriers:
-        if ouvrier["id"] == id:
-            return jsonify(ouvrier)
+    
+    if (request.method == "GET"):
+        for ouvrier in ouvriers:
+            if ouvrier["id"] == id:
+                return jsonify(ouvrier)
+                
+    elif (request.method == "PUT"):
+        data = request.get_json()
+        for ouvrier in ouvriers:
+            if ouvrier["id"] == id:
+                ouvrier["name"] = data["name"]
+
+    elif (request.method == "DELETE"):
+        del ouvriers[int(id)]
+        
     return jsonify(ouvriers)
 
 @app.route("/addOuvriers/", methods = ['POST'])

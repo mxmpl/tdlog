@@ -1,11 +1,14 @@
 <h2>Nos ouvriers</h2>
 
 <div>
-  <label>Nom de l'ouvrier:
+  <label>Ajouter un ouvrier:
     <input #ouvrierName placeholder="Entrez un nom à ajouter"/>
   </label>
   <button (click)="add(ouvrierName.value); ouvrierName.value=''">
-    ajouter
+    OK
+  </button>
+  <button (click)="ngOnInit()">
+    Mettre à jour
   </button>
 </div>
 
