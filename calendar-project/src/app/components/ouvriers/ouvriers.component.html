@@ -1,18 +1,22 @@
-<h1> Voici la liste des ouvriers </h1>
+<h2>Nos ouvriers</h2>
+
 <div>
-	<input #name placeholder="Entrez un nom à ajouter"/>
-    <button (click)='addOuvrier(name.value) ; name.value ="" '> Ajouter </button>
+  <label>Nom de l'ouvrier:
+    <input #ouvrierName placeholder="Entrez un nom à ajouter"/>
+  </label>
+  <button (click)="add(ouvrierName.value); ouvrierName.value=''">
+    ajouter
+  </button>
 </div>
 
-<h2>Nos ouvriers</h2>  
-<button (click)='ngOnInit()'> Mettre à jour la liste </button>
-<ul class="ouvrierList">
-  <li *ngFor="let ouvrier of ouvrierList" 
-  	[class.selected]="ouvrier === selectedOuvrier"
-  	(click)="onSelect(ouvrier)">
-    <span class="badge"> o </span> {{ouvrier.ouvrier}}
+<ul class="ouvriers">
+  <li *ngFor="let ouvrier of ouvriers">
+    <a routerLink="/detail/{{ouvrier.id}}">
+      <span class="badge">{{ouvrier.id}}</span> {{ouvrier.name}}
+    </a>
+    <button class="delete" title="delete ouvrier"
+      (click)="delete(ouvrier)">x</button>
   </li>
 </ul>
 
-<app-ouvriers-detail [ouvrier]="selectedOuvrier"></app-ouvriers-detail>
-
+<app-messages></app-messages>

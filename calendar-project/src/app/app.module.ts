@@ -13,9 +13,10 @@ import { LayoutComponent } from './components/layout/layout.component'
 import { ChantiersComponent } from './components/chantiers/chantiers.component';
 import { SidenavListComponent } from './components/sidenav-list/sidenav-list.component'
 
-import { AppRoutingModule } from './app-routing.module';
-import { MaterialModule } from './modules/material/material.module';
+import { AppRoutingModule } from './modules/app-routing.module';
+import { MaterialModule } from './modules/material.module';
 import { OuvrierDetailComponent } from './components/ouvriers-detail/ouvriers-detail.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OuvrierDetailComponent } from './components/ouvriers-detail/ouvriers-de
     LayoutComponent,
     SidenavListComponent,
     ChantiersComponent,
-    OuvrierDetailComponent
+    OuvrierDetailComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

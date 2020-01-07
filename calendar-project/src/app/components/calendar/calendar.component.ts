@@ -21,6 +21,7 @@ export class CalendarComponent {
 	textColor: 'black'
   };
   calendarLocales = [frLocale];
+  
 
   toggleWeekends() {
     this.calendarWeekends = !this.calendarWeekends;

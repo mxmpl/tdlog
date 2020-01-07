@@ -1,80 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
-export interface GoogleVolumeListResponse {
- // totalItems: number;
-  items: Array<{
-        ouvrier : string
-        chantier : string
-        start : string
-        end : string;
-  }>;
-}
-
-export class Ouvrier {
-  ouvrier? : string
-  chantier? : string
-  start? : string
-  end? : string;
-
-  constructor(args: Ouvrier = {}) {
-      this.ouvrier = args.ouvrier
-      this.chantier = args.chantier
-      this.end = args.end
-      this.start = args.start;
-  }
-}
+import { Ouvrier } from '../../ouvrier';
+import { OuvrierService } from '../../services/ouvrier.service';
 
 @Component({
   selector: 'app-ouvriers',
   templateUrl: './ouvriers.component.html',
   styleUrls: ['./ouvriers.component.css']
 })
+
 export class OuvriersComponent implements OnInit {
-  
-  //ouvrierCount: number;
-  //bookList: Array<{ouvrier : string}>;
-  ouvrierList: Ouvrier[];
+  ouvriers: Ouvrier[];
 
-  ouvrierToAdd: string;
-
-​
-  private _ouvrierListUrl = 'http://127.0.0.1:5000/listeOuvriers/';
-  private _addOuvrierUrl = 'http://127.0.0.1:5000/addOuvriers/';
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private ouvrierService: OuvrierService) { }
 
   ngOnInit() {
-      this.http.get<GoogleVolumeListResponse>(this._ouvrierListUrl)
-          .subscribe(googleVolumeListResponse => {
-
-              //this.ouvrierCount = googleVolumeListResponse.totalItems;​
-              this.ouvrierList = googleVolumeListResponse.items.map(item => new Ouvrier({
-                ouvrier: item.ouvrier, start: item.start, end: item.end, chantier : item.chantier
-            }));
-            
-          })
+    this.getHeroes();
   }
 
-  addOuvrier(obj){
-    console.log(obj)
-    this.http.post(this._addOuvrierUrl, {"nom":obj}, {})
-    .subscribe(data  => {console.log("PUT Request is successful ", data);},
-               error  => {console.log("Error", error);});
+  getHeroes(): void {
+    this.ouvrierService.getOuvriers()
+    .subscribe(ouvriers => this.ouvriers = ouvriers);
   }
 
-  addChantier(obj){}
-
-  deleteOuvrier(obj){}
-
-  selectedOuvrier: Ouvrier;
-  ouvriers: Ouvrier[];
-  
-
-
-  onSelect(ouvrier: Ouvrier): void {
-  	this.selectedOuvrier = ouvrier;
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.ouvrierService.addOuvrier({ name } as Ouvrier)
+      .subscribe(ouvrier => {
+        this.ouvriers.push(ouvrier);
+      });
   }
+
+  delete(ouvrier: Ouvrier): void {
+    this.ouvriers = this.ouvriers.filter(o => o !== ouvrier);
+    this.ouvrierService.deleteOuvrier(ouvrier).subscribe();
+  }
+
 }

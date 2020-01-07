@@ -5,54 +5,60 @@ from flask_restful import  Api
 app = Flask(__name__)
 CORS(app)
 
-attribution = {"items":[
+attribution = [
 {"start":"2020-01-05", "chantier":"Champs-sur-Marn", "ouvrier":"Max"},
 {"start":"2020-01-08", "chantier":"Paris", "ouvrier":"Raph"},
 {"start":"2020-01-10", "chantier":"Bordeaux", "ouvrier":"Margot"},
 {"start":"2020-01-08", "chantier":"Noisy", "ouvrier":"Max2"},
 {"start":"2020-01-12", "chantier":"Mulhouse", "ouvrier":"Fredo", "end":"2020-01-15"}
 ]
-}
 
-test = { "totalItems":5,"items":[
-{"start":"2020-01-05", "chantier":"Champs-sur-Marne", "ouvrier":"Max","end":"2020-01-06"},
-{"start":"2020-01-08", "chantier":"Paris", "ouvrier":"Raph","end":"2020-01-09"},
-{"start":"2020-01-10", "chantier":"Bordeaux", "ouvrier":"Margot","end":"2020-01-11"},
-{"start":"2020-01-08", "chantier":"Noisy", "ouvrier":"Max2","end":"2020-01-09"},
-{"start":"2020-01-12", "chantier":"Mulhouse", "ouvrier":"Fredo", "end":"2020-01-15"}
+ouvriers = [
+{"id":"0", "name":"Max"},
+{"id":"1", "name":"Raph"},
+{"id":"2", "name":"Margot"},
+{"id":"3", "name":"Max2"},
+{"id":"4", "name":"Fredo"},
 ]
-}
 
-
-for dico in attribution["items"]:
+for dico in attribution:
     dico["title"] = dico["ouvrier"] + " est a " + dico["chantier"]
     
-def set_new_ouvrier(ouvrier):
-    global test 
-    test["items"].append({"ouvrier":ouvrier})
+# def set_new_ouvrier(ouvrier):
+#     global ouvriers 
+#     ouvriers.append({"ouvrier":ouvrier})
     
 @app.route("/", methods=['GET'])
 def index():
-    return "Welcome";
+    return "Welcome"
     
 @app.route("/listeChantiers/", methods = ['GET'])
 def ListeChantiers():
     global attribution
-    return jsonify(attribution["items"])
-    
-@app.route("/listeOuvriers/", methods = ['GET'])
-def ListeOuvriers():
-    global attribution
     return jsonify(attribution)
-    
+
+@app.route("/listeOuvriers/", methods = ['GET', 'POST', 'DELETE', 'PUT'])
+def ListeOuvriers():
+    global ouvriers
+    print("liste",request.get_json())
+    return jsonify(ouvriers)
+ 
+@app.route("/listeOuvriers/<id>", methods = ['GET', 'POST', 'DELETE', 'PUT'])
+def OuvrierId(id):
+    global ouvriers
+    print("par id",request.get_json())
+    for ouvrier in ouvriers:
+        if ouvrier["id"] == id:
+            return jsonify(ouvrier)
+    return jsonify(ouvriers)
 
 @app.route("/addOuvriers/", methods = ['POST'])
 def addOuvrier():
 	data = request.get_json()
-	new_evenement = {"start":"2020-01-07", "chantier":"", "title":data["nom"]+" est a Paris", "end":"2020-01-07", "ouvrier":data["nom"]}
+	new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
 	global attribution
-	attribution["items"].append(new_evenement)
-	return jsonify(attribution["items"])
+	attribution.append(new_evenement)
+	return jsonify(attribution)
 
 if __name__ == '__main__':
     app.run(debug=True)
