@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_restful import  Api 
 
 app = Flask(__name__)
 CORS(app)
@@ -43,12 +44,13 @@ def ListeOuvriers():
     global test
     return jsonify(test)
     
-@app.route("/addOuvriers/", methods = ['GET'])
+@app.route("/addOuvriers/", methods = ['POST'])
 def addOuvrier():
-    global test
-    set_new_ouvrier("Jordan")
-    return jsonify(test)
-    
+	data = request.get_json()
+	new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
+	global attribution
+	attribution.append(new_evenement)
+	return jsonify(attribution)
 
 if __name__ == '__main__':
     app.run(debug=True)

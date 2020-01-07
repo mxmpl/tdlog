@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface GoogleVolumeListResponse {
   totalItems: number;
   items: Array<{
-      //ouvrier:string;
         ouvrier : string;
   }>;
 }
@@ -35,13 +35,12 @@ export class OuvriersComponent implements OnInit {
 ​
   private _ouvrierListUrl = 'http://127.0.0.1:5000/listeOuvriers/';
   private _addOuvrierUrl = 'http://127.0.0.1:5000/addOuvriers/';
-  //private _bookListUrl = 'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming';
 
-  constructor(private _httpClient: HttpClient) {
+  constructor(private http: HttpClient) {
   }
 
   ngOnInit() {
-      this._httpClient.get<GoogleVolumeListResponse>(this._ouvrierListUrl)
+      this.http.get<GoogleVolumeListResponse>(this._ouvrierListUrl)
           .subscribe(googleVolumeListResponse => {
 
               this.ouvrierCount = googleVolumeListResponse.totalItems;​
@@ -52,18 +51,14 @@ export class OuvriersComponent implements OnInit {
           })
   }
 
-  addOuvrier(){
-    this._httpClient.get<GoogleVolumeListResponse>(this._addOuvrierUrl)
-    .subscribe(googleVolumeListResponse => {
-
-      this.ouvrierCount = googleVolumeListResponse.totalItems;​
-      this.ouvrierList = googleVolumeListResponse.items.map(item => new Ouvrier({
-        ouvrier: item.ouvrier
-    }));
-    
-  })
-    
+  addOuvrier(obj){
+    console.log(obj)
+    this.http.post(this._addOuvrierUrl, {"nom":obj}, {})
+    .subscribe(data  => {console.log("PUT Request is successful ", data);},
+               error  => {console.log("Error", error);});
   }
+
+  deleteOuvrier(obj){}
 
   selectedOuvrier: Ouvrier;
   ouvriers: Ouvrier[];
@@ -74,26 +69,3 @@ export class OuvriersComponent implements OnInit {
   	this.selectedOuvrier = ouvrier;
   }
 }
-
-
- /*
-  bookCount: number;
-
-​
-  private _bookListUrl = 'https://www.googleapis.com/books/v1/volumes?q=extreme%20programming';
-
-  constructor(private _httpClient: HttpClient) {
-  }
-
-  ngOnInit() {
-      this._httpClient.get<GoogleVolumeListResponse>(this._bookListUrl)
-          .subscribe(googleVolumeListResponse => {
-
-              this.bookCount = googleVolumeListResponse.totalItems;​
-             
-              
-
-          });
-  }
-  */
-
