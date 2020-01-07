@@ -119,7 +119,6 @@ def insert_ouvrier(new_ouvrier: dict):
     doit être un dictionnaire de la forme
     {"name_ouvrier": text}.
     """
-    print(new_ouvrier["name_ouvrier"])
     CURSOR.execute(
         """INSERT INTO ouvriers(name_ouvrier)
                       VALUES(?)""",
@@ -148,7 +147,7 @@ def get_info_from_id_chantier(id_chan: int):
     """
     information = select_condition("""SELECT *
                                                 FROM chantiers
-                                                WHERE id_chantier = """ + str(id_chan))
+                                                WHERE id_chantier = """ + str(id_chan))[0]
     return {"id_chantier": information[0], "name_chantier": information[1], "start": information[2], "end": information[3], "adress": information[4]}
 
 def get_info_from_id_ouvrier(id_ouv: int):
@@ -159,7 +158,7 @@ def get_info_from_id_ouvrier(id_ouv: int):
     """
     information = select_condition("""SELECT *
                                                 FROM ouvriers
-                                                WHERE id_ouvrier = """ + str(id_ouv))
+                                                WHERE id_ouvrier = """ + str(id_ouv))[0]
     return {"id_ouvrier": information[0], "name_ouvrier": information[1]}
 
 def get_all_attribution():
@@ -251,13 +250,14 @@ def suppression_table(name_table: str):
     """
     Supprime la table, attention ne la reset pas seulement.
     """
-    CURSOR.execute("""DROP TABLE IF EXISTS """ + name_table)
+    commit_condition("""DROP TABLE IF EXISTS """ + name_table)
 
 def reset_table(name_table: str):
     """
     Reset la table, attention ne la supprime pas.
     """
-    CURSOR.execute("""DELETE FROM """ + name_table)
+    commit_condition("""DELETE FROM """ + name_table)
+
 
 
 # suppression_table_chantiers()
