@@ -45,11 +45,11 @@ export class OuvrierService {
   }
 
   /** GET ouvrier by id. Will 404 if id not found */
-  getOuvrier(id: number): Observable<Ouvrier> {
-    const url = `${this.listeOuvriersUrl}${id}`;
+  getOuvrier(id_ouvrier: number): Observable<Ouvrier> {
+    const url = `${this.listeOuvriersUrl}${id_ouvrier}`;
     return this.http.get<Ouvrier>(url).pipe(
-      tap(_ => this.log(`fetched ouvrier id=${id}`)),
-      catchError(this.handleError<Ouvrier>(`getOuvrier id=${id}`))
+      tap(_ => this.log(`fetched ouvrier id_ouvrier=${id_ouvrier}`)),
+      catchError(this.handleError<Ouvrier>(`getOuvrier id_ouvrier=${id_ouvrier}`))
     );
   }
 
@@ -70,28 +70,28 @@ export class OuvrierService {
   /** POST: add a new ouvrier to the server */
   addOuvrier (ouvrier: Ouvrier): Observable<Ouvrier> {
     return this.http.post<Ouvrier>(this.listeOuvriersUrl, ouvrier, this.httpOptions).pipe(
-      tap((newOuvrier: Ouvrier) => this.log(`ouvrier ajoute w/ id=${newOuvrier.id}`)),
+      tap((newOuvrier: Ouvrier) => this.log(`ouvrier ajoute w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
       catchError(this.handleError<Ouvrier>('addOuvrier'))
     );
   }
 
   /** DELETE: delete the ouvrier from the server */
   deleteOuvrier (ouvrier: Ouvrier | number): Observable<Ouvrier> {
-    const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id;
+    const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
     const url = `${this.listeOuvriersUrl}${id}`;
 
     return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`deleted ouvrier id=${id}`)),
+      tap(_ => this.log(`deleted ouvrier id_ouvrier=${id}`)),
       catchError(this.handleError<Ouvrier>('deleteOuvrier'))
     );
   }
 
   /** PUT: update the ouvrier on the server */
   updateOuvrier (ouvrier: Ouvrier): Observable<any> {
-    const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id;
+    const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
     const url = `${this.listeOuvriersUrl}${id}`;
     return this.http.put(url, ouvrier, this.httpOptions).pipe(
-      tap(_ => this.log(`updated ouvrier id=${ouvrier.id}`)),
+      tap(_ => this.log(`updated ouvrier id_ouvrier=${ouvrier.id_ouvrier}`)),
       catchError(this.handleError<any>('updateOuvrier'))
     );
   }

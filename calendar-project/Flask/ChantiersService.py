@@ -14,7 +14,7 @@ attribution = [
 ]
 
 ouvriers = [
-{"id":"0", "name":"Max"},
+{"id":"0", "name":"Max", "chantiers":[{"id":"1","name":"paris"}]},
 {"id":"1", "name":"Raph"},
 {"id":"2", "name":"Margot"},
 {"id":"3", "name":"Max2"},

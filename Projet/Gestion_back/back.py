@@ -9,6 +9,13 @@ Le but de ce script python est de traiter la partie back du site.
 Fichier conforme à la norme PEP8.
 """
 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from flask_restful import  Api 
+
+app = Flask(__name__)
+CORS(app)
+
 #############%% Module sys
 
 import sys
@@ -47,6 +54,7 @@ def del_chantier(id_chantier: int):
     for chantier in chantiers:
         if id_chantier == chantier["id_chantier"]:
             bdd.del_chantier(id_chantier)
+            return
     raise Exception ("Attention, vous essayez de supprimer un chantier qui n'existe pas")
 
 def set_new_ouvrier(dict_new_ouvrier: dict):
@@ -66,6 +74,7 @@ def del_ouvrier(id_ouvrier: int):
     for ouvrier in ouvriers:
         if id_ouvrier == ouvrier["id_ouvrier"]:
             bdd.del_ouvrier(id_ouvrier)
+            return
     raise Exception ("Attention, vous essayez de supprimer un ouvrier qui n'existe pas")
 
 def set_new_attribution(dict_new_attribution: dict): 
@@ -77,7 +86,7 @@ def set_new_attribution(dict_new_attribution: dict):
     if verif_dispo_horaire_ouvrier(dict_new_attribution["id_ouvrier"], dict_new_attribution["id_chantier"]):
         bdd.insert_attribution(dict_new_attribution)
     else: 
-        raise Exception("L'ouvrier {} ne peut être attribué au chantier {} car il est déjà occupé".format(dict_new_attribution["id_ouvrier"], dict_new_attribution["id_chantier"])
+        raise Exception("L'ouvrier {} ne peut être attribué au chantier {} car il est déjà occupé".format(dict_new_attribution["id_ouvrier"], dict_new_attribution["id_chantier"]))
 
 def del_attribution(id_ouv: int, id_chan: int):
     """
@@ -88,6 +97,7 @@ def del_attribution(id_ouv: int, id_chan: int):
     for attribution in attributions:
         if id_ouv == attribution["id_ouvrier"] and id_chan == attribution["id_chantier"]:
             bdd.del_attribution(id_ouv, id_chan)
+            return
     raise Exception ("Attention, vous essayez de supprimer une attribution qui n'existe pas")
     
 ########%% GET
@@ -188,3 +198,55 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #bdd.reset_table("chantiers")
 #bdd.reset_table("ouvriers")
 #bdd.reset_table("attribution")
+
+
+## app
+
+@app.route("/", methods=['GET'])
+def index():
+    return "Welcome"
+    
+@app.route("/listeChantiers/", methods = ['GET'])
+def ListeChantiers():
+    attribution = get_planning()
+    for dico in attribution:
+        dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
+    return jsonify(attribution)
+
+@app.route("/listeOuvriers/", methods = ['GET', 'POST', 'DELETE', 'PUT'])
+def ListeOuvriers():
+    data = request.get_json()
+    
+    if (request.method == "POST"):
+        set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
+        
+    ouvriers = return_table_ouvrier()
+    return jsonify(ouvriers)
+ 
+@app.route("/listeOuvriers/<id>", methods = ['GET', 'POST', 'DELETE', 'PUT'])
+def OuvrierId(id):
+    
+    if (request.method == "GET"):
+        return jsonify(get_info_from_id_ouvrier(int(id)))
+                
+    elif (request.method == "PUT"):
+        data = request.get_json()
+        modify_name_ouvrier(int(id),data["name_ouvrier"])
+
+    elif (request.method == "DELETE"):
+        del_ouvrier(int(id))
+        
+    ouvriers = return_table_ouvrier()
+        
+    return jsonify(ouvriers)
+
+# @app.route("/addOuvriers/", methods = ['POST'])
+# def addOuvrier():
+# 	data = request.get_json()
+# 	new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
+# 	global attribution
+# 	attribution.append(new_evenement)
+# 	return jsonify(attribution)
+
+if __name__ == '__main__':
+    app.run(debug=True)

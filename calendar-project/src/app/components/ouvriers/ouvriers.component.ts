@@ -23,10 +23,10 @@ export class OuvriersComponent implements OnInit {
     .subscribe(ouvriers => this.ouvriers = ouvriers);
   }
 
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.ouvrierService.addOuvrier({ name } as Ouvrier)
+  add(name_ouvrier: string): void {
+    name_ouvrier = name_ouvrier.trim();
+    if (!name_ouvrier) { return; }
+    this.ouvrierService.addOuvrier({ name_ouvrier } as Ouvrier)
       .subscribe(ouvrier => {
         this.ouvriers.push(ouvrier);
       });

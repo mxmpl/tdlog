@@ -1,4 +1,7 @@
+import { Chantier } from './chantier';
+
 export class Ouvrier {
-  id: number;
-  name: string;
+  id_ouvrier: number;
+  name_ouvrier: string;
+  chantiers: Chantier[];
 }

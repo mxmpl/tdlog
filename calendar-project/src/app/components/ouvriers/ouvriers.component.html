@@ -14,8 +14,8 @@
 
 <ul class="ouvriers">
   <li *ngFor="let ouvrier of ouvriers">
-    <a routerLink="/detail/{{ouvrier.id}}">
-      <span class="badge">{{ouvrier.id}}</span> {{ouvrier.name}}
+    <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
+      <span class="badge">{{ouvrier.id_ouvrier}}</span> {{ouvrier.name_ouvrier}}
     </a>
     <button class="delete" title="delete ouvrier"
       (click)="delete(ouvrier)">x</button>
