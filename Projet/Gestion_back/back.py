@@ -248,19 +248,19 @@ def ListeOuvriers(): # NOM A CHANGER
     data = request.get_json()
     if request.method == "POST":
         set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table_ouvrier_avec_chantiers()
     return jsonify(ouvriers)
 
-@APP.route("/listeOuvriers/<id>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+@APP.route("/listeOuvriers/<id_ouvrier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
 def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
     """
     Actions sur un ouvrier donné :
     informations, modification du nom ou suppression.
     """
     if request.method == "GET":
-        ouvrier = get_info_from_id_ouvrier(int(id))
+        ouvrier = get_info_from_id_ouvrier(int(id_ouvrier))
         ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
-        return jsonify(get_info_from_id_ouvrier(int(id_ouvrier)))
+        return jsonify(ouvrier)
     if request.method == "PUT":
         data = request.get_json()
         modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
