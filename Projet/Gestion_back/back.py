@@ -9,20 +9,15 @@ Le but de ce script python est de traiter la partie back du site.
 Fichier conforme à la norme PEP8.
 """
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from flask_restful import  Api 
-
-app = Flask(__name__)
-CORS(app)
-
 #############%% Module sys
 
 import sys
 
 #############%% Module Flask
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
+from flask_cors import CORS
+from flask_restful import Api
 
 #############%% Import des bibliothèques utiles
 
@@ -31,7 +26,8 @@ from Gestion_bdd import bdd
 
 #############%% Creation du site
 
-#APP = Flask(__name__)  # Creation du site
+APP = Flask(__name__)
+CORS(APP)  # Creation du site
 
 #############%% Fonctions du back
 
@@ -55,7 +51,7 @@ def del_chantier(id_chantier: int):
         if id_chantier == chantier["id_chantier"]:
             bdd.del_chantier(id_chantier)
             return
-    raise Exception ("Attention, vous essayez de supprimer un chantier qui n'existe pas")
+    raise Exception("Attention, vous essayez de supprimer un chantier qui n'existe pas")
 
 def set_new_ouvrier(dict_new_ouvrier: dict):
     """
@@ -64,8 +60,8 @@ def set_new_ouvrier(dict_new_ouvrier: dict):
     {"name_ouvrier": text}.
     """
     # Gestion d'erreur à faire dessus : conformité de l'entrée + ouvrier non existant
-    bdd.insert_ouvrier(dict_new_ouvrier) 
-    
+    bdd.insert_ouvrier(dict_new_ouvrier)
+
 def del_ouvrier(id_ouvrier: int):
     """
     Permet de supprimer un ouvrier de la table ouvriers à partir de son id.
@@ -75,18 +71,22 @@ def del_ouvrier(id_ouvrier: int):
         if id_ouvrier == ouvrier["id_ouvrier"]:
             bdd.del_ouvrier(id_ouvrier)
             return
-    raise Exception ("Attention, vous essayez de supprimer un ouvrier qui n'existe pas")
+    raise Exception("Attention, vous essayez de supprimer un ouvrier qui n'existe pas")
 
-def set_new_attribution(dict_new_attribution: dict): 
+def set_new_attribution(dict_new_attribution: dict):
     """
     Permet d'inserer un couple d'id_ouvrier/id_chantier.
     Format d'entrée : dict_new_attribution = {"id_ouvrier": int, "id_chantier": int}
     """
-    # Gestion d'erreur à faire : conformité de l'entrée + vérification que les id_ouvrier et id_chantier existent
-    if verif_dispo_horaire_ouvrier(dict_new_attribution["id_ouvrier"], dict_new_attribution["id_chantier"]):
+    # Gestion d'erreur à faire : conformité de l'entrée +
+    # vérification que les id_ouvrier et id_chantier existent
+    if verif_dispo_horaire_ouvrier(dict_new_attribution["id_ouvrier"],
+                                   dict_new_attribution["id_chantier"]):
         bdd.insert_attribution(dict_new_attribution)
-    else: 
-        raise Exception("L'ouvrier {} ne peut être attribué au chantier {} car il est déjà occupé".format(dict_new_attribution["id_ouvrier"], dict_new_attribution["id_chantier"]))
+    else:
+        raise Exception("L'ouvrier {} ne peut être attribué au chantier {} car il est déjà occupé"
+                        .format(dict_new_attribution["id_ouvrier"],
+                                dict_new_attribution["id_chantier"]))
 
 def del_attribution(id_ouv: int, id_chan: int):
     """
@@ -98,8 +98,8 @@ def del_attribution(id_ouv: int, id_chan: int):
         if id_ouv == attribution["id_ouvrier"] and id_chan == attribution["id_chantier"]:
             bdd.del_attribution(id_ouv, id_chan)
             return
-    raise Exception ("Attention, vous essayez de supprimer une attribution qui n'existe pas")
-    
+    raise Exception("Attention, vous essayez de supprimer une attribution qui n'existe pas")
+
 ########%% GET
 
 def get_info_from_id_ouvrier(id_ouv: int):
@@ -109,7 +109,7 @@ def get_info_from_id_ouvrier(id_ouv: int):
     {"id_ouvrier": int, "name_ouvrier": text}.
     """
     return bdd.get_info_from_id_ouvrier(id_ouv)
-    
+
 def get_info_from_id_chantier(id_chan: int):
     """
     Récupère toutes les informations d'un chantier à partir de son identifiant.
@@ -159,7 +159,7 @@ def modify_name_ouvrier(id_ouv: int, new_name: str):
         if id_ouv == ouvrier["id_ouvrier"]:
             bdd.modify_name_ouvrier(id_ouv, new_name)
     raise Exception("Attention, vous essayez de modifier le nom d'un ouvrier qui n'existe pas")
-    
+
 def modify_name_chantier(id_chan: int, new_name: str):
     """
     Permet de modifier le nom d'un chantier.
@@ -169,7 +169,7 @@ def modify_name_chantier(id_chan: int, new_name: str):
         if id_chan == chantier["id_chantier"]:
             bdd.modify_name_chantier(id_chan, new_name)
     raise Exception("Attention, vous essayez de modifier le nom d'un chantier qui n'existe pas")
-    
+
 ########%% CHECK
 
 def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
@@ -180,14 +180,17 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
     """
     planning = bdd.get_planning_individuel(id_ouvrier)
     infos_chantier = bdd.get_info_from_id_chantier(id_chantier)
-    for chantier in planning: 
-        if(chantier["start"] == infos_chantier["start"] and chantier["end"] == infos_chantier["end"]): 
-            raise Exception("L'ouvrier {} est déjà occupé sur la période {}-{}".format(bdd.get_info_id_ouvrier(id_ouvrier)["name_ouvrier"], infos_chantier["start"], infos_chantier["end"]))
-            return False 
+    for chantier in planning:
+        if(chantier["start"] == infos_chantier["start"]
+           and chantier["end"] == infos_chantier["end"]):
+            raise Exception("L'ouvrier {} est déjà occupé sur la période {}-{}"
+                            .format(bdd.get_info_id_ouvrier(id_ouvrier)["name_ouvrier"],
+                                    infos_chantier["start"], infos_chantier["end"]))
+            # return False
         return True
 
 #if __name__ == "__main__":
-#    APP.debug = False  
+#    APP.debug = False
 #    APP.run()
 
 # À la fin de l'utilisation, on supprime les tables
@@ -200,48 +203,57 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #bdd.reset_table("attribution")
 
 
-## app
+#############%% Gestion du site
 
-@app.route("/", methods=['GET'])
+@APP.route("/", methods=['GET'])
 def index():
+    """
+    Page d'accueil.
+    """
     return "Welcome"
-    
-@app.route("/listeChantiers/", methods = ['GET'])
-def ListeChantiers():
+
+@APP.route("/listeChantiers/", methods=['GET'])
+def ListeChantiers(): # NOM A CHANGER
+    """
+    Associe les chantiers aux ouvriers.
+    """
     attribution = get_planning()
     for dico in attribution:
         dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
     return jsonify(attribution)
 
-@app.route("/listeOuvriers/", methods = ['GET', 'POST', 'DELETE', 'PUT'])
-def ListeOuvriers():
+@APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def ListeOuvriers(): # NOM A CHANGER
+    """
+    Ajout d'un nouvel ouvrier.
+    """
     data = request.get_json()
-    
-    if (request.method == "POST"):
+    if request.method == "POST":
         set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
-        
     ouvriers = return_table_ouvrier()
     return jsonify(ouvriers)
- 
-@app.route("/listeOuvriers/<id>", methods = ['GET', 'POST', 'DELETE', 'PUT'])
-def OuvrierId(id):
-    
-    if (request.method == "GET"):
-        return jsonify(get_info_from_id_ouvrier(int(id)))
-                
-    elif (request.method == "PUT"):
+
+@APP.route("/listeOuvriers/<id>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+    """
+    Actions sur un ouvrier donné :
+    informations, modification du nom ou suppression.
+    """
+    if request.method == "GET":
+        return jsonify(get_info_from_id_ouvrier(int(id_ouvrier)))
+    if request.method == "PUT":
         data = request.get_json()
-        modify_name_ouvrier(int(id),data["name_ouvrier"])
-
-    elif (request.method == "DELETE"):
-        del_ouvrier(int(id))
-        
+        modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
+    elif request.method == "DELETE":
+        del_ouvrier(int(id_ouvrier))
     ouvriers = return_table_ouvrier()
-        
     return jsonify(ouvriers)
 
-# @app.route("/addOuvriers/", methods = ['POST'])
+# @APP.route("/addOuvriers/", methods = ['POST'])
 # def addOuvrier():
+#   """
+#   Attribue un ouvrier à un chantier.
+#   """
 # 	data = request.get_json()
 # 	new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
 # 	global attribution
@@ -249,4 +261,4 @@ def OuvrierId(id):
 # 	return jsonify(attribution)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    APP.run(debug=True)
