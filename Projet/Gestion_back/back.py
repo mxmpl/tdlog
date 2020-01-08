@@ -148,6 +148,15 @@ def get_planning():
     """
     return bdd.get_all_attribution()
 
+def get_planning_individuel(id_ouv: int):
+    """
+    Renvoie toutes les attributions d'un ouvrier (à partir de son index) sous
+    la forme d'une liste de dictionnaires telle que
+    [{"id_chantier": int, "name_chantier": text, "start": text, "end": text,
+    "adress": text},]
+    """
+    return bdd.get_planning_individuel(id_ouv)
+    
 ########%% MODIFY
 
 def modify_name_ouvrier(id_ouv: int, new_name: str):
@@ -199,6 +208,14 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #bdd.reset_table("ouvriers")
 #bdd.reset_table("attribution")
 
+##chantier dans classe ouvrier
+
+def return_table_ouvrier_avec_chantiers():
+    ouvriers = return_table_ouvrier()
+    for ouvrier in ouvriers:
+        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
+    return ouvriers
+        
 
 ## app
 
@@ -220,14 +237,15 @@ def ListeOuvriers():
     if (request.method == "POST"):
         set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
         
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table_ouvrier_avec_chantiers()
     return jsonify(ouvriers)
  
 @app.route("/listeOuvriers/<id>", methods = ['GET', 'POST', 'DELETE', 'PUT'])
 def OuvrierId(id):
-    
     if (request.method == "GET"):
-        return jsonify(get_info_from_id_ouvrier(int(id)))
+        ouvrier = get_info_from_id_ouvrier(int(id))
+        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
+        return jsonify(ouvrier)
                 
     elif (request.method == "PUT"):
         data = request.get_json()
@@ -236,7 +254,7 @@ def OuvrierId(id):
     elif (request.method == "DELETE"):
         del_ouvrier(int(id))
         
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table_ouvrier_avec_chantiers()
         
     return jsonify(ouvriers)
 
