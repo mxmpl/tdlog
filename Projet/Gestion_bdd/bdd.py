@@ -1,4 +1,4 @@
-############################
+############################%%
 
 """
 Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
@@ -10,11 +10,11 @@ Le but de ce script python est de traiter les bases de données
 Fichier conforme à la norme PEP8.
 """
 
-############################ Import des bibliothèques utiles
+############################%% Import des bibliothèques utiles
 
 import sqlite3
 
-#%% Création des bases de données
+############################%% Création des bases de données
 
 DB = sqlite3.connect("bdd", check_same_thread=False)
 # La base de données avec 3 tables
@@ -51,9 +51,9 @@ CURSOR.execute(
 
 DB.commit()  # On termine de creer les tables
 
-#%% Fonctions
+############################%% Fonctions
 
-#%% Fonctions de requetes
+################%% REQUEST
 
 
 def commit_condition(command: str):
@@ -91,9 +91,7 @@ def print_condition(command: str):
         print(list(row[:]))
 
 
-#%% Fonctions de set
-
-############################ Ajout d'un nouveau chantier à notre base de données
+###############%% SET & DEL
 
 def insert_chantier(new_chantier: dict):
     """
@@ -108,8 +106,6 @@ def insert_chantier(new_chantier: dict):
     )
     DB.commit()
 
-############################ Suppression d'un chantier de notre base de données
-
 def del_chantier(id_chan: int):
     """
     Permet de supprimer un chantier de la table chantiers à partir de son id.
@@ -118,8 +114,6 @@ def del_chantier(id_chan: int):
         """DELETE FROM chantiers
                     WHERE id_chantier = """ + str(id_chan)
     )
-
-############################ Ajout d'un nouveau ouvrier à notre base de données
 
 def insert_ouvrier(new_ouvrier: dict):
     """
@@ -133,8 +127,6 @@ def insert_ouvrier(new_ouvrier: dict):
         (new_ouvrier["name_ouvrier"],),)
     DB.commit()
 
-############################ Suppression d'un ouvrier de notre base de données
-
 def del_ouvrier(id_ouv: int):
     """
     Permet de supprimer un ouvrier de la table ouvriers à partir de son id.
@@ -144,9 +136,6 @@ def del_ouvrier(id_ouv: int):
                     WHERE id_ouvrier = """ + str(id_ouv)
     )
 
-############################ Ajout d'un nouveau couple à notre base de données
-
-
 def insert_attribution(new_attribution: dict):
     """
     Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
@@ -154,8 +143,6 @@ def insert_attribution(new_attribution: dict):
     """
     CURSOR.execute("""INSERT INTO attribution(id_ouvrier, id_chantier) VALUES(?,?)""", (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),)
     DB.commit()
-    
-############################ Suppression d'une attribution de notre base de données
 
 def del_attribution(id_ouv: int, id_chan: int):
     """
@@ -168,17 +155,29 @@ def del_attribution(id_ouv: int, id_chan: int):
                     """ AND id_chantier = """ + str(id_chan)
     )
 
+###############%% MODIFY
+
 def modify_name_ouvrier(id_ouv: int, new_name: str):
     """
     Permet de modifier le nom d'un ouvrier.
     """
     commit_condition(
         """ UPDATE ouvriers
-                    SET name_ouvrier = """ + new_name +
+                    SET name_ouvrier = """ + '"' + new_name + '"' +
                     """ WHERE id_ouvrier = """ + str(id_ouv)
     )
     
-#%% FONCTIONS PROJET 
+def modify_name_chantier(id_chan: int, new_name: str):
+    """
+    Permet de modifier le nom d'un chantier.
+    """
+    commit_condition(
+        """ UPDATE chantiers
+                    SET name_chantier = """ + '"' + new_name + '"' +
+                    """ WHERE id_chantier = """ + str(id_chan)
+    )
+    
+###############%% GET
 
 def get_info_from_id_chantier(id_chan: int):
     """
@@ -246,8 +245,6 @@ def get_planning_individuel(id_ouv: int):
         liste_attribution.append(get_info_from_id_chantier(attribution[0]))
     return liste_attribution
 
-#%% Fonction return table
-
 def return_table_chantier():
     """
     Renvoie toute la table chantiers sous forme d'une liste de dictionnaire :
@@ -290,8 +287,7 @@ def return_table_attribution():
         table_attribution.append({"id_ouvrier": information[0], "id_chantier": information[1]})
     return table_attribution
 
-##%%
-############################# A effacer dans le futur
+#############################%% BDD provisoire, à effacer dans le futur
 
 CHANTIER = {"name_chantier": "Paris", "start": "2016-10-09 08:00:00", "end": "2016-10-09 12:00:00", "adress": "20 rue des lillas"}
 
@@ -321,12 +317,7 @@ ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
 
 insert_attribution(ATTRIBUTION)
 
-#%% Fonction de suppression
-
-print(return_table_ouvrier())
-
-modify_name_ouvrier(1, "Jean_Michel")
-print(return_table_ouvrier())
+###############%% RESET & SUPRESS
 
 def suppression_table(name_table: str):
     """
@@ -340,6 +331,11 @@ def reset_table(name_table: str):
     """
     commit_condition("""DELETE FROM """ + name_table)
 
+###############%%
+
+print(return_table_chantier())
+modify_name_chantier(1, "St-Maur")
+print(return_table_chantier())
 
 reset_table("chantiers")
 reset_table("ouvriers")
