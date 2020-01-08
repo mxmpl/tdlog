@@ -132,6 +132,16 @@ def return_table_ouvrier():
     """
     return bdd.return_table_ouvrier()
 
+def return_table_ouvrier_avec_chantiers():
+    """
+    Renvoie la liste de tous les ouvriers affecté à leur chantiers de la forme
+    [{"id_ouvrier": int, "name_ouvrier", text, "chantiers", list},]
+    """
+    ouvriers = return_table_ouvrier()
+    for ouvrier in ouvriers:
+        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
+    return ouvriers
+
 def return_table_attribution():
     """
     Renvoie toute la table attribution sous forme d'une liste de dictionnaire :
@@ -147,6 +157,15 @@ def get_planning():
     "name_chantier": text, "start": text, "end": text, "adress": text},]
     """
     return bdd.get_all_attribution()
+
+def get_planning_individuel(id_ouv: int):
+    """
+    Renvoie toutes les attributions d'un ouvrier (à partir de son index) sous
+    la forme d'une liste de dictionnaires telle que
+    [{"id_chantier": int, "name_chantier": text, "start": text, "end": text,
+    "adress": text},]
+    """
+    return bdd.get_planning_individuel(id_ouv)
 
 ########%% MODIFY
 
@@ -202,7 +221,6 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #bdd.reset_table("ouvriers")
 #bdd.reset_table("attribution")
 
-
 #############%% Gestion du site
 
 @APP.route("/", methods=['GET'])
@@ -240,13 +258,15 @@ def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
     informations, modification du nom ou suppression.
     """
     if request.method == "GET":
+        ouvrier = get_info_from_id_ouvrier(int(id))
+        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
         return jsonify(get_info_from_id_ouvrier(int(id_ouvrier)))
     if request.method == "PUT":
         data = request.get_json()
         modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
     elif request.method == "DELETE":
         del_ouvrier(int(id_ouvrier))
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table_ouvrier_avec_chantiers()
     return jsonify(ouvriers)
 
 # @APP.route("/addOuvriers/", methods = ['POST'])
