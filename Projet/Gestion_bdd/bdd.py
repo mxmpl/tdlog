@@ -287,6 +287,25 @@ def return_table_attribution():
         table_attribution.append({"id_ouvrier": information[0], "id_chantier": information[1]})
     return table_attribution
 
+###############%% RESET & SUPRESS
+
+def suppression_table(name_table: str):
+    """
+    Supprime la table, attention ne la reset pas seulement.
+    """
+    commit_condition("""DROP TABLE IF EXISTS """ + name_table)
+
+def reset_table(name_table: str):
+    """
+    Reset la table, attention ne la supprime pas.
+    """
+    commit_condition("""DELETE FROM """ + name_table)
+    
+
+reset_table("chantiers")
+reset_table("ouvriers")
+reset_table("attribution")
+
 #############################%% BDD provisoire, à effacer dans le futur
 
 CHANTIER = {"name_chantier": "Paris", "start": "2016-10-09 08:00:00", "end": "2016-10-09 12:00:00", "adress": "20 rue des lillas"}
@@ -317,26 +336,11 @@ ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
 
 insert_attribution(ATTRIBUTION)
 
-###############%% RESET & SUPRESS
-
-def suppression_table(name_table: str):
-    """
-    Supprime la table, attention ne la reset pas seulement.
-    """
-    commit_condition("""DROP TABLE IF EXISTS """ + name_table)
-
-def reset_table(name_table: str):
-    """
-    Reset la table, attention ne la supprime pas.
-    """
-    commit_condition("""DELETE FROM """ + name_table)
 
 ###############%%
 
-print(return_table_chantier())
-modify_name_chantier(1, "St-Maur")
-print(return_table_chantier())
+# print(return_table_chantier())
+# modify_name_chantier(1, "St-Maur")
+# print(return_table_chantier())
 
-reset_table("chantiers")
-reset_table("ouvriers")
-reset_table("attribution")
+
