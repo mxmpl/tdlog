@@ -1,6 +1,6 @@
 export class Chantier {
-    id: number;
-    name: string;
+    id_chantier: number;
+    name_chantier: string;
     start: string;
     end: string;
     adress: string;

@@ -14,11 +14,11 @@ attribution = [
 ]
 
 ouvriers = [
-{"id":"0", "name":"Max", "chantiers":[{"id":"1","name":"paris"}]},
-{"id":"1", "name":"Raph"},
-{"id":"2", "name":"Margot"},
-{"id":"3", "name":"Max2"},
-{"id":"4", "name":"Fredo"},
+{"id_ouvrier":"0", "name_ouvrier":"Max", "chantiers":[{"id_chantier":"1","name_chantier":"Paris"}]}
+# {"id":"1", "name":"Raph"},
+# {"id":"2", "name":"Margot"},
+# {"id":"3", "name":"Max2"},
+# {"id":"4", "name":"Fredo"},
 ]
 
 for dico in attribution:
@@ -44,8 +44,8 @@ def ListeOuvriers():
     data = request.get_json()
     
     if (request.method == "POST"):
-        lastId = int(ouvriers[-1]["id"])
-        ouvriers.append({"id":str(lastId + 1), "name": data["name"]})
+        lastId = int(ouvriers[-1]["id_ouvrier"])
+        ouvriers.append({"id_ouvrier":str(lastId + 1), "name": data["name_ouvrier"]})
         
     return jsonify(ouvriers)
  
@@ -55,14 +55,14 @@ def OuvrierId(id):
     
     if (request.method == "GET"):
         for ouvrier in ouvriers:
-            if ouvrier["id"] == id:
+            if ouvrier["id_ouvrier"] == id:
                 return jsonify(ouvrier)
                 
     elif (request.method == "PUT"):
         data = request.get_json()
         for ouvrier in ouvriers:
-            if ouvrier["id"] == id:
-                ouvrier["name"] = data["name"]
+            if ouvrier["id_ouvrier"] == id:
+                ouvrier["name_ouvrier"] = data["name_ouvrier"]
 
     elif (request.method == "DELETE"):
         del ouvriers[int(id)]

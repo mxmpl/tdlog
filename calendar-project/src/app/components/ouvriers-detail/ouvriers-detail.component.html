@@ -1,14 +1,33 @@
 <div *ngIf="ouvrier">
-  <h2>{{ouvrier.name_ouvrier | uppercase}} Details</h2>
-  <div><span>id: </span>{{ouvrier.id_ouvrier}}</div>
+  <h2>Détails sur {{ouvrier.name_ouvrier | uppercase}}</h2>
+  <div><label>id: </label>{{ouvrier.id_ouvrier}}</div>
   <div>
-    <label>name:
+    <label>Nom:
       <input [(ngModel)]="ouvrier.name_ouvrier" placeholder="name_ouvrier"/>
     </label>
   </div>
+  <label>Chantiers:</label>
+  <!--
+  <div *ngFor="let chantier of ouvrier.chantiers">
+    <div routerLink="/detail/{{ouvrier.id_ouvrier}}">
+      id :{{chantier.id_chantier}} : {{chantier.name_chantier}}
+    </div>
+  </div>
+-->
+
+<ul class="chantiers">
+  <li *ngFor="let chantier of ouvrier.chantiers">
+    <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
+      <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
+    </a>
+    <div>De : {{chantier.start}} </div>
+    <div>A : {{chantier.end}} </div>
+    <div>Adresse : {{chantier.adress}} </div>
+  </li>
+</ul>
+
   <button (click)="goBack()">go back</button>
   <button (click)="save()">save</button>
-</div>
 
 <!-- <div *ngIf="ouvrier">
 
