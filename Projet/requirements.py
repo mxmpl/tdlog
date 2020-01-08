@@ -27,5 +27,7 @@ os.system("pip install pandas")
 
 ############################ Telechargement des bibliothèques liées au front
 
-os.system("pip install pipenv")
-os.system("npm install")
+os.system("pip install django-angular")
+os.system("pip install nodejs")
+os.system("npm init")
+os.system("npm install angular --save")
