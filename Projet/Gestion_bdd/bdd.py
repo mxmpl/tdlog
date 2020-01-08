@@ -95,7 +95,6 @@ def print_condition(command: str):
 
 ############################ Ajout d'un nouveau chantier à notre base de données
 
-
 def insert_chantier(new_chantier: dict):
     """
     Permet d'inserer un nouveau chantier dans la base de données. Le format d'entrée
@@ -109,9 +108,18 @@ def insert_chantier(new_chantier: dict):
     )
     DB.commit()
 
+############################ Suppression d'un chantier de notre base de données
+
+def del_chantier(id_chan: int):
+    """
+    Permet de supprimer un chantier de la table chantiers à partir de son id.
+    """
+    commit_condition(
+        """DELETE FROM chantiers
+                    WHERE id_chantier = """ + str(id_chan)
+    )
 
 ############################ Ajout d'un nouveau ouvrier à notre base de données
-
 
 def insert_ouvrier(new_ouvrier: dict):
     """
@@ -125,6 +133,16 @@ def insert_ouvrier(new_ouvrier: dict):
         (new_ouvrier["name_ouvrier"],),)
     DB.commit()
 
+############################ Suppression d'un ouvrier de notre base de données
+
+def del_ouvrier(id_ouv: int):
+    """
+    Permet de supprimer un ouvrier de la table ouvriers à partir de son id.
+    """
+    commit_condition(
+        """DELETE FROM ouvriers
+                    WHERE id_ouvrier = """ + str(id_ouv)
+    )
 
 ############################ Ajout d'un nouveau couple à notre base de données
 
@@ -136,7 +154,30 @@ def insert_attribution(new_attribution: dict):
     """
     CURSOR.execute("""INSERT INTO attribution(id_ouvrier, id_chantier) VALUES(?,?)""", (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),)
     DB.commit()
+    
+############################ Suppression d'une attribution de notre base de données
 
+def del_attribution(id_ouv: int, id_chan: int):
+    """
+    Permet de supprimer une attribution de la table attribution à partir d'un
+    couple d'id_ouvrier/id_chantier.
+    """
+    commit_condition(
+        """DELETE FROM attribution
+                    WHERE id_ouvrier = """ + str(id_ouv) +
+                    """ AND id_chantier = """ + str(id_chan)
+    )
+
+def modify_name_ouvrier(id_ouv: int, new_name: str):
+    """
+    Permet de modifier le nom d'un ouvrier.
+    """
+    commit_condition(
+        """ UPDATE ouvriers
+                    SET name_ouvrier = """ + new_name +
+                    """ WHERE id_ouvrier = """ + str(id_ouv)
+    )
+    
 #%% FONCTIONS PROJET 
 
 def get_info_from_id_chantier(id_chan: int):
@@ -207,44 +248,85 @@ def get_planning_individuel(id_ouv: int):
 
 #%% Fonction return table
 
-def return_table(name_table: str):
+def return_table_chantier():
     """
-    Renvoie toute la table.
+    Renvoie toute la table chantiers sous forme d'une liste de dictionnaire :
+    [{"id_chantier": int, "name_chantier": text, "start": text, "end": text, "adress": text},].
     """
-    return select_condition(
+    informations = select_condition(
         """SELECT *
-                    FROM """ + name_table
+                    FROM chantiers"""
     )
+    table_chantier = []
+    for information in informations:
+        table_chantier.append ({"id_chantier": information[0], "name_chantier": information[1], "start": information[2], "end": information[3], "adress": information[4]})
+    return table_chantier
+    
+def return_table_ouvrier():
+    """
+    Renvoie toute la table ouvriers sous forme d'une liste de dictionnaire :
+    [{"id_ouvrier": int, "name_ouvrier": text},].
+    """
+    informations = select_condition(
+        """SELECT *
+                    FROM ouvriers"""
+    )
+    table_ouvrier = []
+    for information in informations:
+        table_ouvrier.append({"id_ouvrier": information[0], "name_ouvrier": information[1]})
+    return table_ouvrier
+    
+def return_table_attribution():
+    """
+    Renvoie toute la table attribution sous forme d'une liste de dictionnaire :
+    [{"id_ouvrier": int, "id_chantier": text},].
+    """
+    informations = select_condition(
+        """SELECT *
+                    FROM attribution"""
+    )
+    table_attribution = []
+    for information in informations:
+        table_attribution.append({"id_ouvrier": information[0], "id_chantier": information[1]})
+    return table_attribution
 
 ##%%
 ############################# A effacer dans le futur
-#
-#CHANTIER = {"name_chantier": "Paris", "start": "2016-10-09 08:00:00", "end": "2016-10-09 12:00:00", "adress": "20 rue des lillas"}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {"name_chantier": "Marseille", "start": "2018-10-09 08:00:00", "end": "2018-10-09 12:00:00", "adress": "20 rue des lillas"}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {"name_chantier": "Noisy", "start": "2019-12-09 08:00:00", "end": "2020-02-09 12:00:00", "adress": "6-8 Avenue Blaise Pascal"}
-#
-#insert_chantier(CHANTIER)
-#
-#OUVRIER = {"name_ouvrier" :"Leo"}
-#
-#insert_ouvrier(OUVRIER)
-#
-#OUVRIER = {"name_ouvrier" :"Margot"}
-#
-#insert_ouvrier(OUVRIER)
-#
-#OUVRIER = {"name_ouvrier" :"Raphael"}
-#
-#insert_ouvrier(OUVRIER)
+
+CHANTIER = {"name_chantier": "Paris", "start": "2016-10-09 08:00:00", "end": "2016-10-09 12:00:00", "adress": "20 rue des lillas"}
+
+insert_chantier(CHANTIER)
+
+CHANTIER = {"name_chantier": "Marseille", "start": "2018-10-09 08:00:00", "end": "2018-10-09 12:00:00", "adress": "20 rue des lillas"}
+
+insert_chantier(CHANTIER)
+
+CHANTIER = {"name_chantier": "Noisy", "start": "2019-12-09 08:00:00", "end": "2020-02-09 12:00:00", "adress": "6-8 Avenue Blaise Pascal"}
+
+insert_chantier(CHANTIER)
+
+OUVRIER = {"name_ouvrier": "Leo"}
+
+insert_ouvrier(OUVRIER)
+
+OUVRIER = {"name_ouvrier": "Margot"}
+
+insert_ouvrier(OUVRIER)
+
+OUVRIER = {"name_ouvrier": "Raphael"}
+
+insert_ouvrier(OUVRIER)
+
+ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
+
+insert_attribution(ATTRIBUTION)
 
 #%% Fonction de suppression
 
+print(return_table_ouvrier())
+
+modify_name_ouvrier(1, "Jean_Michel")
+print(return_table_ouvrier())
 
 def suppression_table(name_table: str):
     """
@@ -259,7 +341,6 @@ def reset_table(name_table: str):
     commit_condition("""DELETE FROM """ + name_table)
 
 
-
-# suppression_table_chantiers()
-# suppression_table_ouvriers()
-# suppression_table_attribution()
+reset_table("chantiers")
+reset_table("ouvriers")
+reset_table("attribution")
