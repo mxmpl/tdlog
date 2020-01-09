@@ -16,8 +16,8 @@ import sys
 #############%% Module Flask
 
 from flask import Flask, request, render_template, jsonify
-#from flask_cors import CORS
-#from flask_restful import Api
+from flask_cors import CORS
+from flask_restful import Api
 
 #############%% Import des bibliothèques utiles
 
@@ -26,9 +26,9 @@ from Gestion_bdd import bdd
 from Gestion_bdd import exception as ex
 
 #############%% Creation du site
-#
-#APP = Flask(__name__)
-#CORS(APP)  # Creation du site
+
+APP = Flask(__name__)
+CORS(APP)  # Creation du site
 
 #############%% Fonctions du back
 
@@ -75,7 +75,7 @@ def del_data(name_table: str, id_ouv = None, id_chant = None):
     """
     Permet de supprimer un élément de la table à partir de son id.
     """
-    if bdd.id_in_table(name_table, id_ouv = id_ouvrier, id_chant = id_chantier)
+    if bdd.id_in_table(name_table, id_ouv = id_ouvrier, id_chant = id_chantier):
         bdd.del_data(name_table, id_ouv = id_ouvrier, id_chant = id_chantier)
         return
     raise ex.invalid_id
@@ -179,63 +179,63 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #bdd.reset_table("attribution")
 
 #############%% Gestion du site
-#
-#@APP.route("/", methods=['GET'])
-#def index():
-#    """
-#    Page d'accueil.
-#    """
-#    return "Welcome"
-#
-#@APP.route("/listeChantiers/", methods=['GET'])
-#def ListeChantiers(): # NOM A CHANGER
-#    """
-#    Associe les chantiers aux ouvriers.
-#    """
-#    attribution = get_planning()
-#    for dico in attribution:
-#        dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
-#    return jsonify(attribution)
-#
-#@APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
-#def ListeOuvriers(): # NOM A CHANGER
-#    """
-#    Ajout d'un nouvel ouvrier.
-#    """
-#    data = request.get_json()
-#    if request.method == "POST":
-#        set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
-#    ouvriers = return_table_ouvrier_avec_chantiers()
-#    return jsonify(ouvriers)
-#
-#@APP.route("/listeOuvriers/<id_ouvrier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-#def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
-#    """
-#    Actions sur un ouvrier donné :
-#    informations, modification du nom ou suppression.
-#    """
-#    if request.method == "GET":
-#        ouvrier = get_info_from_id_ouvrier(int(id_ouvrier))
-#        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
-#        return jsonify(ouvrier)
-#    if request.method == "PUT":
-#        data = request.get_json()
-#        modify_data("ouvrier", "name", data["name_ouvrier"], id_ouv = int(id_ouvrier))
-#    elif request.method == "DELETE":
-#        del_data("ouvriers", id_ouv = int(id_ouvrier))
-#    ouvriers = return_table_ouvrier_avec_chantiers()
-#    return jsonify(ouvriers)
 
-# @APP.route("/addOuvriers/", methods = ['POST'])
-# def addOuvrier():
-#   """
-#   Attribue un ouvrier à un chantier.
-#   """
-# 	data = request.get_json()
-# 	new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
-# 	global attribution
-# 	attribution.append(new_evenement)
-# 	return jsonify(attribution)
+@APP.route("/", methods=['GET'])
+def index():
+   """
+   Page d'accueil.
+   """
+   return "Welcome"
 
-#if __name__ == '__main__':
-#    APP.run(debug=True)
+@APP.route("/listeChantiers/", methods=['GET'])
+def ListeChantiers(): # NOM A CHANGER
+   """
+   Associe les chantiers aux ouvriers.
+   """
+   attribution = get_planning()
+   for dico in attribution:
+       dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
+   return jsonify(attribution)
+
+@APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def ListeOuvriers(): # NOM A CHANGER
+   """
+   Ajout d'un nouvel ouvrier.
+   """
+   data = request.get_json()
+   if request.method == "POST":
+       set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
+   ouvriers = return_table_ouvrier_avec_chantiers()
+   return jsonify(ouvriers)
+
+@APP.route("/listeOuvriers/<id_ouvrier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+   """
+   Actions sur un ouvrier donné :
+   informations, modification du nom ou suppression.
+   """
+   if request.method == "GET":
+       ouvrier = get_info_from_id_ouvrier(int(id_ouvrier))
+       ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
+       return jsonify(ouvrier)
+   if request.method == "PUT":
+       data = request.get_json()
+       modify_data("ouvrier", "name", data["name_ouvrier"], id_ouv = int(id_ouvrier))
+   elif request.method == "DELETE":
+       del_data("ouvriers", id_ouv = int(id_ouvrier))
+   ouvriers = return_table_ouvrier_avec_chantiers()
+   return jsonify(ouvriers)
+
+@APP.route("/addOuvriers/", methods = ['POST'])
+def addOuvrier():
+    """
+    Attribue un ouvrier à un chantier.
+    """
+    data = request.get_json()
+    new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
+    global attribution
+    attribution.append(new_evenement)
+    return jsonify(attribution)
+
+if __name__ == '__main__':
+   APP.run(debug=True)
