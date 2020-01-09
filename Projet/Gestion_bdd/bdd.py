@@ -112,17 +112,6 @@ def insert_chantier(new_chantier: dict):
     )
     DB.commit()
 
-def del_chantier(id_chan: int):
-    """
-    Permet de supprimer un chantier de la table chantiers à partir de son id.
-    """
-    commit_condition(
-        """DELETE FROM chantiers
-                    WHERE id_chantier = """
-        + str(id_chan)
-    )
-
-
 def insert_ouvrier(new_ouvrier: dict):
     """
     Permet d'inserer un nouveau ouvrier dans la base de données. Le format d'entrée
@@ -136,17 +125,6 @@ def insert_ouvrier(new_ouvrier: dict):
     )
     DB.commit()
 
-def del_ouvrier(id_ouv: int):
-    """
-    Permet de supprimer un ouvrier de la table ouvriers à partir de son id.
-    """
-    commit_condition(
-        """DELETE FROM ouvriers
-                    WHERE id_ouvrier = """
-        + str(id_ouv)
-    )
-
-
 def insert_attribution(new_attribution: dict):
     """
     Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
@@ -157,71 +135,41 @@ def insert_attribution(new_attribution: dict):
         (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),
     )
     DB.commit()
+def create_commande(name_table: str, id_ouv: int, id_chant: int):
+    """
+    Cree une commande utile pour d'autres fonctions.
+    """
+    if id_ouv != None and id_chant != None and name_table == "attribution": # On veut alors effectuer une action sur une attribution
+        commande = """id_chantier = """ + str(id_chant) + """AND id_ouvrier = """ + str(id_ouv)
+    elif id_ouv == None and name_table == "chantiers": # On veut alors effectuer une action sur un chantier
+        commande = """id_chantier = """ + str(id_chant)
+    elif id_chant == None and name_table == "ouvriers": # On veut alors effectuer une action sur un ouvrier
+        commande = """id_ouvrier = """ + str(id_ouv)
+    return commande
 
-def del_attribution(id_ouv: int, id_chan: int):
+def del_data(name_table: str, id_ouv = None, id_chant = None):
     """
-    Permet de supprimer une attribution de la table attribution à partir d'un
-    couple d'id_ouvrier/id_chantier.
+    Permet de supprimer un élément de la table à partir de son id.
     """
-    commit_condition(
-        """DELETE FROM attribution
-                    WHERE id_ouvrier = """
-        + str(id_ouv)
-        + """ AND id_chantier = """
-        + str(id_chan)
-    )
+    commit_condition("""DELETE FROM """ + name_table + """ WHERE """ + create_commande(name_table, id_ouv, id_chant))
 
 ###############%% CHECK
     
-def id_in_table(name_table: str, id_ouv = False, id_chant = False): 
+def id_in_table(name_table: str, id_ouv = None, id_chant = None): 
     """
     Pour savoir si un identifiant est dans la table.
     """
-    if id_ouv != False and id_chant != False: # On veut alors vérifier une attribution
-        commande = "id_ouvrier IN " + str(id_ouv) + " AND id_chantier = " + str(id_chant)
-    elif id_ouv == False: # On veut alors vérifier l'indice d'un chantier
-        commande = "id_chantier IN " + str(id_chant)
-    else: # On veut alors vérifier l'indice d'un ouvrier
-        commande = "id_ouvrier IN " + str(id_ouv)
-        print(""" SELECT * FROM """ + '"' + name_table + '"' + """ WHERE EXISTS (
-                                    SELECT * 
-                                    FROM """ + '"' + name_table + '"' +
-                                    """ WHERE """ + commande + ')')
-#    return commit_condition(""" SELECT COUNT(*) FROM """ + '"' + name_table + '"' + """ WHERE """ + commande)
-        return commit_condition(""" SELECT COUNT(*) FROM ouvriers WHERE id_ouvrier IN ('1')""")
+    return select_condition("""SELECT COUNT(*)
+                                FROM """ + name_table +
+                                """WHERE """ + create_commande(name_table, id_ouv, id_chant))[0][0] > 0
 
 ###############%% MODIFY
 
-
-def modify_name_ouvrier(id_ouv: int, new_name: str):
+def modify_data(name_table: str, champs: str, value: str, id_ouv = None, id_chant = None):
     """
-    Permet de modifier le nom d'un ouvrier.
+    Permet de modifier une donnée dans une table.
     """
-    commit_condition(
-        """ UPDATE ouvriers
-                    SET name_ouvrier = """
-        + '"'
-        + new_name
-        + '"'
-        + """ WHERE id_ouvrier = """
-        + str(id_ouv)
-    )
-
-
-def modify_name_chantier(id_chan: int, new_name: str):
-    """
-    Permet de modifier le nom d'un chantier.
-    """
-    commit_condition(
-        """ UPDATE chantiers
-                    SET name_chantier = """
-        + '"'
-        + new_name
-        + '"'
-        + """ WHERE id_chantier = """
-        + str(id_chan)
-    )
-
+    commit_condition(""" UPDATE """ + name_table + """ SET """ + champs + "'" + value + "'" + """ WHERE """ + create_commande(name_table, id_ouv, id_chant))
 
 ###############%% GET
 
@@ -388,66 +336,66 @@ def reset_table(name_table: str):
     commit_condition("""DELETE FROM """ + name_table)
 
 
-reset_table("chantiers")
-reset_table("ouvriers")
-reset_table("attribution")
+# reset_table("chantiers")
+# reset_table("ouvriers")
+# reset_table("attribution")
 
 #############################%% BDD provisoire, à effacer dans le futur
 
-CHANTIER = {
-    "name_chantier": "Paris",
-    "start": "2016-10-09 08:00:00",
-    "end": "2016-10-09 12:00:00",
-    "adress": "20 rue des lillas",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Marseille",
-    "start": "2018-10-09 08:00:00",
-    "end": "2018-10-09 12:00:00",
-    "adress": "20 rue des lillas",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Noisy",
-    "start": "2020-01-09 08:00:00",
-    "end": "2020-01-11 12:00:00",
-    "adress": "6-8 Avenue Blaise Pascal",
-}
-
-insert_chantier(CHANTIER)
-
-OUVRIER = {"name_ouvrier": "Leo"}
-
-insert_ouvrier(OUVRIER)
-
-OUVRIER = {"name_ouvrier": "Margot"}
-
-insert_ouvrier(OUVRIER)
-
-OUVRIER = {"name_ouvrier": "Raphael"}
-
-insert_ouvrier(OUVRIER)
-
-ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
-
-insert_attribution(ATTRIBUTION)
+# CHANTIER = {
+#     "name_chantier": "Paris",
+#     "start": "2016-10-09 08:00:00",
+#     "end": "2016-10-09 12:00:00",
+#     "adress": "20 rue des lillas",
+# }
+# 
+# insert_chantier(CHANTIER)
+# 
+# CHANTIER = {
+#     "name_chantier": "Marseille",
+#     "start": "2018-10-09 08:00:00",
+#     "end": "2018-10-09 12:00:00",
+#     "adress": "20 rue des lillas",
+# }
+# 
+# insert_chantier(CHANTIER)
+# 
+# CHANTIER = {
+#     "name_chantier": "Noisy",
+#     "start": "2020-01-09 08:00:00",
+#     "end": "2020-01-11 12:00:00",
+#     "adress": "6-8 Avenue Blaise Pascal",
+# }
+# 
+# insert_chantier(CHANTIER)
+# 
+# OUVRIER = {"name_ouvrier": "Leo"}
+# 
+# insert_ouvrier(OUVRIER)
+# 
+# OUVRIER = {"name_ouvrier": "Margot"}
+# 
+# insert_ouvrier(OUVRIER)
+# 
+# OUVRIER = {"name_ouvrier": "Raphael"}
+# 
+# insert_ouvrier(OUVRIER)
+# 
+# ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
+# 
+# insert_attribution(ATTRIBUTION)
+# 
+# ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
+# 
+# insert_attribution(ATTRIBUTION)
+# 
+# ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
+# 
+# insert_attribution(ATTRIBUTION)
+# 
+# ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
+# 
+# insert_attribution(ATTRIBUTION)
 ###############%%
 
 #print(return_table_chantier())

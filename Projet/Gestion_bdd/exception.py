@@ -16,6 +16,12 @@ class invalid_id(Exception):
     """
     pass
 
+class id_ouvrier_not_available_for_assignation(Exception): 
+    """
+    L'ouvrier est indisponible.
+    """
+    pass
+
 def conformite_dict(dictionnaire: dict, champs):
     """
     champs doit être un dictionnaire des types des values du 

@@ -45,17 +45,6 @@ def set_new_chantier(dict_new_chantier: dict):
     ex.conformite_dict(dict_new_chantier, {"name_chantier": str, "start": str, "end": str, "adress": str})
     bdd.insert_chantier(dict_new_chantier)
 
-def del_chantier(id_chantier: int):
-    """
-    Permet de supprimer un chantier de la table chantiers à partir de son id.
-    """
-    chantiers = return_table("chantiers")
-    for chantier in chantiers:
-        if id_chantier == chantier["id_chantier"]:
-            bdd.del_chantier(id_chantier)
-            return
-    raise ex.invalid_id
-
 def set_new_ouvrier(dict_new_ouvrier: dict):
     """
     Permet d'inserer un nouveau ouvrier. Le format d'entrée
@@ -66,17 +55,6 @@ def set_new_ouvrier(dict_new_ouvrier: dict):
     # Exception levée si l'argument n'est pas conforme
     ex.conformite_dict(dict_new_ouvrier, {"name_ouvrier": str})
     bdd.insert_ouvrier(dict_new_ouvrier)
-
-def del_ouvrier(id_ouvrier: int):
-    """
-    Permet de supprimer un ouvrier de la table ouvriers à partir de son id.
-    """
-    ouvriers = return_table("ouvriers")
-    for ouvrier in ouvriers:
-        if id_ouvrier == ouvrier["id_ouvrier"]:
-            bdd.del_ouvrier(id_ouvrier)
-            return
-    raise Exception("Attention, vous essayez de supprimer un ouvrier qui n'existe pas")
 
 def set_new_attribution(dict_new_attribution: dict):
     """
@@ -91,21 +69,16 @@ def set_new_attribution(dict_new_attribution: dict):
                                    dict_new_attribution["id_chantier"]):
         bdd.insert_attribution(dict_new_attribution)
     else:
-        raise Exception("L'ouvrier {} ne peut être attribué au chantier {} car il est déjà occupé"
-                        .format(dict_new_attribution["id_ouvrier"],
-                                dict_new_attribution["id_chantier"]))
+        raise ex.id_ouvrier_not_available_for_assignation
 
-def del_attribution(id_ouv: int, id_chan: int):
+def del_data(name_table: str, id_ouv = None, id_chant = None):
     """
-    Permet de supprimer une attribution de la table attribution à partir d'un
-    couple d'id_ouvrier/id_chantier.
+    Permet de supprimer un élément de la table à partir de son id.
     """
-    attributions = return_table("attribution")
-    for attribution in attributions:
-        if id_ouv == attribution["id_ouvrier"] and id_chan == attribution["id_chantier"]:
-            bdd.del_attribution(id_ouv, id_chan)
-            return
-    raise Exception("Attention, vous essayez de supprimer une attribution qui n'existe pas")
+    if bdd.id_in_table(name_table, id_ouv = id_ouvrier, id_chant = id_chantier)
+        bdd.del_data(name_table, id_ouv = id_ouvrier, id_chant = id_chantier)
+        return
+    raise ex.invalid_id
 
 ########%% GET
 
@@ -168,25 +141,12 @@ def get_planning_individuel(id_ouv: int):
 
 ########%% MODIFY
 
-def modify_name_ouvrier(id_ouv: int, new_name: str):
+def modify_data(name_table: str, champs: str, value: str, id_ouv = None, id_chant = None):
     """
-    Permet de modifier le nom d'un ouvrier.
+    Permet de modifier une donnée dans une table.
     """
-    ouvriers = return_table("ouvriers")
-    for ouvrier in ouvriers:
-        if id_ouv == ouvrier["id_ouvrier"]:
-            bdd.modify_name_ouvrier(id_ouv, new_name)
-    raise Exception("Attention, vous essayez de modifier le nom d'un ouvrier qui n'existe pas")
-
-def modify_name_chantier(id_chan: int, new_name: str):
-    """
-    Permet de modifier le nom d'un chantier.
-    """
-    chantiers = return_table("chantiers")
-    for chantier in chantiers:
-        if id_chan == chantier["id_chantier"]:
-            bdd.modify_name_chantier(id_chan, new_name)
-    raise Exception("Attention, vous essayez de modifier le nom d'un chantier qui n'existe pas")
+    # Gestion d'erreur à faire : vérifier que champs est bien un champs
+    bdd.modify_data(name_table, champs, value, id_ouv, id_chant)
 
 ########%% CHECK
 
@@ -194,18 +154,16 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
     """
     Permet via l'index d'un chantier et d'un ouvrier de vérifier que
     l'ouvrier est disponible sur la plage horaire concernée pour ce
-    chantier. Return true si l'ouvrier n'est pas encore occupé sur ce créneau.
+    chantier. Return True si l'ouvrier n'est pas encore occupé sur ce créneau.
     """
     planning = bdd.get_planning_individuel(id_ouvrier)
     infos_chantier = bdd.get_info_from_id_chantier(id_chantier)
     for chantier in planning:
+        # Bien qu'inutile dans notre modèle, on vérifie le début et la fin de l'horaire.
         if(chantier["start"] == infos_chantier["start"]
            and chantier["end"] == infos_chantier["end"]):
-            raise Exception("L'ouvrier {} est déjà occupé sur la période {}-{}"
-                            .format(bdd.get_info_id_ouvrier(id_ouvrier)["name_ouvrier"],
-                                    infos_chantier["start"], infos_chantier["end"]))
-            # return False
-        return True
+            raise ex.id_ouvrier_not_available_for_assignation
+    return True
 
 #if __name__ == "__main__":
 #    APP.debug = False
@@ -264,7 +222,7 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #        data = request.get_json()
 #        modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
 #    elif request.method == "DELETE":
-#        del_ouvrier(int(id_ouvrier))
+#        del_data("ouvriers", id_ouv = int(id_ouvrier))
 #    ouvriers = return_table_ouvrier_avec_chantiers()
 #    return jsonify(ouvriers)
 
