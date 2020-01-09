@@ -16,18 +16,19 @@ import sys
 #############%% Module Flask
 
 from flask import Flask, request, render_template, jsonify
-from flask_cors import CORS
-from flask_restful import Api
+#from flask_cors import CORS
+#from flask_restful import Api
 
 #############%% Import des bibliothèques utiles
 
 sys.path.append("..")
 from Gestion_bdd import bdd
+from Gestion_bdd import exception as ex
 
 #############%% Creation du site
-
-APP = Flask(__name__)
-CORS(APP)  # Creation du site
+#
+#APP = Flask(__name__)
+#CORS(APP)  # Creation du site
 
 #############%% Fonctions du back
 
@@ -40,18 +41,20 @@ def set_new_chantier(dict_new_chantier: dict):
     {"name_chantier": text, "start": text, "end": text, "adress": text}.
     """
     # Gestion d'erreur à faire dessus : chantier pas déjà existant
+    # Exception levée si l'argument n'est pas conforme
+    ex.conformite_dict(dict_new_chantier, {"name_chantier": str, "start": str, "end": str, "adress": str})
     bdd.insert_chantier(dict_new_chantier)
 
 def del_chantier(id_chantier: int):
     """
     Permet de supprimer un chantier de la table chantiers à partir de son id.
     """
-    chantiers = return_table_chantier()
+    chantiers = return_table("chantiers")
     for chantier in chantiers:
         if id_chantier == chantier["id_chantier"]:
             bdd.del_chantier(id_chantier)
             return
-    raise Exception("Attention, vous essayez de supprimer un chantier qui n'existe pas")
+    raise ex.invalid_id
 
 def set_new_ouvrier(dict_new_ouvrier: dict):
     """
@@ -60,13 +63,15 @@ def set_new_ouvrier(dict_new_ouvrier: dict):
     {"name_ouvrier": text}.
     """
     # Gestion d'erreur à faire dessus : ouvrier non existant
+    # Exception levée si l'argument n'est pas conforme
+    ex.conformite_dict(dict_new_ouvrier, {"name_ouvrier": str})
     bdd.insert_ouvrier(dict_new_ouvrier)
 
 def del_ouvrier(id_ouvrier: int):
     """
     Permet de supprimer un ouvrier de la table ouvriers à partir de son id.
     """
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table("ouvriers")
     for ouvrier in ouvriers:
         if id_ouvrier == ouvrier["id_ouvrier"]:
             bdd.del_ouvrier(id_ouvrier)
@@ -80,6 +85,8 @@ def set_new_attribution(dict_new_attribution: dict):
     """
     # Gestion d'erreur à faire :
     # vérification que les id_ouvrier et id_chantier existent
+    # Exception levée si l'argument n'est pas conforme
+    ex.conformite_dict(dict_new_attribution, {"id_ouvrier": int, "id_chantier": int })
     if verif_dispo_horaire_ouvrier(dict_new_attribution["id_ouvrier"],
                                    dict_new_attribution["id_chantier"]):
         bdd.insert_attribution(dict_new_attribution)
@@ -93,7 +100,7 @@ def del_attribution(id_ouv: int, id_chan: int):
     Permet de supprimer une attribution de la table attribution à partir d'un
     couple d'id_ouvrier/id_chantier.
     """
-    attributions = return_table_attribution()
+    attributions = return_table("attribution")
     for attribution in attributions:
         if id_ouv == attribution["id_ouvrier"] and id_chan == attribution["id_chantier"]:
             bdd.del_attribution(id_ouv, id_chan)
@@ -118,36 +125,28 @@ def get_info_from_id_chantier(id_chan: int):
     """
     return bdd.get_info_from_id_chantier(id_chan)
 
-def return_table_chantier():
+def return_table(name_table: str):
     """
-    Renvoie toute la table chantiers sous forme d'une liste de dictionnaire :
-    [{"id_chantier": int, "name_chantier": text, "start": text, "end": text, "adress": text},].
+    Renvoie toute la table name_table sous forme d'une liste de dictionnaire :
+    [{"id": int, "name": text, etc.},].
     """
-    return bdd.return_table_chantier()
-
-def return_table_ouvrier():
-    """
-    Renvoie toute la table ouvriers sous forme d'une liste de dictionnaire :
-    [{"id_ouvrier": int, "name_ouvrier": text},].
-    """
-    return bdd.return_table_ouvrier()
+    if name_table == "chantiers":
+        return bdd.return_table_chantier()
+    elif name_table == "ouvriers":
+        return bdd.return_table_ouvrier()
+    elif name_table == "attribution": 
+        return bdd.return_table_attribution()
+    # faire gestion d'erreur si ni chantiers, ni ouvriers, ni attribution
 
 def return_table_ouvrier_avec_chantiers():
     """
     Renvoie la liste de tous les ouvriers affecté à leur chantiers de la forme
     [{"id_ouvrier": int, "name_ouvrier", text, "chantiers", list},]
     """
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table("ouvriers")
     for ouvrier in ouvriers:
         ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
     return ouvriers
-
-def return_table_attribution():
-    """
-    Renvoie toute la table attribution sous forme d'une liste de dictionnaire :
-    [{"id_ouvrier": int, "id_chantier": text},].
-    """
-    return bdd.return_table_attribution()
 
 def get_planning():
     """
@@ -173,7 +172,7 @@ def modify_name_ouvrier(id_ouv: int, new_name: str):
     """
     Permet de modifier le nom d'un ouvrier.
     """
-    ouvriers = return_table_ouvrier()
+    ouvriers = return_table("ouvriers")
     for ouvrier in ouvriers:
         if id_ouv == ouvrier["id_ouvrier"]:
             bdd.modify_name_ouvrier(id_ouv, new_name)
@@ -183,7 +182,7 @@ def modify_name_chantier(id_chan: int, new_name: str):
     """
     Permet de modifier le nom d'un chantier.
     """
-    chantiers = return_table_chantier()
+    chantiers = return_table("chantiers")
     for chantier in chantiers:
         if id_chan == chantier["id_chantier"]:
             bdd.modify_name_chantier(id_chan, new_name)
@@ -222,52 +221,52 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #bdd.reset_table("attribution")
 
 #############%% Gestion du site
-
-@APP.route("/", methods=['GET'])
-def index():
-    """
-    Page d'accueil.
-    """
-    return "Welcome"
-
-@APP.route("/listeChantiers/", methods=['GET'])
-def ListeChantiers(): # NOM A CHANGER
-    """
-    Associe les chantiers aux ouvriers.
-    """
-    attribution = get_planning()
-    for dico in attribution:
-        dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
-    return jsonify(attribution)
-
-@APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def ListeOuvriers(): # NOM A CHANGER
-    """
-    Ajout d'un nouvel ouvrier.
-    """
-    data = request.get_json()
-    if request.method == "POST":
-        set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
-    ouvriers = return_table_ouvrier_avec_chantiers()
-    return jsonify(ouvriers)
-
-@APP.route("/listeOuvriers/<id_ouvrier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
-    """
-    Actions sur un ouvrier donné :
-    informations, modification du nom ou suppression.
-    """
-    if request.method == "GET":
-        ouvrier = get_info_from_id_ouvrier(int(id_ouvrier))
-        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
-        return jsonify(ouvrier)
-    if request.method == "PUT":
-        data = request.get_json()
-        modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
-    elif request.method == "DELETE":
-        del_ouvrier(int(id_ouvrier))
-    ouvriers = return_table_ouvrier_avec_chantiers()
-    return jsonify(ouvriers)
+#
+#@APP.route("/", methods=['GET'])
+#def index():
+#    """
+#    Page d'accueil.
+#    """
+#    return "Welcome"
+#
+#@APP.route("/listeChantiers/", methods=['GET'])
+#def ListeChantiers(): # NOM A CHANGER
+#    """
+#    Associe les chantiers aux ouvriers.
+#    """
+#    attribution = get_planning()
+#    for dico in attribution:
+#        dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
+#    return jsonify(attribution)
+#
+#@APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
+#def ListeOuvriers(): # NOM A CHANGER
+#    """
+#    Ajout d'un nouvel ouvrier.
+#    """
+#    data = request.get_json()
+#    if request.method == "POST":
+#        set_new_ouvrier({"name_ouvrier":data["name_ouvrier"]})
+#    ouvriers = return_table_ouvrier_avec_chantiers()
+#    return jsonify(ouvriers)
+#
+#@APP.route("/listeOuvriers/<id_ouvrier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+#def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+#    """
+#    Actions sur un ouvrier donné :
+#    informations, modification du nom ou suppression.
+#    """
+#    if request.method == "GET":
+#        ouvrier = get_info_from_id_ouvrier(int(id_ouvrier))
+#        ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
+#        return jsonify(ouvrier)
+#    if request.method == "PUT":
+#        data = request.get_json()
+#        modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
+#    elif request.method == "DELETE":
+#        del_ouvrier(int(id_ouvrier))
+#    ouvriers = return_table_ouvrier_avec_chantiers()
+#    return jsonify(ouvriers)
 
 # @APP.route("/addOuvriers/", methods = ['POST'])
 # def addOuvrier():
@@ -280,5 +279,5 @@ def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
 # 	attribution.append(new_evenement)
 # 	return jsonify(attribution)
 
-if __name__ == '__main__':
-    APP.run(debug=True)
+#if __name__ == '__main__':
+#    APP.run(debug=True)

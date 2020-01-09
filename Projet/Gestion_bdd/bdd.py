@@ -13,7 +13,6 @@ Fichier conforme à la norme PEP8.
 ############################%% Import des bibliothèques utiles
 
 import sqlite3
-import exception as ex
 
 ############################%% Création des bases de données
 
@@ -101,26 +100,17 @@ def insert_chantier(new_chantier: dict):
     doit être un dictionnaire de la forme
     {"name_chantier": text, "start": text, "end": text, "adress": text}.
     """
-    try : 
-        ex.conformite_dict(new_chantier, {"name_chantier": str, "start": str, "end": str, "adress": str})
-        CURSOR.execute(
-            """INSERT INTO chantiers(name_chantier, start, end, adress)
-                          VALUES(?,?,?,?)""",
-            (
-                new_chantier["name_chantier"],
-                new_chantier["start"],
-                new_chantier["end"],
-                new_chantier["adress"],
-            ),
-        )
-        DB.commit()
-    except ex.wrong_type_dict: 
-        print("L'argument d'entrée doit être un dictionnaire")
-    except ex.missing_or_bad_key:
-        print("Le dictionnaire en entrée a une clef manquante ou erronee")
-    except ex.bad_type: 
-        print("Une des values du dictionnaire n'a pas le bon type")
-
+    CURSOR.execute(
+        """INSERT INTO chantiers(name_chantier, start, end, adress)
+                      VALUES(?,?,?,?)""",
+        (
+            new_chantier["name_chantier"],
+            new_chantier["start"],
+            new_chantier["end"],
+            new_chantier["adress"],
+        ),
+    )
+    DB.commit()
 
 def del_chantier(id_chan: int):
     """
@@ -139,20 +129,12 @@ def insert_ouvrier(new_ouvrier: dict):
     doit être un dictionnaire de la forme
     {"name_ouvrier": text}.
     """
-    try : 
-        ex.conformite_dict(new_ouvrier, {"name_ouvrier": str})
-        CURSOR.execute(
-            """INSERT INTO ouvriers(name_ouvrier)
-                          VALUES(?)""",
-            (new_ouvrier["name_ouvrier"],),
-        )
-        DB.commit()
-    except ex.wrong_type_dict: 
-        print("L'argument d'entrée doit être un dictionnaire")
-    except ex.missing_or_bad_key:
-        print("Le dictionnaire en entrée a une clef manquante ou erronee")
-    except ex.bad_type: 
-        print("Une des values du dictionnaire n'a pas le bon type")
+    CURSOR.execute(
+        """INSERT INTO ouvriers(name_ouvrier)
+                      VALUES(?)""",
+        (new_ouvrier["name_ouvrier"],),
+    )
+    DB.commit()
 
 def del_ouvrier(id_ouv: int):
     """
@@ -170,20 +152,11 @@ def insert_attribution(new_attribution: dict):
     Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
     Format d'entrée : new_attribution = {"id_ouvrier": int, "id_chantier": int}
     """
-    try : 
-        ex.conformite_dict(new_attribution, {"id_ouvrier": int, "id_chantier": int })
-        CURSOR.execute(
-            """INSERT INTO attribution(id_ouvrier, id_chantier) VALUES(?,?)""",
-            (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),
-        )
-        DB.commit()
-    except ex.wrong_type_dict: 
-        print("L'argument d'entrée doit être un dictionnaire")
-    except ex.missing_or_bad_key:
-        print("Le dictionnaire en entrée a une clef manquante ou erronee")
-    except ex.bad_type: 
-        print("Une des values du dictionnaire n'a pas le bon type")
-
+    CURSOR.execute(
+        """INSERT INTO attribution(id_ouvrier, id_chantier) VALUES(?,?)""",
+        (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),
+    )
+    DB.commit()
 
 def del_attribution(id_ouv: int, id_chan: int):
     """
@@ -198,6 +171,24 @@ def del_attribution(id_ouv: int, id_chan: int):
         + str(id_chan)
     )
 
+###############%% CHECK
+    
+def id_in_table(name_table: str, id_ouv = False, id_chant = False): 
+    """
+    Pour savoir si un identifiant est dans la table.
+    """
+    if id_ouv != False and id_chant != False: # On veut alors vérifier une attribution
+        commande = "id_ouvrier IN " + str(id_ouv) + " AND id_chantier = " + str(id_chant)
+    elif id_ouv == False: # On veut alors vérifier l'indice d'un chantier
+        commande = "id_chantier IN " + str(id_chant)
+    else: # On veut alors vérifier l'indice d'un ouvrier
+        commande = "id_ouvrier IN " + str(id_ouv)
+        print(""" SELECT * FROM """ + '"' + name_table + '"' + """ WHERE EXISTS (
+                                    SELECT * 
+                                    FROM """ + '"' + name_table + '"' +
+                                    """ WHERE """ + commande + ')')
+#    return commit_condition(""" SELECT COUNT(*) FROM """ + '"' + name_table + '"' + """ WHERE """ + commande)
+        return commit_condition(""" SELECT COUNT(*) FROM ouvriers WHERE id_ouvrier IN ('1')""")
 
 ###############%% MODIFY
 
@@ -459,6 +450,6 @@ ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
 insert_attribution(ATTRIBUTION)
 ###############%%
 
-print(return_table_chantier())
+#print(return_table_chantier())
 # modify_name_chantier(1, "St-Maur")
 # print(return_table_chantier())
