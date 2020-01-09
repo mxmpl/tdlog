@@ -39,7 +39,7 @@ def set_new_chantier(dict_new_chantier: dict):
     doit être un dictionnaire de la forme
     {"name_chantier": text, "start": text, "end": text, "adress": text}.
     """
-    # Gestion d'erreur à faire dessus : conformité de l'entrée + chantier non existant
+    # Gestion d'erreur à faire dessus : chantier pas déjà existant
     bdd.insert_chantier(dict_new_chantier)
 
 def del_chantier(id_chantier: int):
@@ -59,7 +59,7 @@ def set_new_ouvrier(dict_new_ouvrier: dict):
     doit être un dictionnaire de la forme
     {"name_ouvrier": text}.
     """
-    # Gestion d'erreur à faire dessus : conformité de l'entrée + ouvrier non existant
+    # Gestion d'erreur à faire dessus : ouvrier non existant
     bdd.insert_ouvrier(dict_new_ouvrier)
 
 def del_ouvrier(id_ouvrier: int):
@@ -78,7 +78,7 @@ def set_new_attribution(dict_new_attribution: dict):
     Permet d'inserer un couple d'id_ouvrier/id_chantier.
     Format d'entrée : dict_new_attribution = {"id_ouvrier": int, "id_chantier": int}
     """
-    # Gestion d'erreur à faire : conformité de l'entrée +
+    # Gestion d'erreur à faire :
     # vérification que les id_ouvrier et id_chantier existent
     if verif_dispo_horaire_ouvrier(dict_new_attribution["id_ouvrier"],
                                    dict_new_attribution["id_chantier"]):

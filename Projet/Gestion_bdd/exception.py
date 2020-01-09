@@ -1,9 +1,6 @@
 class wrong_type_dict(Exception): 
     pass
 
-class dict_incomplet(Exception): 
-    pass
-
 class missing_or_bad_key(Exception): 
     pass
 
@@ -24,7 +21,10 @@ def conformite_dict(dictionnaire: dict, champs):
         elif type(dictionnaire[clef]) != champs[clef]:
             raise bad_type
 
-dico = {"name" : "Marcel", "age" : 20}
-liste = [1,2,3]
-champs = {"name" : str, "age": int}
-conformite_dict(liste,champs)
+if __name__ == '__main__':
+    dico = {"name" : "Marcel", "age" : 20}
+    liste = [1,2,3]
+    champs = {"name" : str, "age": int}
+    conformite_dict(liste,champs)
+
+"""à faire : faire exception quand on essaye de get dans une table vide"""
