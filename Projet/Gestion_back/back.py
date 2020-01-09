@@ -220,7 +220,7 @@ def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
 #        return jsonify(ouvrier)
 #    if request.method == "PUT":
 #        data = request.get_json()
-#        modify_name_ouvrier(int(id_ouvrier), data["name_ouvrier"])
+#        modify_data("ouvrier", "name", data["name_ouvrier"], id_ouv = int(id_ouvrier))
 #    elif request.method == "DELETE":
 #        del_data("ouvriers", id_ouv = int(id_ouvrier))
 #    ouvriers = return_table_ouvrier_avec_chantiers()
