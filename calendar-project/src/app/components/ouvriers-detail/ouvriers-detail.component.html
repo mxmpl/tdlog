@@ -5,16 +5,8 @@
     <label>Nom:
       <input [(ngModel)]="ouvrier.name_ouvrier" placeholder="name_ouvrier"/>
     </label>
-  </div>
-  <label>Chantiers:</label>
-  <!--
-  <div *ngFor="let chantier of ouvrier.chantiers">
-    <div routerLink="/detail/{{ouvrier.id_ouvrier}}">
-      id :{{chantier.id_chantier}} : {{chantier.name_chantier}}
-    </div>
-  </div>
--->
-
+</div>
+<label>Chantiers:</label>
 <ul class="chantiers">
   <li *ngFor="let chantier of ouvrier.chantiers">
     <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
@@ -25,6 +17,6 @@
     <div>Adresse : {{chantier.adress}} </div>
   </li>
 </ul>
-  <!-- <button (click)= -->
+  <button (click)="ajoutChantier()">ajout chantier</button>
   <button (click)="goBack()">go back</button>
   <button (click)="save()">save</button>

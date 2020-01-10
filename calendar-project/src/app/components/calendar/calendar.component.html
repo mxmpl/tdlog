@@ -1,7 +1,6 @@
 <div>
   <div>
     <button (click)='toggleWeekends()'> Enlever les weekends</button>
-    (cliquer sur une date/heure pour ajouter un événement, drag and drop des événements)
   </div>
 
   <div>
@@ -20,9 +19,7 @@
       [plugins]="calendarPlugins"
       [weekends]="calendarWeekends"
       [events]="calendarEvents"
-      (dateClick)="handleDateClick($event)"
-      (eventDragStart)="handleEventDragStart($event)"
-      (eventDragStop)="handleEventDragStop($event)"
+      (eventClick)="handleEventClick($event)"
     ></full-calendar>
   </div>
 
