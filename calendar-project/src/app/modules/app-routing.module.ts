@@ -4,13 +4,11 @@ import { CalendarComponent } from '../components/calendar/calendar.component';
 import { OuvriersComponent } from '../components/ouvriers/ouvriers.component';
 import { ChantiersComponent } from '../components/chantiers/chantiers.component';
 import { OuvrierDetailComponent } from '../components/ouvriers-detail/ouvriers-detail.component';
-import { SelectChantierComponent } from '../components/select-chantier/select-chantier.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/calendar', pathMatch:'full'},
   { path: 'calendar', component: CalendarComponent },
   { path: 'detail/:id', component: OuvrierDetailComponent },
-  { path: 'dispos/:id', component: SelectChantierComponent},
   { path: 'ouvriers', component: OuvriersComponent },
   { path: 'chantiers', component: ChantiersComponent},
   { path: 'ouvriers-detail', component: OuvrierDetailComponent},

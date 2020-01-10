@@ -70,7 +70,7 @@ export class OuvrierService {
   /** POST: add a new ouvrier to the server */
   addOuvrier (ouvrier: Ouvrier): Observable<Ouvrier> {
     return this.http.post<Ouvrier>(this.listeOuvriersUrl, ouvrier, this.httpOptions).pipe(
-      tap((newOuvrier: Ouvrier) => this.log(`ouvrier ajoute w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
+      tap((newOuvrier: Ouvrier) => this.log(`ouvrier ajoute`)),//, w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
       catchError(this.handleError<Ouvrier>('addOuvrier'))
     );
   }
@@ -89,7 +89,6 @@ export class OuvrierService {
   /** PUT: update the ouvrier on the server */
   updateOuvrier (ouvrier: Ouvrier): Observable<any> {
     const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
-    console.log(id);
     const url = `${this.listeOuvriersUrl}${id}`;
     return this.http.put(url, ouvrier, this.httpOptions).pipe(
       tap(_ => this.log(`updated ouvrier id_ouvrier=${ouvrier.id_ouvrier}`)),

@@ -27,9 +27,7 @@ export class OuvriersComponent implements OnInit {
     name_ouvrier = name_ouvrier.trim();
     if (!name_ouvrier) { return; }
     this.ouvrierService.addOuvrier({ name_ouvrier } as Ouvrier)
-      .subscribe(ouvrier => {
-        this.ouvriers.push(ouvrier);
-      });
+      .subscribe(_ => this.getOuvriers());
   }
 
   delete(ouvrier: Ouvrier): void {
