@@ -121,11 +121,13 @@ def return_table_ouvrier_avec_chantiers():
         ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
     return ouvriers
     
-def return_cluster_chantiers():
+def return_cluster_chantiers(id_ouv: int):
     """
     Renvoie un dictionnaire
+    {"Boulogne":[{"id_chantier": 1, "name_chantier":"Boulogne", "start":...},],
+    "Marseille":[{"id_chantier": 2, "name_chantier":"Marseille", "start":...},],}
     """
-    chantiers = return_table("chantiers")
+    chantiers = return_chantiers_possibles(id_ouv)
     dictionnaire = {}
     for chantier in chantiers:
         if chantier["name_chantier"] in dictionnaire.keys(): 
@@ -134,6 +136,23 @@ def return_cluster_chantiers():
              dictionnaire[chantier["name_chantier"]] = [chantier]
     return dictionnaire
 
+def return_chantiers_possibles(id_ouv: int):
+    """
+    Renvoie la liste des chantiers où un ouvrier donné peut être attribué en 
+    fonction des chantiers auxquels il a déjà été attribué 
+    (gestion des conflits horaires).
+    """
+    chantiers = return_table("chantiers")
+    chantier_attribues = get_planning_individuel(id_ouv)
+    liste_chantiers_possibles = []
+    for chantier in chantiers:
+        try :
+            verif_dispo_horaire_ouvrier(id_ouv, chantier["id_chantier"], planning = chantier_attribues, infos_chantier = chantier)
+            liste_chantiers_possibles.append(chantier)
+        except:
+            pass
+    return liste_chantiers_possibles
+    
 def get_planning():
     """
     Renvoie toutes les attributions et les informations sur les ouvriers et
@@ -163,14 +182,16 @@ def modify_data(name_table: str, champs: str, value: str, id_ouv = None, id_chan
 
 ########%% CHECK
 
-def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int):
+def verif_dispo_horaire_ouvrier(id_ouvrier: int, id_chantier: int, planning = None, infos_chantier = None):
     """
     Permet via l'index d'un chantier et d'un ouvrier de vérifier que
     l'ouvrier est disponible sur la plage horaire concernée pour ce
     chantier. Return True si l'ouvrier n'est pas encore occupé sur ce créneau.
     """
-    planning = bdd.get_planning_individuel(id_ouvrier)
-    infos_chantier = bdd.get_info_from_id_chantier(id_chantier)
+    if planning == None:
+        planning = bdd.get_planning_individuel(id_ouvrier)
+    if infos_chantier == None:
+        infos_chantier = bdd.get_info_from_id_chantier(id_chantier)
     for chantier in planning:
         # Bien qu'inutile dans notre modèle, on vérifie le début et la fin de l'horaire.
         if(chantier["start"] == infos_chantier["start"]
