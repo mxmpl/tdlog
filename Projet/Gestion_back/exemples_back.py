@@ -1,5 +1,11 @@
 from back import *
 
+print("Table ouvriers")
+print(return_table("ouvriers"))
+print("Table chantiers")
+print(return_table("chantiers"))
+print("Table attribution")
+
 
 #print(return_table_ouvrier_avec_chantiers())
 
