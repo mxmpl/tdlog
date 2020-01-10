@@ -89,6 +89,7 @@ export class OuvrierService {
   /** PUT: update the ouvrier on the server */
   updateOuvrier (ouvrier: Ouvrier): Observable<any> {
     const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
+    console.log(id);
     const url = `${this.listeOuvriersUrl}${id}`;
     return this.http.put(url, ouvrier, this.httpOptions).pipe(
       tap(_ => this.log(`updated ouvrier id_ouvrier=${ouvrier.id_ouvrier}`)),
