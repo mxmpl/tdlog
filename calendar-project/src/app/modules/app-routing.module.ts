@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'detail/:id', component: OuvrierDetailComponent },
   { path: 'ouvriers', component: OuvriersComponent },
   { path: 'chantiers', component: ChantiersComponent},
-  { path: 'ouvriers-detail', component: OuvrierDetailComponent}
+  { path: 'ouvriers-detail', component: OuvrierDetailComponent},
 ];
 
 @NgModule({
