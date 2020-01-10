@@ -1,3 +1,17 @@
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+}
+
+
+
+
 label {
   display: inline-block;
   width: 3em;

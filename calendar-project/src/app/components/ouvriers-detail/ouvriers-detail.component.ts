@@ -12,6 +12,7 @@ import { OuvrierService }  from '../../services/ouvrier.service';
 })
 export class OuvrierDetailComponent implements OnInit {
   @Input() ouvrier: Ouvrier;
+  showDispo: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +39,8 @@ export class OuvrierDetailComponent implements OnInit {
       .subscribe(() => this.goBack());
   }
 
-  ajoutChantier(): void {
-    this.ouvrierService.updateOuvrier(this.ouvrier)
+  toggleChantiersDispos(): void {
+    this.ouvrierService.updateOuvrier(this.ouvrier);
+    this.showDispo = !this.showDispo;
   }
 }

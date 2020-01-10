@@ -1,22 +1,36 @@
-<div *ngIf="ouvrier">
-  <h2>Détails sur {{ouvrier.name_ouvrier | uppercase}}</h2>
-  <div><label>id: </label>{{ouvrier.id_ouvrier}}</div>
-  <div>
-    <label>Nom:
-      <input [(ngModel)]="ouvrier.name_ouvrier" placeholder="name_ouvrier"/>
-    </label>
+<div class = "row">
+
+  <div *ngIf="ouvrier" class = "column">
+      <h2>Détails sur {{ouvrier.name_ouvrier | uppercase}}</h2>
+      <div><label>id: </label>{{ouvrier.id_ouvrier}}</div>
+      <div>
+        <label>Nom:
+          <input [(ngModel)]="ouvrier.name_ouvrier" placeholder="name_ouvrier"/>
+        </label>
+      </div>
+      <div>
+        <label>Chantiers:</label>
+        <ul class="chantiers">
+          <li *ngFor="let chantier of ouvrier.chantiers">
+              <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
+            <div>De : {{chantier.start}} </div>
+            <div>A : {{chantier.end}} </div>
+            <div>Adresse : {{chantier.adress}} </div>
+          </li>
+        </ul>
+      </div>
+      <button (click)="toggleChantiersDispos()">ajout chantier</button>
+      <button (click)="goBack()">go back</button>
+      <button (click)="save()">save</button>
+  </div>
+
+  <div class = "column">
+      <app-select-chantier [showMe]="showDispo"></app-select-chantier>
+  </div>
+
+<!--   <div class = "column">
+      <app-select-chantier [showMe]="showDispo"></app-select-chantier>
+  </div> -->
+
 </div>
-<label>Chantiers:</label>
-<ul class="chantiers">
-  <li *ngFor="let chantier of ouvrier.chantiers">
-    <a routerLink="/dispos/{{ouvrier.id_ouvrier}}">
-      <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
-    </a>
-    <div>De : {{chantier.start}} </div>
-    <div>A : {{chantier.end}} </div>
-    <div>Adresse : {{chantier.adress}} </div>
-  </li>
-</ul>
-  <button (click)="ajoutChantier()">ajout chantier</button>
-  <button (click)="goBack()">go back</button>
-  <button (click)="save()">save</button>
+
