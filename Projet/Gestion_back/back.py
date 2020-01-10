@@ -114,12 +114,25 @@ def return_table(name_table: str):
 def return_table_ouvrier_avec_chantiers():
     """
     Renvoie la liste de tous les ouvriers affecté à leur chantiers de la forme
-    [{"id_ouvrier": int, "name_ouvrier", text, "chantiers", list},]
+    [{"id_ouvrier": int, "name_ouvrier": text, "chantiers": list},]
     """
     ouvriers = return_table("ouvriers")
     for ouvrier in ouvriers:
         ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
     return ouvriers
+    
+def return_cluster_chantiers():
+    """
+    Renvoie un dictionnaire
+    """
+    chantiers = return_table("chantiers")
+    dictionnaire = {}
+    for chantier in chantiers:
+        if chantier["name_chantier"] in dictionnaire.keys(): 
+            dictionnaire[chantier["name_chantier"]].append(chantier)
+        else:
+             dictionnaire[chantier["name_chantier"]] = [chantier]
+    return dictionnaire
 
 def get_planning():
     """
