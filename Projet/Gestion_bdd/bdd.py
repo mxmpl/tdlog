@@ -135,6 +135,7 @@ def insert_attribution(new_attribution: dict):
         (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),
     )
     DB.commit()
+    
 def create_commande(name_table: str, id_ouv: int, id_chant: int):
     """
     Cree une commande utile pour d'autres fonctions.
@@ -412,17 +413,17 @@ ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
 
 insert_attribution(ATTRIBUTION)
 
-ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
+#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
+#
+#insert_attribution(ATTRIBUTION)
 
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
-
-insert_attribution(ATTRIBUTION)
+#ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
+#
+#insert_attribution(ATTRIBUTION)
+#
+#ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
+#
+#insert_attribution(ATTRIBUTION)
 
 ###############%%
 

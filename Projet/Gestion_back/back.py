@@ -125,7 +125,10 @@ def return_cluster_chantiers(id_ouv: int, champ_id_ouv = None):
     """
     Renvoie un dictionnaire
     {"Boulogne":[{"id_chantier": 1, "name_chantier":"Boulogne", "start":...},],
-    "Marseille":[{"id_chantier": 2, "name_chantier":"Marseille", "start":...},],}
+    "Marseille":[{"id_chantier": 2, "name_chantier":"Marseille", "start":...},],}. 
+    On laisse champ_id_ouv = None si on veut seulement les clusters de chantiers 
+    pour les chantiers possibles pour l'ouvrier id_ouv. Sinon on a tous les clusters
+    de tous les chantiers. 
     """
     if champ_id_ouv == None:
         chantiers = return_chantiers_possibles(id_ouv)
