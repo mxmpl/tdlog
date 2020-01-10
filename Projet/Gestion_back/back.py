@@ -260,16 +260,30 @@ def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
    ouvriers = return_table_ouvrier_avec_chantiers()
    return jsonify(ouvriers)
 
-@APP.route("/addOuvriers/", methods = ['POST'])
-def addOuvrier():
-    """
-    Attribue un ouvrier à un chantier.
-    """
-    data = request.get_json()
-    new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
-    global attribution
-    attribution.append(new_evenement)
-    return jsonify(attribution)
+@APP.route("/listeOuvriers/<id_ouvrier>/chantiersdispos", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def chantiers_dispos_ouvrier_id(id_ouvrier: str):
+   """
+   Actions sur un ouvrier donné :
+   affichage des noms des chantiers où il peut s'affilier
+   """
+   if request.method == "GET":
+       chantiers_dispos = return_cluster_chantiers(id_ouvrier)
+       return jsonify(chantiers_dispos)
+
+   ouvriers = return_table_ouvrier_avec_chantiers()
+   return jsonify(ouvriers)
+
+
+# @APP.route("/addOuvriers/", methods = ['POST'])
+# def addOuvrier():
+#     """
+#     Attribue un ouvrier à un chantier.
+#     """
+#     data = request.get_json()
+#     new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
+#     global attribution
+#     attribution.append(new_evenement)
+#     return jsonify(attribution)
 
 if __name__ == '__main__':
    APP.run(debug=True)
