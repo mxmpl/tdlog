@@ -27,17 +27,7 @@ export class CalendarComponent {
     this.calendarWeekends = !this.calendarWeekends;
   }
 
-  handleDateClick(arg) {
-    if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-      console.log('ok')
-    }
+  handleEventClick(arg) {
+      console.log('Evenement cliqué')
   }
-
-  handleEventDragStart(timeSheetEntry, jsEvent, ui, activeView) {
-   console.log('event drag start');
-  }
-  handleEventDragStop(timeSheetEntry, jsEvent, ui, activeView) {
-   console.log('event drag end');
-  }
-
 }

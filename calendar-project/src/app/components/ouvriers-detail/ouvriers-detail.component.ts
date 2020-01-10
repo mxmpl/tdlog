@@ -37,4 +37,8 @@ export class OuvrierDetailComponent implements OnInit {
     this.ouvrierService.updateOuvrier(this.ouvrier)
       .subscribe(() => this.goBack());
   }
+
+  ajoutChantier(): void {
+    this.ouvrierService.updateOuvrier(this.ouvrier)
+  }
 }

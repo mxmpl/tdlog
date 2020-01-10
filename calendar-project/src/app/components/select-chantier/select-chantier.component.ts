@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Ouvrier }         from '../../ouvrier';
 import { ChantierService } from '../../services/chantier.service';
 
@@ -8,7 +8,7 @@ import { ChantierService } from '../../services/chantier.service';
   styleUrls: ['./select-chantier.component.css']
 })
 export class SelectChantierComponent implements OnInit {
-  chantiers_dispos: Map<string,any[]>;
+  @Input() chantiers_dispos: Map<string,any[]>;
 
   constructor(private ouvrier: Ouvrier, private chantierService: ChantierService) { }
 
