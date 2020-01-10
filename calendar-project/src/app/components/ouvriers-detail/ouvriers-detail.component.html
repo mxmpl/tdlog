@@ -34,10 +34,10 @@
   </div>
 
   <div *ngIf="showDates" class = "column">
-      <h2>Dates de ce chantier</h2>
+      <h2 *ngIf="nom_choisi">Dates à {{nom_choisi| uppercase}}</h2>
       <div>
         <label>Chantiers:</label>
-        <ul *ngIf="nom_choisi" class="chantiers">
+        <ul class="chantiers">
           <li *ngFor="let chantier of chantiers_dispos[nom_choisi]">
               <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
             <div>De : {{chantier.start}} </div>
