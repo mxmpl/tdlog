@@ -1,1 +1,10 @@
-<p>select-chantier works!</p>
+<ul class="chantiers">
+  <li *ngFor="let chantier of ouvrier.chantiers">
+    <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
+      <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
+    </a>
+    <div>De : {{chantier.start}} </div>
+    <div>A : {{chantier.end}} </div>
+    <div>Adresse : {{chantier.adress}} </div>
+  </li>
+</ul>

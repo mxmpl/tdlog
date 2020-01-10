@@ -25,25 +25,6 @@
     <div>Adresse : {{chantier.adress}} </div>
   </li>
 </ul>
-
+  <!-- <button (click)= -->
   <button (click)="goBack()">go back</button>
   <button (click)="save()">save</button>
-
-<!-- <div *ngIf="ouvrier">
-
-<h2> Détails sur : {{ouvrier.ouvrier | uppercase}}</h2>
-<div>
-  <label>Nom:
-    <input [(ngModel)]="ouvrier.ouvrier" placeholder="nom"/>
-  </label>
-  <div><span>Chantier affecté: </span>{{ouvrier.chantier}}</div>
-  <div><span>Date début chantier: </span>{{ouvrier.start}}</div>
-  <div><span>Date fin chantier: </span>{{ouvrier.end}}</div>
-
-  <div *ngIf="ouvrier.chantier === ''">
-    <input #name_ouvrier placeholder="Entrez un chantier à affecter"/>
-    <button (click)='addChantier(name_ouvrier.value) ; name_ouvrier.value ="" '> Ajouter </button>
-  </div>
-</div>
-
-</div> -->

@@ -25,11 +25,11 @@ export class ChantierService {
     private http: HttpClient,
     private messageService: MessageService) { }
 
-  getChantiersDispos(id_ouvrier: number): Observable<Map<string,any[]>> {
-    return this.http.get<Map<string,any[]>>(this.listeOuvriersUrl+'${id_ouvrier}'+'/chantiersdispos')
+  getChantiersDispos(id_ouvrier: number): Observable<Map<string,Chantier[]>> {
+    return this.http.get<Map<string,Chantier[]>>(this.listeOuvriersUrl+'${id_ouvrier}'+'/chantiersdispos')
       .pipe(
         tap(_ => this.log('chantiers dispos récupérés')),
-        catchError(this.handleError<Ouvrier[]>('getChantiersDispos', []))
+        catchError(this.handleError<Map<string,Chantier[]>>('getChantiersDispos'))
       );
   }
 
@@ -57,6 +57,4 @@ export class ChantierService {
   private log(message: string) {
     this.messageService.add(`OuvrierService: ${message}`);
   }
-}
-
 }
