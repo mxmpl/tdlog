@@ -17,6 +17,7 @@ import { AppRoutingModule } from './modules/app-routing.module';
 import { MaterialModule } from './modules/material.module';
 import { OuvrierDetailComponent } from './components/ouvriers-detail/ouvriers-detail.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { SelectChantierComponent } from './components/select-chantier/select-chantier.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MessagesComponent } from './components/messages/messages.component';
     SidenavListComponent,
     ChantiersComponent,
     OuvrierDetailComponent,
-    MessagesComponent
+    MessagesComponent,
+    SelectChantierComponent
   ],
   imports: [
     BrowserModule,

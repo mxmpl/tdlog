@@ -15,10 +15,10 @@ export class OuvriersComponent implements OnInit {
   constructor(private ouvrierService: OuvrierService) { }
 
   ngOnInit() {
-    this.getHeroes();
+    this.getOuvriers();
   }
 
-  getHeroes(): void {
+  getOuvriers(): void {
     this.ouvrierService.getOuvriers()
     .subscribe(ouvriers => this.ouvriers = ouvriers);
   }
