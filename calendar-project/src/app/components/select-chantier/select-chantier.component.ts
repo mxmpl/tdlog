@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Ouvrier }         from '../../ouvrier';
 import { ChantierService } from '../../services/chantier.service';
 
@@ -10,14 +11,17 @@ import { ChantierService } from '../../services/chantier.service';
 export class SelectChantierComponent implements OnInit {
   @Input() chantiers_dispos: Map<string,any[]>;
 
-  constructor(private ouvrier: Ouvrier, private chantierService: ChantierService) { }
+  constructor(
+  	private route: ActivatedRoute,
+  	private chantierService: ChantierService) { }
 
   ngOnInit() {
   	this.getChantiersDispos();
   }
 
   getChantiersDispos(): void {
-  	this.chantierService.getChantiersDispos(this.ouvrier.id_ouvrier)
+  	const id = +this.route.snapshot.paramMap.get('id');
+  	this.chantierService.getChantiersDispos(id)
   		.subscribe(chantiers_dispos => this.chantiers_dispos = chantiers_dispos)
   }
 }

@@ -26,7 +26,8 @@ export class ChantierService {
     private messageService: MessageService) { }
 
   getChantiersDispos(id_ouvrier: number): Observable<Map<string,Chantier[]>> {
-    return this.http.get<Map<string,Chantier[]>>(this.listeOuvriersUrl+'${id_ouvrier}'+'/chantiersdispos')
+  	const url = `${this.listeOuvriersUrl}${id_ouvrier}/chantiersdispos`;
+    return this.http.get<Map<string,Chantier[]>>(url)
       .pipe(
         tap(_ => this.log('chantiers dispos récupérés')),
         catchError(this.handleError<Map<string,Chantier[]>>('getChantiersDispos'))

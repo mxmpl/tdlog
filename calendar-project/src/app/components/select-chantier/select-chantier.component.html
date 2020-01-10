@@ -1,5 +1,5 @@
-<ul class="chantiers">
-  <li *ngFor="let chantier of chantiers_dispo.chantiers">
+<ul *ngIf="chantiers_dispos" class="chantiers">
+  <li *ngFor="let chantier of chantiers_dispos.chantiers">
     <a routerLink="/dispos/{{chantier.id_chantier}}">
       <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
     </a>
