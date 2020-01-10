@@ -75,8 +75,8 @@ def del_data(name_table: str, id_ouv = None, id_chant = None):
     """
     Permet de supprimer un élément de la table à partir de son id.
     """
-    if bdd.id_in_table(name_table, id_ouv = id_ouvrier, id_chant = id_chantier):
-        bdd.del_data(name_table, id_ouv = id_ouvrier, id_chant = id_chantier)
+    if bdd.id_in_table(name_table, id_ouv = id_ouv, id_chant = id_chant):
+        bdd.del_data(name_table, id_ouv = id_ouv, id_chant = id_chant)
         return
     raise ex.invalid_id
 
