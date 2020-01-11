@@ -151,7 +151,7 @@ def resume_chantiers():
     ouvriers = return_table("ouvriers")
     chantiers = return_table("chantiers")
     attribution = return_table("attribution")
-    dictionnaire = {}
+    liste_chantier = []
     for name_chantier in chantiers_possibles.keys():
         dictionnaire_chantier = {}
         dictionnaire_chantier["adress"] = chantiers_possibles[name_chantier][0]["adress"]
@@ -159,6 +159,7 @@ def resume_chantiers():
         end = sorted(chantiers_possibles[name_chantier], key = lambda element: element["end"])[-1]["end"]
         dictionnaire_chantier["start"] = start
         dictionnaire_chantier["end"] = end
+        dictionnaire_chantier["name_chantier"] = name_chantier
         dictionnaire_chantier["ouvrier"] = []
         for chantier in chantiers:
             if chantier["name_chantier"] == name_chantier:
@@ -167,8 +168,8 @@ def resume_chantiers():
                     if dico in attribution:
                         dico["name_ouvrier"] = ouvrier["name_ouvrier"]
                         dictionnaire_chantier["ouvrier"].append(dico)
-        dictionnaire[name_chantier] = dictionnaire_chantier
-    return dictionnaire
+        liste_chantier.append(dictionnaire_chantier)
+    return liste_chantier
 
 def return_chantiers_possibles(id_ouv: int):
     """
