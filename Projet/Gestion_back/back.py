@@ -322,14 +322,12 @@ def liste_chantiers(): # NOM A CHANGER
    Renvoie la liste des chantiers
    """
    if request.method == "GET":
-       chantiers = return_table("chantiers")
+       chantiers = resume_chantiers()
        return jsonify(chantiers)
    elif request.method == "POST":
        data = request.get_json()
        set_new_chantier({"name_chantier":data["name_chantier"],"start":data["start"],"end":data["end"],"adress":data["adress"]})
-       chantiers = return_table("chantiers")
-       return jsonify(chantiers)
-   chantiers = return_table("chantiers")
+   chantiers = resume_chantiers()
    return jsonify(chantiers)
 
 @APP.route("/listeChantiers/<id_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
