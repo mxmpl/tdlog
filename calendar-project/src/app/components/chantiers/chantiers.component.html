@@ -1,17 +1,5 @@
 <h2>Nos chantiers</h2>
 
-<div>
-  <label>Ajouter un chantier:
-    <input #chantierName placeholder="Entrez un nom à ajouter"/>
-  </label>
-  <button (click)="add(chantierName.value); chantierName.value=''">
-    OK
-  </button>
-  <button (click)="ngOnInit()">
-    Mettre à jour
-  </button>
-</div>
-
 <ul class="chantiers">
   <li *ngFor="let chantier of chantiers">
     <a routerLink="/chantiers/detail/{{chantier.id_chantier}}">
@@ -21,6 +9,57 @@
       (click)="delete(chantier)">x</button> -->
   </li>
 </ul>
+<hr/>
+<div>
+    <h2>Ajouter un chantier: </h2>
+    <div>
+        <label>
+            Lieu :
+            <input #chantierName placeholder="Entrez un lieu"/>
+        </label>
 
+        <label>
+            Adresse :
+            <input #chantierAdress placeholder="Entrez une adresse"/>
+        </label>
+    </div>
+    
+    <div>
+        <label>
+            Déb.
+            <input #chantierStart type="date"/>
+           <!--  <div ng-controller="choixHeuresDeb">
+                <label>Heure de déb. : 
+                    <select ng-model="debut" ng-options="temps.deb for temps in choix"></select>
+                </label>
+            </div> -->
+        </label>
+
+        <label>Heure de déb. : 
+            <input #chantierStartTime placeholder="Entrez '8' ou '14'">
+        </label>
+    </div>
+    <div>
+        <label>
+            Fin..
+            <input #chantierEnd type="date"/>
+        </label>
+
+        <label>Heure de fin : 
+            <input #chantierEndTime placeholder="Entrez '12' ou '18'">
+        </label>
+    </div>
+        
+        
+
+    <button (click)="add(chantierName.value, chantierStart.value, chantierStartTime.value, chantierEnd.value, chantierEndTime.value, chantierAdress); chantierName.value=''">
+      OK
+    </button>
+    <button (click)="ngOnInit()">
+      Mettre à jour
+    </button>
+</div>
+
+<hr/>
 <app-messages></app-messages>
 

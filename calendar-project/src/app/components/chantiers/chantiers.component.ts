@@ -11,6 +11,8 @@ export class ChantiersComponent implements OnInit {
 
   chantiers: Chantier[]
 
+  choixHeuresDeb = {"choix":[{"deb":"8h"},{"deb":"14h"}],"debut":"8h","fin":"12h"} //en cours
+
   constructor(private chantierService: ChantierService) { }
 
   ngOnInit() {
@@ -22,10 +24,13 @@ export class ChantiersComponent implements OnInit {
     .subscribe(chantiers => this.chantiers = chantiers);
   }
 
-  add(name_chantier: string): void {
+  add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
     name_chantier = name_chantier.trim();
+    //start = start + " " + startTime + ":00:00";
+    //end = end + " " + endTime + ":00:00";
+    start = ""
     if (!name_chantier) { return; }
-    this.chantierService.addChantier({ name_chantier } as Chantier)
+    this.chantierService.addChantier({ name_chantier,start,end,adress } as Chantier)
       .subscribe(_ => this.getChantiers());
   }
 
