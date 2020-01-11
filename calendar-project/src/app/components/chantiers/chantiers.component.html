@@ -1,1 +1,26 @@
-<p>chantiers works!</p>
+<h2>Nos chantiers</h2>
+
+<div>
+  <label>Ajouter un chantier:
+    <input #chantierName placeholder="Entrez un nom à ajouter"/>
+  </label>
+  <button (click)="add(chantierName.value); chantierName.value=''">
+    OK
+  </button>
+  <button (click)="ngOnInit()">
+    Mettre à jour
+  </button>
+</div>
+
+<ul class="chantiers">
+  <li *ngFor="let chantier of chantiers">
+    <a routerLink="/chantiers/detail/{{chantier.id_chantier}}">
+      <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
+    </a>
+<!--     <button class="delete" title="delete chantier"
+      (click)="delete(chantier)">x</button> -->
+  </li>
+</ul>
+
+<app-messages></app-messages>
+

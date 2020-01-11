@@ -16,7 +16,7 @@ export class CalendarComponent {
   calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin];
   calendarWeekends = true;
   calendarEvents = {
-  	url: 'http://127.0.0.1:5000/listeChantiers/',
+  	url: 'http://127.0.0.1:5000/planning/',
 	color: 'yellow',
 	textColor: 'black'
   };

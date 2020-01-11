@@ -1,11 +1,56 @@
-.chantiers {
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+.column {
+float: left;
+width: 33.33%;
+}
+
+label {
+display: inline-block;
+width: 3em;
+margin: .5em 0;
+color: #607D8B;
+font-weight: bold;
+}
+
+input {
+height: 2em;
+font-size: 1em;
+padding-left: .4em;
+}
+
+button {
+margin-top: 20px;
+font-family: Arial;
+background-color: #eee;
+border: none;
+padding: 5px 10px;
+border-radius: 4px;
+cursor: pointer; cursor: hand;
+}
+
+button:hover {
+background-color: #cfd8dc;
+}
+
+button:disabled {
+background-color: #eee;
+color: #ccc;
+cursor: auto;
+}
+
+.ouvriers {
     margin: 0 0 2em 0;
     list-style-type: none;
     padding: 0;
     width: 15em;
 }
 
-.chantiers li {
+.ouvriers li {
 position: relative;
 cursor: pointer;
 background-color: #EEE;
@@ -15,13 +60,13 @@ height: 1.6em;
 border-radius: 4px;
 }
 
-.chantiers li:hover {
+.ouvriers li:hover {
 color: #607D8B;
 background-color: #DDD;
 left: .1em;
 }
 
-.chantiers a {
+.ouvriers a {
 color: #333;
 text-decoration: none;
 position: relative;
@@ -29,11 +74,11 @@ display: block;
 width: 250px;
 }
 
-.chantiers a:hover {
+.ouvriers a:hover {
 color:#607D8B;
 }
 
-.chantiers .badge {
+.ouvriers .badge {
 display: inline-block;
 font-size: small;
 color: white;
@@ -48,26 +93,4 @@ min-width: 16px;
 text-align: right;
 margin-right: .8em;
 border-radius: 4px 0 0 4px;
-}
-
-button {
-background-color: #eee;
-border: none;
-padding: 5px 10px;
-border-radius: 4px;
-cursor: pointer;
-cursor: hand;
-font-family: Arial;
-}
-
-button:hover {
-background-color: #cfd8dc;
-}
-
-button.delete {
-position: relative;
-left: 194px;
-top: -32px;
-background-color: gray !important;
-color: white;
 }
