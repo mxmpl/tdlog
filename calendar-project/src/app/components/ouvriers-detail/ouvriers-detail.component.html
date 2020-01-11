@@ -39,10 +39,12 @@
         <label>Chantiers:</label>
         <ul class="chantiers">
           <li *ngFor="let chantier of chantiers_dispos[nom_choisi]">
+            <div (click)="addAttribution(chantier)">
               <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
             <div>De : {{chantier.start}} </div>
             <div>A : {{chantier.end}} </div>
             <div>Adresse : {{chantier.adress}} </div>
+          </div>
           </li>
         </ul>
       </div>

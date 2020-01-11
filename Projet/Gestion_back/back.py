@@ -279,6 +279,14 @@ def chantiers_dispos_ouvrier_id(id_ouvrier: str):
    ouvriers = return_table_ouvrier_avec_chantiers()
    return jsonify(ouvriers)
 
+@APP.route("/attribution/", methods=['POST'])
+def nouvelle_attribution():
+  """
+  Nouvelle attribution d'un ouvrier sur un chantier
+  """
+  set_new_attribution(request.get_json())
+  return jsonify(0)
+
 
 # @APP.route("/addOuvriers/", methods = ['POST'])
 # def addOuvrier():

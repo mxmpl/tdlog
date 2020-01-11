@@ -14,7 +14,7 @@ import { MessageService } from './message.service';
 })
 export class ChantierService {
 
-  private listeChantiersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
+  private nouvelleAttributionUrl = 'http://127.0.0.1:5000/attribution/';
   private listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
 
   httpOptions = {
@@ -32,6 +32,15 @@ export class ChantierService {
         tap(_ => this.log('chantiers dispos récupérés')),
         catchError(this.handleError<Map<string,Chantier[]>>('getChantiersDispos'))
       );
+  }
+
+  addAttribution(ouvrier: Ouvrier, chantier: Chantier): Observable<Ouvrier>  {
+    const id_ouvrier = ouvrier.id_ouvrier;
+    const id_chantier = chantier.id_chantier;
+    return this.http.post<Ouvrier>(this.nouvelleAttributionUrl, {id_ouvrier, id_chantier}, this.httpOptions).pipe(
+      tap((newOuvrier: Ouvrier) => this.log(`attribution ajoute`)),//, w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
+      catchError(this.handleError<Ouvrier>('addAttribution'))
+    );
   }
 
     /**

@@ -66,4 +66,9 @@ export class OuvrierDetailComponent implements OnInit {
     this.showDates = true;
     this.nom_choisi = nom_chantier;
   }
+
+  addAttribution(chantier: Chantier): void {
+    this.chantierService.addAttribution(this.ouvrier, chantier)
+      .subscribe(_ => this.ouvrierService.updateOuvrier(this.ouvrier));
+  }
 }
