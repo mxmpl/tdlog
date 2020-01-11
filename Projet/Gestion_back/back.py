@@ -8,6 +8,10 @@ Le but de ce script python est de traiter la partie back du site.
 
 Fichier conforme à la norme PEP8.
 """
+#############%% Module utiles
+
+import datetime 
+import copy
 
 #############%% Module sys
 
@@ -29,6 +33,14 @@ from Gestion_bdd import exception as ex
 
 APP = Flask(__name__)
 CORS(APP)  # Creation du site
+
+#############%% Constantes
+
+HEURES_DEBUT = {"debut_matin": datetime.datetime(1900, 1, 1, 8, 0), "debut_aprem": datetime.datetime(1900, 1, 1, 14, 0)} 
+#Le 1er janvier 1900 est une date fictive pour avoir un type datetime plutôt que time qui permet moins d'opérations
+HEURES_FIN = {"fin_matin": datetime.datetime(1900, 1, 1, 12, 0), "fin_aprem" : datetime.datetime(1900, 1, 1, 18, 0)}
+NB_LIMITE_JOURS = 25
+FORMAT_DATE = "%Y-%m-%d %H:%M:%S"
 
 #############%% Fonctions du back
 
@@ -80,6 +92,69 @@ def del_data(name_table: str, id_ouv = None, id_chant = None):
         return
     raise ex.invalid_id
 
+
+def decoup_new_chantier(dict_new_chantier: dict): 
+    """
+    Permet à partir d'un dictionnaire d'informations d'un chantier 
+    {"name_chantier": text, "start": text, "end": text, "adress": text}, 
+    de découper ce chantier en demi-journées et de 
+    renvoyer une liste de dictionnaire 
+    [{"name_chantier": text, "start": text, "end": text, "adress": text},] 
+    de ce chantier par demi-journées.
+    """
+    # Dates ou durées utiles
+    transition_matin_aprem = HEURES_DEBUT["debut_aprem"] - HEURES_DEBUT["debut_matin"]
+    transition_aprem_matin = datetime.timedelta(days=1) - transition_matin_aprem
+    duree_matin = HEURES_FIN["fin_matin"]-HEURES_DEBUT["debut_matin"]
+    duree_aprem = HEURES_FIN["fin_aprem"]-HEURES_DEBUT["debut_aprem"]
+    date_debut = datetime.datetime.strptime(dict_new_chantier["start"], FORMAT_DATE)
+    date_fin = datetime.datetime.strptime(dict_new_chantier["end"], FORMAT_DATE)
+    # Liste de dictionnaires renvoyée à la fin
+    list_dict_new_chantiers = [] # correspond à la liste des dictionnaires du chantier découpé en demi-journées
+    # Vérification de la conformité des entrées 
+    if(date_debut >= date_fin): 
+        raise ex.invalid_dates
+    if(date_debut.hour != HEURES_DEBUT["debut_matin"].hour and date_debut.hour != HEURES_DEBUT["debut_aprem"].hour): 
+        raise ex.invalid_dates
+    if(date_fin.hour != HEURES_FIN["fin_matin"].hour and date_fin.hour != HEURES_FIN["fin_aprem"].hour): 
+        raise ex.invalid_dates
+    # On enregistre l'heure de début de la dernière matinée
+    if date_fin.hour == HEURES_FIN["fin_matin"].hour:
+        heure_debut_fin = date_fin - duree_matin
+        heure_fin_fin = heure_debut_fin + transition_matin_aprem
+    elif date_fin.hour == HEURES_FIN["fin_aprem"].hour:
+        heure_debut_fin = date_fin - duree_aprem
+        heure_fin_fin = heure_debut_fin + transition_aprem_matin
+    # On découpe 
+    for i in range(1,2*NB_LIMITE_JOURS+1):
+        dic_chantier = copy.deepcopy(dict_new_chantier)
+        if(date_debut <= heure_debut_fin):
+            dic_chantier["start"]=date_debut.strftime(FORMAT_DATE)
+            if(date_debut.hour == HEURES_DEBUT["debut_matin"].hour): 
+                dic_chantier["end"]=(date_debut+ duree_matin).strftime(FORMAT_DATE)
+                date_debut += transition_matin_aprem
+            elif(date_debut.hour == HEURES_DEBUT["debut_aprem"].hour):
+                dic_chantier["end"]=(date_debut+ duree_aprem).strftime(FORMAT_DATE)
+                date_debut += transition_aprem_matin
+            list_dict_new_chantiers.append(dic_chantier)
+        else: 
+            break
+    if(date_debut == heure_fin_fin):
+        return list_dict_new_chantiers
+    else: 
+        raise ex.overlimit_date
+        
+def declare_new_chantier(dict_new_chantier: dict): 
+    """
+    Prend en argument un dictionnaire d'un chantier 
+    tel que {"name_chantier": text, "start": text, "end": text, "adress": text}. 
+    Le chantier peut être étendue sur plusieurs journées, il est redécoupé
+    en demi-journées et enregistrer dans la base de données.
+    """
+    list_new_chantiers = decoup_new_chantier(dict_new_chantier)
+    for chantier in list_new_chantiers:
+        set_new_chantier(chantier)
+        
 ########%% GET
 
 def get_info_from_id_ouvrier(id_ouv: int):

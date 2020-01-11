@@ -15,10 +15,10 @@ if __name__ == '__main__':
     
     print("\n-----------INSERTIONS------------")
     
-    set_new_chantier({
+    declare_new_chantier({
         "name_chantier": "TEST",
-        "start": "2020-10-09 08:00:00",
-        "end": "2020-10-09 12:00:00",
+        "start": "2020-10-10 08:00:00",
+        "end": "2020-11-12 18:00:00",
         "adress": "TEST",
     })
     
