@@ -260,7 +260,7 @@ def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
        return jsonify(ouvrier)
    if request.method == "PUT":
        data = request.get_json()
-       modify_data("ouvrier", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
+       modify_data("ouvriers", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
    elif request.method == "DELETE":
        del_data("ouvriers", id_ouv = int(id_ouvrier))
    ouvriers = return_table_ouvrier_avec_chantiers()
