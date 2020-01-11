@@ -330,14 +330,14 @@ def liste_chantiers(): # NOM A CHANGER
    chantiers = resume_chantiers()
    return jsonify(chantiers)
 
-@APP.route("/listeChantiers/<id_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def chantier_id(id_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+@APP.route("/listeChantiers/<name_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def chantier_id(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
    """
    Action sur un chantier donné :
    informations.
    """
    if request.method == "GET":
-       chantier = get_info_from_id_chantier(int(id_chantier))
+       chantier = get_info_from_id_chantier(1)
        chantier["ouvriers"] = [get_info_from_id_ouvrier(1)]
        return jsonify(chantier)
    # if request.method == "PUT":
