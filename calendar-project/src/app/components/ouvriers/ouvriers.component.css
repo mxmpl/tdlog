@@ -52,8 +52,10 @@
 button {
   background-color: #eee;
   border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
+  padding: 0.8em 0.7em 0.7em 0.7em;
+  border-radius: 0 4px 4px 0;
+  margin-left: .8em;
+  line-height: 1em;
   cursor: pointer;
   cursor: hand;
   font-family: Arial;
@@ -64,9 +66,9 @@ button:hover {
 }
 
 button.delete {
-  position: relative;
-  left: 194px;
-  top: -32px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
   background-color: gray !important;
   color: white;
 }
