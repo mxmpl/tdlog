@@ -121,19 +121,19 @@ def return_table_ouvrier_avec_chantiers():
         ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
     return ouvriers
     
-def return_cluster_chantiers(id_ouv: int, champ_id_ouv = None):
+def return_cluster_chantiers(id_ouv = None):
     """
     Renvoie un dictionnaire
     {"Boulogne":[{"id_chantier": 1, "name_chantier":"Boulogne", "start":...},],
     "Marseille":[{"id_chantier": 2, "name_chantier":"Marseille", "start":...},],}. 
-    On laisse champ_id_ouv = None si on veut seulement les clusters de chantiers 
+    On précise id_ouv si on veut seulement les clusters de chantiers 
     pour les chantiers possibles pour l'ouvrier id_ouv. Sinon on a tous les clusters
     de tous les chantiers. 
     """
-    if champ_id_ouv == None:
-        chantiers = return_chantiers_possibles(id_ouv)
-    else:
+    if id_ouv == None:
         chantiers = return_table("chantiers")
+    else:
+        chantiers = return_chantiers_possibles(id_ouv)
     dictionnaire = {}
     for chantier in chantiers:
         if chantier["name_chantier"] in dictionnaire.keys(): 
