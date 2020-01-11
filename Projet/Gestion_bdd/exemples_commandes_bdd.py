@@ -60,7 +60,7 @@ from bdd import *
 
 #print("On retourne les tables")
 # print(return_table_ouvrier())
-#print(return_table("chantiers"))
+print(return_table_chantier())
 #print(return_table("attribution"))
 #
 #print("get_info_from_id_chantier", get_info_from_id_chantier(1))

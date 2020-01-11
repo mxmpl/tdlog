@@ -13,6 +13,7 @@ Fichier conforme à la norme PEP8.
 ############################%% Import des bibliothèques utiles
 
 import sqlite3
+import threading
 
 ############################%% Création des bases de données
 
@@ -63,7 +64,7 @@ def commit_condition(command: str):
     CURSOR.execute(command)
     DB.commit()
 
-
+lock = threading.Lock()
 def select_condition(
         command: str
 ):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
@@ -71,8 +72,12 @@ def select_condition(
     Permet à partir d'une commande d'enregistrer les informations
     correspondantes de la base de données.
     """
-    commit_condition(command)
-    rows = CURSOR.fetchall()
+    try:
+        lock.acquire(True)
+        commit_condition(command)
+        rows = CURSOR.fetchall()
+    finally:
+        lock.release()
     sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie
     for row in rows:
         sortie.append(list(row[:]))
