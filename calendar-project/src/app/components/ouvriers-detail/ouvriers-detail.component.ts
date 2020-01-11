@@ -17,7 +17,6 @@ export class OuvrierDetailComponent implements OnInit {
   @Input() chantiers_dispos: Map<string,Chantier[]>;
   nom_choisi: string;
   show: boolean = false;
-  showDates: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,16 +58,19 @@ export class OuvrierDetailComponent implements OnInit {
   toggleChantiersDispos(): void {
     this.ouvrierService.updateOuvrier(this.ouvrier);
     this.show = !this.show;
-    this.showDates = false;
   }
 
   selectChantier(nom_chantier: string): void{
-    this.showDates = true;
+    this.show = true;
     this.nom_choisi = nom_chantier;
   }
 
   addAttribution(chantier: Chantier): void {
     this.chantierService.addAttribution(this.ouvrier, chantier)
-      .subscribe(_ => this.ouvrierService.updateOuvrier(this.ouvrier));
+      .subscribe(_ => this.goBack());
+  }
+
+  deleteAttribution(chantier: Chantier): void{
+    
   }
 }

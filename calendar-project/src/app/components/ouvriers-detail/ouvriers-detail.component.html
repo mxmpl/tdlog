@@ -2,7 +2,7 @@
 
   <div *ngIf="ouvrier" class = "column">
       <h2>Détails sur {{ouvrier.name_ouvrier | uppercase}}</h2>
-      <div><label>id: </label>{{ouvrier.id_ouvrier}}</div>
+      <div><label>id: </label>{{ouvrier.id_ouvrier}}</div> 
       <div>
         <label>Nom:
           <input [(ngModel)]="ouvrier.name_ouvrier" placeholder="name_ouvrier"/>
@@ -12,28 +12,31 @@
         <label>Chantiers:</label>
         <ul class="chantiers">
           <li *ngFor="let chantier of ouvrier.chantiers">
-              <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
+            <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
+            <button class="delete" (click)="deleteAttribution(chantier)">x</button>
             <div>De : {{chantier.start}} </div>
             <div>A : {{chantier.end}} </div>
             <div>Adresse : {{chantier.adress}} </div>
           </li>
         </ul>
       </div>
-      <button (click)="toggleChantiersDispos()">ajout chantier</button>
-      <button (click)="goBack()">go back</button>
-      <button (click)="save()">save</button>
-  </div>
+      <button (click)="goBack()">Retour</button>
+      <button (click)="save()">Save</button>
+<!--       <button (click)="toggleChantiersDispos()">Assigner à un chantier</button>
+ -->  </div>
 
-  <div *ngIf="show" class = "column">
+  <div class = "column">
       <h2>Chantiers disponibles</h2>
-      <ul *ngIf="chantiers_dispos" class="chantiers">
+      <ul *ngIf="chantiers_dispos" class="noms_chantiers">
         <li *ngFor="let name of getNames()">
-          <div (click)="selectChantier(name)">{{name}}</div>
+          <div (click)="selectChantier(name)">
+            <span class="badge">0</span> {{name}}
+          </div>
         </li>
       </ul>
   </div>
 
-  <div *ngIf="showDates" class = "column">
+  <div *ngIf="show" class = "column">
       <h2 *ngIf="nom_choisi">Dates à {{nom_choisi| uppercase}}</h2>
       <div>
         <label>Chantiers:</label>
