@@ -77,3 +77,4 @@ if __name__ == '__main__':
     print(get_info_from_id_chantier(1))
     print(return_cluster_chantiers(1))
     print(return_cluster_chantiers())
+    print(resume_chantiers())

@@ -279,7 +279,7 @@ def get_planning_individuel(id_ouv: int):
 
 def return_table_chantier():
     """
-    Renvoie toute la table chantiers sous forme d'une liste de dictionnaire :
+    Renvoie toute la table chantiers triés par date sous forme d'une liste de dictionnaire :
     [{"id_chantier": int, "name_chantier": text, "start": text, "end": text, "adress": text},].
     """
     informations = select_condition(
@@ -385,6 +385,15 @@ CHANTIER = {
 insert_chantier(CHANTIER)
 
 CHANTIER = {
+    "name_chantier": "Paris",
+    "start": "2016-10-10 08:00:00",
+    "end": "2016-10-10 12:00:00",
+    "adress": "20 rue des lillas",
+}
+
+insert_chantier(CHANTIER)
+
+CHANTIER = {
     "name_chantier": "Marseille",
     "start": "2018-10-09 08:00:00",
     "end": "2018-10-09 12:00:00",
@@ -418,17 +427,17 @@ ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
 
 insert_attribution(ATTRIBUTION)
 
-#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
-#
-#insert_attribution(ATTRIBUTION)
+ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
 
-#ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
-#
-#insert_attribution(ATTRIBUTION)
-#
-#ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
-#
-#insert_attribution(ATTRIBUTION)
+insert_attribution(ATTRIBUTION)
+
+ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
+
+insert_attribution(ATTRIBUTION)
+
+ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
+
+insert_attribution(ATTRIBUTION)
 
 ###############%%
 
