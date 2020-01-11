@@ -36,7 +36,11 @@
         </label>
 
         <label>Heure de déb. : 
-            <input #chantierStartTime placeholder="Entrez '8' ou '14'">
+            <!-- <input #chantierStartTime placeholder="Entrez '8' ou '14'"> -->
+            <mat-radio-group [(ngModel)]="heureDeb">
+                <mat-radio-button class="example-margin" value="08">8h</mat-radio-button>
+                <mat-radio-button class="example-margin" value="14">14h</mat-radio-button>
+            </mat-radio-group>
         </label>
     </div>
     <div>
@@ -45,17 +49,22 @@
             <input #chantierEnd type="date"/>
         </label>
 
-        <label>Heure de fin : 
-            <input #chantierEndTime placeholder="Entrez '12' ou '18'">
+        <label>Heure de fin... : 
+            <mat-radio-group [(ngModel)]="heureFin">
+                <mat-radio-button class="example-margin" value="12">12h</mat-radio-button>
+                <mat-radio-button class="example-margin" value="18">18h</mat-radio-button>
+            </mat-radio-group>
         </label>
     </div>
         
         
 
-    <button (click)="add(chantierName.value, chantierStart.value, chantierStartTime.value, chantierEnd.value, chantierEndTime.value, chantierAdress.value); chantierName.value=''">
+    <button (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value); chantierName.value=''">
       OK
     </button>
 </div>
+
+  
 
 <hr/>
 <app-messages></app-messages>

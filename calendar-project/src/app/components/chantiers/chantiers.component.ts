@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chantier } from 'src/app/chantier';
 import { ChantierService } from 'src/app/services/chantier.service';
 
+
 @Component({
   selector: 'app-chantiers',
   templateUrl: './chantiers.component.html',
@@ -11,7 +12,8 @@ export class ChantiersComponent implements OnInit {
 
   chantiers: Chantier[]
 
-  choixHeuresDeb = {"choix":[{"deb":"8h"},{"deb":"14h"}],"debut":"8h","fin":"12h"} //en cours
+  heureDeb = "08";
+  heureFin = "12";
 
   constructor(private chantierService: ChantierService) { }
 
@@ -38,5 +40,7 @@ export class ChantiersComponent implements OnInit {
     this.chantiers = this.chantiers.filter(o => o !== chantier);
     this.chantierService.deleteChantier(chantier).subscribe();
   } */
+
+  
 
 }
