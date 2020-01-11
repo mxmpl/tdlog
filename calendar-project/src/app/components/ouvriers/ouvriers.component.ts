@@ -30,9 +30,10 @@ export class OuvriersComponent implements OnInit {
       .subscribe(_ => this.getOuvriers());
   }
 
-  delete(ouvrier: Ouvrier): void {
+  delete(ouvrier: Ouvrier){
+    if (confirm('Voulez-vous supprimer '+ouvrier.name_ouvrier+' ?')) {
     this.ouvriers = this.ouvriers.filter(o => o !== ouvrier);
     this.ouvrierService.deleteOuvrier(ouvrier).subscribe();
+    }
   }
-
 }

@@ -14,7 +14,7 @@ import { MessageService } from './message.service';
 })
 export class ChantierService {
 
-  private nouvelleAttributionUrl = 'http://127.0.0.1:5000/attribution/';
+  private attributionUrl = 'http://127.0.0.1:5000/attribution/';
   private listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
   private listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/'
 
@@ -76,11 +76,23 @@ export class ChantierService {
   addAttribution(ouvrier: Ouvrier, chantier: Chantier): Observable<Ouvrier>  {
     const id_ouvrier = ouvrier.id_ouvrier;
     const id_chantier = chantier.id_chantier;
-    return this.http.post<Ouvrier>(this.nouvelleAttributionUrl, {id_ouvrier, id_chantier}, this.httpOptions).pipe(
+    return this.http.post<Ouvrier>(this.attributionUrl, {id_ouvrier, id_chantier}, this.httpOptions).pipe(
       tap((newOuvrier: Ouvrier) => this.log(`attribution ajoute`)),//, w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
       catchError(this.handleError<Ouvrier>('addAttribution'))
     );
   }
+
+  deleteAttribution(ouvrier: Ouvrier, chantier: Chantier) {
+    //: Observable<Ouvrier>  {
+    // const id_ouvrier = ouvrier.id_ouvrier;
+    // const id_chantier = chantier.id_chantier;
+    // const url = `${this.attributionUrl}${id_ouvrier}/${id_chantier}`;
+    // return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
+    //   tap((newOuvrier: Ouvrier) => this.log(`attribution ajoute`)),//, w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
+    //   catchError(this.handleError<Ouvrier>('addAttribution'))
+    // );
+  }
+
 
     /**
    * Handle Http operation that failed.
