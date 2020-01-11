@@ -11,7 +11,7 @@
 </ul>
 <hr/>
 <div>
-    <h2>Ajouter un chantier: </h2>
+    <h2>Ajouter un chantier</h2>
     <div>
         <label>
             Lieu :
@@ -52,11 +52,8 @@
         
         
 
-    <button (click)="add(chantierName.value, chantierStart.value, chantierStartTime.value, chantierEnd.value, chantierEndTime.value, chantierAdress); chantierName.value=''">
+    <button (click)="add(chantierName.value, chantierStart.value, chantierStartTime.value, chantierEnd.value, chantierEndTime.value, chantierAdress.value); chantierName.value=''">
       OK
-    </button>
-    <button (click)="ngOnInit()">
-      Mettre à jour
     </button>
 </div>
 

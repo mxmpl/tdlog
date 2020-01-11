@@ -26,9 +26,9 @@ export class ChantiersComponent implements OnInit {
 
   add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
     name_chantier = name_chantier.trim();
-    //start = start + " " + startTime + ":00:00";
-    //end = end + " " + endTime + ":00:00";
-    start = ""
+    start = start + " " + startTime + ":00:00";
+    end = end + " " + endTime + ":00:00";
+  
     if (!name_chantier) { return; }
     this.chantierService.addChantier({ name_chantier,start,end,adress } as Chantier)
       .subscribe(_ => this.getChantiers());
