@@ -315,7 +315,7 @@ def nouvelle_attribution():
   set_new_attribution(request.get_json())
   return jsonify(0)
 
-@APP.route("/listeChantiers/", methods=['GET'])
+@APP.route("/listeChantiers/", methods=['GET','POST'])
 def liste_chantiers(): # NOM A CHANGER
    """
    Renvoie la liste des chantiers
@@ -324,7 +324,8 @@ def liste_chantiers(): # NOM A CHANGER
        chantiers = return_table("chantiers")
        return jsonify(chantiers)
    elif request.method == "POST":
-       set_new_chantier({"name_chantier":"Champs","start":"2020-01-07","end":"2020-01-09","adress":"23 avenue ampere"})
+       data = request.get_json()
+       set_new_chantier({"name_chantier":data["name_chantier"],"start":data["start"],"end":data["end"],"adress":data["adress"]})
        chantiers = return_table("chantiers")
        return jsonify(chantiers)
    chantiers = return_table("chantiers")
