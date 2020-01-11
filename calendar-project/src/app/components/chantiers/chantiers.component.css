@@ -8,11 +8,11 @@
 .chantiers li {
 position: relative;
 cursor: pointer;
-background-color: #EEE;
+background-color: rgb(226, 237, 241);
 margin: .5em;
-padding: .3em 0;
+padding: .6em 0.8em;
 height: 1.6em;
-border-radius: 4px;
+border-radius: 7px;
 }
 
 .chantiers li:hover {

@@ -141,7 +141,7 @@ def return_cluster_chantiers(id_ouv = None):
         else:
              dictionnaire[chantier["name_chantier"]] = [chantier]
     return dictionnaire
-    
+
 def resume_chantiers():
     """
     Revoie une liste de dictionnaires de la forme :
@@ -161,14 +161,14 @@ def resume_chantiers():
         end = sorted(chantiers_possibles[name_chantier], key = lambda element: element["end"])[-1]["end"]
         dictionnaire_chantier["start"] = start
         dictionnaire_chantier["end"] = end
-        dictionnaire_chantier["ouvrier"] = []
+        dictionnaire_chantier["ouvriers"] = []
         for chantier in chantiers:
             if chantier["name_chantier"] == name_chantier:
                 for ouvrier in ouvriers:
                     dico = {"id_ouvrier": ouvrier["id_ouvrier"], "id_chantier": chantier["id_chantier"]}
                     if dico in attribution:
                         dico["name_ouvrier"] = ouvrier["name_ouvrier"]
-                        dictionnaire_chantier["ouvrier"].append(dico)
+                        dictionnaire_chantier["ouvriers"].append(dico)
         # liste_chantier.append(dictionnaire_chantier)
         dictionnaire[name_chantier] = dictionnaire_chantier
     # return liste_chantier
@@ -326,7 +326,11 @@ def liste_chantiers(): # NOM A CHANGER
    """
    if request.method == "GET":
        chantiers = resume_chantiers()
-       return jsonify(chantiers)
+       listeChantiers = []
+       for cle in chantiers:
+           chantiers[cle]["name_chantier"] = str(cle)
+           listeChantiers.append(chantiers[cle])
+       return jsonify(listeChantiers)
    elif request.method == "POST":
        data = request.get_json()
        set_new_chantier({"name_chantier":data["name_chantier"],"start":data["start"],"end":data["end"],"adress":data["adress"]})
@@ -340,8 +344,8 @@ def chantier_id(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGE
    informations.
    """
    if request.method == "GET":
-       chantier = get_info_from_id_chantier(1)
-       chantier["ouvriers"] = [get_info_from_id_ouvrier(1)]
+       chantier = resume_chantiers()[name_chantier]
+       chantier["name_chantier"] = name_chantier
        return jsonify(chantier)
    # if request.method == "PUT":
    #     data = request.get_json()

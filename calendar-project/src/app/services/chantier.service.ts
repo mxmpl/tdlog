@@ -37,11 +37,11 @@ export class ChantierService {
   }
 
   /** GET chantier by id. Will 404 if id not found */
-  getChantier(id_chantier: number): Observable<Chantier> {
-    const url = `${this.listeChantiersUrl}${id_chantier}`;
+  getChantier(name_chantier: string): Observable<Chantier> {
+    const url = `${this.listeChantiersUrl}${name_chantier}`;
     return this.http.get<Chantier>(url).pipe(
-      tap(_ => this.log(`fetched chantier id_chantier=${id_chantier}`)),
-      catchError(this.handleError<Chantier>(`getChantier id_chantier=${id_chantier}`))
+      tap(_ => this.log(`fetched chantier name_chantier=${name_chantier}`)),
+      catchError(this.handleError<Chantier>(`getChantier name_chantier=${name_chantier}`))
     );
   }
 

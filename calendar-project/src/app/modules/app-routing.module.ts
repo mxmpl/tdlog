@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/calendar', pathMatch:'full'},
   { path: 'calendar', component: CalendarComponent },
   { path: 'detail/:id', component: OuvrierDetailComponent },
-  { path: 'chantiers/detail/:id', component: ChantierDetailComponent },
+  { path: 'chantiers/detail/:name', component: ChantierDetailComponent },
   { path: 'ouvriers', component: OuvriersComponent },
   { path: 'chantiers', component: ChantiersComponent},
   { path: 'ouvriers-detail', component: OuvrierDetailComponent},
