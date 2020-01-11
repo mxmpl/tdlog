@@ -227,8 +227,8 @@ def index():
    """
    return "Welcome"
 
-@APP.route("/listeChantiers/", methods=['GET'])
-def ListeChantiers(): # NOM A CHANGER
+@APP.route("/planning/", methods=['GET'])
+def planning(): # NOM A CHANGER
    """
    Associe les chantiers aux ouvriers.
    """
@@ -286,6 +286,32 @@ def nouvelle_attribution():
   """
   set_new_attribution(request.get_json())
   return jsonify(0)
+
+@APP.route("/listeChantiers/", methods=['GET'])
+def liste_chantiers(): # NOM A CHANGER
+   """
+   Associe les chantiers aux ouvriers.
+   """
+   chantiers = return_table("chantiers")
+   return jsonify(chantiers)
+
+@APP.route("/listeChantiers/<id_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def chantier_id(id_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+   """
+   Action sur un chantier donné :
+   informations.
+   """
+   if request.method == "GET":
+       chantier = get_info_from_id_chantier(int(id_chantier))
+       chantier["ouvriers"] = [get_info_from_id_ouvrier(1)]
+       return jsonify(chantier)
+   # if request.method == "PUT":
+   #     data = request.get_json()
+   #     modify_data("ouvriers", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
+   # elif request.method == "DELETE":
+   #     del_data("ouvriers", id_ouv = int(id_ouvrier))
+   chantiers = return_table("chantiers")
+   return jsonify(chantiers)
 
 
 # @APP.route("/addOuvriers/", methods = ['POST'])
