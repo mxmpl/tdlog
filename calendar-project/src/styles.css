@@ -12,3 +12,7 @@ html, body {
     height: 100%;
     font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
+
+.mat-icon-button:hover .mat-button-focus-overlay {
+  opacity: .1 !important;
+}
