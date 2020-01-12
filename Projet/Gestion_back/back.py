@@ -344,7 +344,7 @@ def index():
    return "Welcome"
 
 @APP.route("/planning/", methods=['GET'])
-def planning(): # NOM A CHANGER
+def planning(): 
    """
    Associe les chantiers aux ouvriers.
    """
@@ -354,7 +354,7 @@ def planning(): # NOM A CHANGER
    return jsonify(attribution)
 
 @APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def ListeOuvriers(): # NOM A CHANGER
+def liste_ouvriers(): # NOM A CHANGER
    """
    Ajout d'un nouvel ouvrier.
    """
@@ -365,7 +365,7 @@ def ListeOuvriers(): # NOM A CHANGER
    return jsonify(ouvriers)
 
 @APP.route("/listeOuvriers/<id_ouvrier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def OuvrierId(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+def ouvrier_id(id_ouvrier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
    """
    Actions sur un ouvrier donné :
    informations, modification du nom ou suppression.
@@ -404,7 +404,7 @@ def nouvelle_attribution():
   return jsonify(0)
 
 @APP.route("/listeChantiers/", methods=['GET','POST'])
-def liste_chantiers(): # NOM A CHANGER
+def liste_chantiers():
    """
    Renvoie la liste des chantiers
    """
@@ -419,13 +419,12 @@ def liste_chantiers(): # NOM A CHANGER
        data = request.get_json()
        dateStart = data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
        dateEnd = data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
-       #set_new_chantier({"name_chantier":data["name_chantier"],"start":dateStart,"end":dateEnd,"adress":data["adress"]})
        declare_new_chantier({"name_chantier":data["name_chantier"],"start":dateStart,"end":dateEnd,"adress":data["adress"]})
    chantiers = resume_chantiers()
    return jsonify(chantiers)
 
 @APP.route("/listeChantiers/<name_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def chantier_name(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+def chantier_name(name_chantier: str):
    """
    Action sur un chantier donné :
    informations.
@@ -434,33 +433,15 @@ def chantier_name(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHAN
        chantier = resume_chantiers()[name_chantier]
        chantier["name_chantier"] = name_chantier
        for dicoOuvrier in chantier["ouvriers"]:
-           dicoOuvrier["chantiers"] = [get_info_from_id_chantier(dicoOuvrier["id_chantier"])]
+           dicoOuvrier["chantiers"] = []
+           for idChantier in dicoOuvrier["id_chantier"]:
+               dicoOuvrier["chantiers"].append(get_info_from_id_chantier(idChantier))
        return jsonify(chantier)
-   # if request.method == "PUT":
-   #     data = request.get_json()
-   #     modify_data("ouvriers", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
    elif request.method == "DELETE":
        #del_data("ouvriers", id_ouv = int(id_ouvrier))
        rien = []
    chantiers = return_table("chantiers")
    return jsonify(chantiers)
-
-# @APP.route("/listeChantiers/horaires/<id_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-# def chantier_id(id_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
-#    """
-#    Action sur un chantier donné :
-#    informations.
-#    """
-#    if request.method == "GET":
-#        chantier = get_info_from_id_chantier(int(id_chantier))
-#        return jsonify(chantier)
-#    # if request.method == "PUT":
-#    #     data = request.get_json()
-#    #     modify_data("ouvriers", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
-#    # elif request.method == "DELETE":
-#    #     del_data("ouvriers", id_ouv = int(id_ouvrier))
-#    chantiers = return_table("chantiers")
-#    return jsonify(chantiers)
 
 
 # @APP.route("/addOuvriers/", methods = ['POST'])
