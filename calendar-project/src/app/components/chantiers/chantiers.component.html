@@ -8,8 +8,7 @@
         <mat-nav-list>
           <mat-list-item *ngFor="let chantier of chantiers" routerLink="/chantiers/detail/{{chantier.name_chantier}}">
             <a matLine> {{chantier.name_chantier}} </a>
-            <button mat-icon-button>
-              <!--(click)="delete(chantier)">-->
+            <button mat-icon-button (click)="delete(chantier)">
               <mat-icon>close</mat-icon>
             </button>
           </mat-list-item>
@@ -67,4 +66,8 @@
       </mat-card-content>
     </mat-card>
   </div>
+</div>
+
+<div class="row">
+  <app-messages></app-messages>
 </div>

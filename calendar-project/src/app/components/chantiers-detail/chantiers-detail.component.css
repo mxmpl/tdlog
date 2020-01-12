@@ -1,5 +1,5 @@
 .card {
-  max-width: 40%;
+  max-width: 70%;
   margin-top: 2em;
   margin-bottom: 2em;
   margin-right: 2em;
@@ -7,4 +7,15 @@
 
 .title {
   color: #7C4DFF ;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 50%;
 }

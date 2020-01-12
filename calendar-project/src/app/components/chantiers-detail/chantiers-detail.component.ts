@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Chantier }        from '../../chantier';
 import { ChantierService } from '../../services/chantier.service';
+import { Ouvrier } from 'src/app/ouvrier';
 
 @Component({
   selector: 'app-chantiers-detail',
@@ -13,9 +14,11 @@ import { ChantierService } from '../../services/chantier.service';
 export class ChantierDetailComponent implements OnInit {
 
   @Input() chantier: Chantier;
+  
   nom_choisi: string;
+  ouvrier_choisi: Ouvrier;
+  horaires: Chantier[];
   show: boolean = false;
-  showDates: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +40,23 @@ export class ChantierDetailComponent implements OnInit {
     this.location.back();
   }
 
+  toggleHoraires(): void {
+    this.show = !this.show;
+  }
+
+  selectOuvrier(ouvrier: Ouvrier): void{
+    console.log('ok')
+    this.show = true;
+    this.nom_choisi = ouvrier.name_ouvrier;
+    this.ouvrier_choisi = ouvrier;
+    this.horaires = ouvrier.chantiers;
+  }
+/* 
+  getHorairesOuvrier(): void {
+    const id = this.id_heure;
+    this.chantierService.getChantiersDispos(id)
+      .subscribe(chantiers_dispos => this.chantiers_dispos = chantiers_dispos)
+  } */
 /*   save(): void {
     this.chantierService.updateChantier(this.chantier)
       .subscribe(() => this.goBack());

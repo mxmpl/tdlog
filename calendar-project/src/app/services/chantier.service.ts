@@ -16,7 +16,8 @@ export class ChantierService {
 
   private attributionUrl = 'http://127.0.0.1:5000/attribution/';
   private listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
-  private listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/'
+  private listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/';
+  private listeChantiersHorairesUrl = 'http://127.0.0.1:5000/listeChantiers/horaires'
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -36,7 +37,7 @@ export class ChantierService {
       );
   }
 
-  /** GET chantier by id. Will 404 if id not found */
+  /** GET chantier by name. Will 404 if id not found */
   getChantier(name_chantier: string): Observable<Chantier> {
     const url = `${this.listeChantiersUrl}${name_chantier}`;
     return this.http.get<Chantier>(url).pipe(
@@ -44,6 +45,15 @@ export class ChantierService {
       catchError(this.handleError<Chantier>(`getChantier name_chantier=${name_chantier}`))
     );
   }
+
+/*   GET chantier by id. Will 404 if id not found 
+  getChantierHoraire(id_chantier: number): Observable<Chantier> {
+    const url = `${this.listeChantiersHorairesUrl}${id_chantier}`;
+    return this.http.get<Chantier>(url).pipe(
+      tap(_ => this.log(`fetched chantier name_chantier=${id_chantier}`)),
+      catchError(this.handleError<Chantier>(`getChantier name_chantier=${id_chantier}`))
+    );
+  } */
 
   getChantiersDispos(id_ouvrier: number): Observable<Map<string,Chantier[]>> {
   	const url = `${this.listeOuvriersUrl}${id_ouvrier}/chantiersdispos`;
@@ -63,15 +73,15 @@ export class ChantierService {
   }
 
   /** DELETE: delete the chantier from the server */
-/*   deleteChantier (chantier: Chantier | number): Observable<Chantier> {
-    const id = typeof chantier === 'number' ? chantier : chantier.id_chantier;
-    const url = `${this.listeChantiersUrl}${id}`;
+   deleteChantier (chantier: Chantier | string): Observable<Chantier> {
+    const name = typeof chantier === 'string' ? chantier : chantier.name_chantier;
+    const url = `${this.listeChantiersUrl}${name}`;
 
     return this.http.delete<Chantier>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`deleted chantier id_chantier=${id}`)),
+      tap(_ => this.log(`deleted chantier name_chantier=${name}`)),
       catchError(this.handleError<Chantier>('deleteChantier'))
     );
-  } */
+  } 
 
   addAttribution(ouvrier: Ouvrier, chantier: Chantier): Observable<Ouvrier>  {
     const id_ouvrier = ouvrier.id_ouvrier;

@@ -36,10 +36,10 @@ export class ChantiersComponent implements OnInit {
       .subscribe(_ => this.getChantiers());
   }
 
-/*   delete(chantier: Chantier): void {
+   delete(chantier: Chantier): void {
     this.chantiers = this.chantiers.filter(o => o !== chantier);
     this.chantierService.deleteChantier(chantier).subscribe();
-  } */
+  } 
 
   
 

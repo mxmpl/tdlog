@@ -1,37 +1,63 @@
-<div *ngIf="chantier" class="column">
-  <mat-card class="card">
-    <mat-card-header>
-      <mat-card-title class="title">Détails sur {{chantier.name_chantier}}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list>
-        <h3 matSubheader>Identifiant</h3>
-        <mat-list-item> {{ouvrier.id_chantier}} </mat-list-item>
-        <mat-divider></mat-divider>
-        <h3 matSubheader>Nom</h3>
-        <mat-list-item>
-          <a matLine>
-            <mat-form-field>
-              <input matInput [(ngModel)]="chantier.name_chantier">
-            </mat-form-field>
-          </a>
-          <button mat-icon-button>
-            <!--(click)="save()"> -->
-            <mat-icon>done</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
-        <mat-divider></mat-divider>
-        <mat-nav-list>
-        <h3 matSubheader> Ouvriers</h3>
-        <mat-list-item *ngFor="let ouvrier of chantier.ouvriers" routerLink="/detail/{{ouvrier.id_ouvrier}}">
-          <a matLine> {{ouvrier.name_ouvrier}} </a>
-          <button mat-icon-button>
-            <!-- (click)="deleteAttribution(chantier)"> -->
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
-    </mat-card-content>
-  </mat-card>
+<div class="row">
+  <div *ngIf="chantier" class="column">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Détails sur {{chantier.name_chantier}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <!-- <h3 matSubheader>Identifiant</h3>
+          <mat-list-item> {{ouvrier.id_chantier}} </mat-list-item>
+          <mat-divider></mat-divider> -->
+          <h3 matSubheader>Nom</h3>
+          <mat-list-item> {{chantier.name_chantier}} </mat-list-item>
+          <mat-divider></mat-divider>
+  <!--         <mat-list-item>
+            <a matLine>
+              <mat-form-field>
+                <input matInput [(ngModel)]="chantier.name_chantier">
+              </mat-form-field>
+            </a>
+            <button mat-icon-button>
+              <mat-icon>done</mat-icon>
+            </button>
+          </mat-list-item> -->
+          <h3 matSubheader>Adresse</h3>
+          <mat-list-item> {{chantier.adress}} </mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+          <h3 matSubheader> Ouvriers</h3>
+          <mat-list-item *ngFor="let ouvrier of chantier.ouvriers" (click)="selectOuvrier(ouvrier)">
+          <!-- <mat-list-item *ngFor="let ouvrier of chantier.ouvriers" routerLink="/detail/{{ouvrier.id_ouvrier}}"> -->
+            <a matLine> {{ouvrier.name_ouvrier}} </a>
+            <button mat-icon-button routerLink="/detail/{{ouvrier.id_ouvrier}}">
+              <!-- (click)="deleteAttribution(chantier)"> -->
+              <mat-icon>assignment</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="show" class="column">
+    <mat-card *ngIf="nom_choisi" class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Dates de {{ouvrier_choisi.name_ouvrier}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let chantier of horaires">
+            <h3 matLine> {{chantier.name_chantier}} </h3>
+            <p matLine> De : {{chantier.start}} </p>
+            <p matLine> A : {{chantier.end}}</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
 </div>

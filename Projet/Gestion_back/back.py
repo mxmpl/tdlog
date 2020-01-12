@@ -408,12 +408,15 @@ def liste_chantiers(): # NOM A CHANGER
        return jsonify(listeChantiers)
    elif request.method == "POST":
        data = request.get_json()
-       set_new_chantier({"name_chantier":data["name_chantier"],"start":data["start"],"end":data["end"],"adress":data["adress"]})
+       dateStart = data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
+       dateEnd = data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
+       #set_new_chantier({"name_chantier":data["name_chantier"],"start":dateStart,"end":dateEnd,"adress":data["adress"]})
+       declare_new_chantier({"name_chantier":data["name_chantier"],"start":dateStart,"end":dateEnd,"adress":data["adress"]})
    chantiers = resume_chantiers()
    return jsonify(chantiers)
 
 @APP.route("/listeChantiers/<name_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
-def chantier_id(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+def chantier_name(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
    """
    Action sur un chantier donné :
    informations.
@@ -421,14 +424,34 @@ def chantier_id(name_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGE
    if request.method == "GET":
        chantier = resume_chantiers()[name_chantier]
        chantier["name_chantier"] = name_chantier
+       for dicoOuvrier in chantier["ouvriers"]:
+           dicoOuvrier["chantiers"] = [get_info_from_id_chantier(dicoOuvrier["id_chantier"])]
        return jsonify(chantier)
    # if request.method == "PUT":
    #     data = request.get_json()
    #     modify_data("ouvriers", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
-   # elif request.method == "DELETE":
-   #     del_data("ouvriers", id_ouv = int(id_ouvrier))
+   elif request.method == "DELETE":
+       #del_data("ouvriers", id_ouv = int(id_ouvrier))
+       rien = []
    chantiers = return_table("chantiers")
    return jsonify(chantiers)
+
+# @APP.route("/listeChantiers/horaires/<id_chantier>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+# def chantier_id(id_chantier: str): # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+#    """
+#    Action sur un chantier donné :
+#    informations.
+#    """
+#    if request.method == "GET":
+#        chantier = get_info_from_id_chantier(int(id_chantier))
+#        return jsonify(chantier)
+#    # if request.method == "PUT":
+#    #     data = request.get_json()
+#    #     modify_data("ouvriers", "name_ouvrier", data["name_ouvrier"], id_ouv = int(id_ouvrier))
+#    # elif request.method == "DELETE":
+#    #     del_data("ouvriers", id_ouv = int(id_ouvrier))
+#    chantiers = return_table("chantiers")
+#    return jsonify(chantiers)
 
 
 # @APP.route("/addOuvriers/", methods = ['POST'])
