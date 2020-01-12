@@ -6,15 +6,15 @@
   </div>
   <div>
       <a routerLink="/calendar"> <mat-icon>calendar_today</mat-icon> Calendrier</a>
+      <a routerLink="/ouvriers">Ouvriers</a>
+      <a routerLink="/chantiers">Chantiers</a>
+
   </div>
   <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
       <ul fxLayout fxLayoutGap="15px" class="navigation-items">
-          <li>
-              <a routerLink="/ouvriers">Ouvriers</a>
-          </li>
-          <li>
-              <a routerLink="/chantiers">Chantiers</a>
-          </li>
+        <button mat-icon-button (click)="goBack()">
+          <mat-icon>backspace</mat-icon>
+        </button>
       </ul>
   </div>
 </mat-toolbar>

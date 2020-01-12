@@ -59,10 +59,9 @@
             </mat-radio-group>
           </mat-list-item>
           <mat-list-item>
-            <a matLine></a>
-            <button mat-icon-button (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value); chantierName.value=''">
-              <mat-icon>send</mat-icon>
-            </button>
+            <button mat-raised-button class = "send_button" color="accent" (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value); chantierName.value=''">
+            Ajouter
+          </button>
           </mat-list-item>
         </mat-list>
       </mat-card-content>

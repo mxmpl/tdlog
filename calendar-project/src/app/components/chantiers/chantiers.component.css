@@ -20,6 +20,10 @@
   color: #7C4DFF ;
 }
 
+.send_button {
+    margin-top: 1em;
+}
+
 mat-form-field {
   margin-right: 40px;
 }
