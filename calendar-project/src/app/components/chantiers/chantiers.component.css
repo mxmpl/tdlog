@@ -6,11 +6,11 @@
 
 .column {
   float: left;
-  width: 33.33%;
+  width: 50%;
 }
 
 .card {
-  max-width: 800px;
+  max-width: 80%;
   margin-top: 2em;
   margin-bottom: 2em;
   margin-right: 2em;
