@@ -1,59 +1,74 @@
-<h2>Nos chantiers</h2>
-<ul class="chantiers">
-  <li *ngFor="let chantier of chantiers">
-    <a routerLink="/chantiers/detail/{{chantier.name_chantier}}">
-      {{chantier.name_chantier}}
-    </a>
-    <!--     <button class="delete" title="delete chantier"
-      (click)="delete(chantier)">x</button> -->
-  </li>
-</ul>
-<hr />
-<div>
-  <h2>Ajouter un chantier</h2>
-  <div>
-    <label>
-      Lieu :
-      <input #chantierName placeholder="Entrez un lieu" />
-    </label>
-    <label>
-      Adresse :
-      <input #chantierAdress placeholder="Entrez une adresse" />
-    </label>
+<div class="row">
+  <div *ngIf="chantiers" class="column">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Nos chantiers</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-nav-list>
+          <mat-list-item *ngFor="let chantier of chantiers" routerLink="/chantiers/detail/{{chantier.name_chantier}}">
+            <a matLine> {{chantier.name_chantier}} </a>
+            <button mat-icon-button>
+              <!--(click)="delete(chantier)">-->
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div>
-    <label>
-      Déb.
-      <input #chantierStart type="date" />
-      <!--  <div ng-controller="choixHeuresDeb">
-                <label>Heure de déb. : 
-                    <select ng-model="debut" ng-options="temps.deb for temps in choix"></select>
-                </label>
-            </div> -->
-    </label>
-    <label>Heure de déb. :
-      <!-- <input #chantierStartTime placeholder="Entrez '8' ou '14'"> -->
-      <mat-radio-group [(ngModel)]="heureDeb">
-        <mat-radio-button class="example-margin" value="08">8h</mat-radio-button>
-        <mat-radio-button class="example-margin" value="14">14h</mat-radio-button>
-      </mat-radio-group>
-    </label>
+  <div *ngIf="chantiers" class="column">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Ajouter un chantier</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <mat-form-field>
+              <input #chantierName matInput placeholder="Lieu">
+            </mat-form-field>
+            <mat-form-field>
+              <input #chantierAdress matInput placeholder="Adresse">
+            </mat-form-field>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-form-field>
+              <input #chantierStart matInput [matDatepicker]="picker1" placeholder="Date de début">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <input #chantierEnd matInput [matDatepicker]="picker2" placeholder="Date de fin">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </mat-list-item>
+          <h3 matSubheader> Heure de début </h3>
+          <mat-list-item>
+            <mat-radio-group [(ngModel)]="heureDeb">
+              <mat-radio-button class="example-margin" value="08">8h</mat-radio-button>
+              <mat-radio-button class="example-margin" value="14">14h</mat-radio-button>
+            </mat-radio-group>
+          </mat-list-item>
+          <h3 matSubheader> Heure de fin </h3>
+          <mat-list-item>
+            <mat-radio-group [(ngModel)]="heureFin">
+              <mat-radio-button class="example-margin" value="12">12h</mat-radio-button>
+              <mat-radio-button class="example-margin" value="18">18h</mat-radio-button>
+            </mat-radio-group>
+          </mat-list-item>
+          <mat-list-item>
+            <a matLine></a>
+            <button mat-icon-button (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value); chantierName.value=''">
+              <mat-icon>send</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div>
-    <label>
-      Fin..
-      <input #chantierEnd type="date" />
-    </label>
-    <label>Heure de fin... :
-      <mat-radio-group [(ngModel)]="heureFin">
-        <mat-radio-button class="example-margin" value="12">12h</mat-radio-button>
-        <mat-radio-button class="example-margin" value="18">18h</mat-radio-button>
-      </mat-radio-group>
-    </label>
+  <div class="column">
+    <app-messages></app-messages>
   </div>
-  <button (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value); chantierName.value=''">
-    OK
-  </button>
 </div>
-<hr />
-<app-messages></app-messages>

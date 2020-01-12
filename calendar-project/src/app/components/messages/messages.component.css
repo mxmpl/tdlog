@@ -2,7 +2,9 @@
   max-width: 800px;
   max-height: 300px;
   overflow-y: auto;
+  margin-top: 2em;
   margin-bottom: 2em;
+  margin-right: 2em;
 }
 
 .title {

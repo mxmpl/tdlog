@@ -19,6 +19,8 @@ import { OuvrierDetailComponent } from './components/ouvriers-detail/ouvriers-de
 import { MessagesComponent } from './components/messages/messages.component';
 import { ChantierDetailComponent } from './components/chantiers-detail/chantiers-detail.component';
 
+import {MAT_DATE_LOCALE} from '@angular/material';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,7 @@ import { ChantierDetailComponent } from './components/chantiers-detail/chantiers
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [{provide: MAT_DATE_LOCALE, useValue:'fr-FR'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
