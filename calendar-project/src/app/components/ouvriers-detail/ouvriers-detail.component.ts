@@ -67,8 +67,10 @@ export class OuvrierDetailComponent implements OnInit {
   }
 
   addAttribution(chantier: Chantier): void {
+    if (confirm('Voulez-vous ajouter '+this.ouvrier.name_ouvrier+' au chantier '+chantier.name_chantier+' ?')) {
     this.chantierService.addAttribution(this.ouvrier, chantier)
       .subscribe(_ => this.goBack());
+    }
   }
 
 /*   deleteAttribution(chantier: Chantier) {
