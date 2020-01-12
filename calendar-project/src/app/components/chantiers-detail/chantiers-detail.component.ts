@@ -14,7 +14,7 @@ import { Ouvrier } from 'src/app/ouvrier';
 export class ChantierDetailComponent implements OnInit {
 
   @Input() chantier: Chantier;
-  
+
   nom_choisi: string;
   ouvrier_choisi: Ouvrier;
   horaires: Chantier[];
@@ -50,6 +50,27 @@ export class ChantierDetailComponent implements OnInit {
     this.nom_choisi = ouvrier.name_ouvrier;
     this.ouvrier_choisi = ouvrier;
     this.horaires = ouvrier.chantiers;
+  }
+
+  add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
+    name_chantier = name_chantier.trim();
+    
+    console.log(start.substr(11,2))
+    if (start.substr(11,2) == "12") {
+      console.log(start)
+      start = start.substr(8,2) + "-" + start.substr(5,2) + "-" + start.substr(0,4) + " 14:00:00";
+      console.log(start)
+
+    } else {
+      start = (parseInt(start.substr(8,2))+1).toString() + "-" + start.substr(5,2) + "-" + start.substr(0,4) + " 08:00:00";
+      console.log(start)
+    }
+    end = end + " " + endTime + ":00:00";
+
+  
+    if (!name_chantier) { return; }
+    this.chantierService.addChantier({ name_chantier,start,end,adress } as Chantier)
+      .subscribe(_ => this.getChantier());
   }
 /* 
   getHorairesOuvrier(): void {

@@ -5,6 +5,13 @@
   margin-right: 2em;
 }
 
+.smallcard {
+  max-width: 35%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  margin-right: 2em;
+}
+
 .title {
   color: #7C4DFF ;
 }
@@ -18,4 +25,12 @@
 .column {
   float: left;
   width: 50%;
+}
+
+mat-form-field {
+  margin-right: 40px;
+}
+
+mat-radio-button {
+  margin-right: 12px;
 }

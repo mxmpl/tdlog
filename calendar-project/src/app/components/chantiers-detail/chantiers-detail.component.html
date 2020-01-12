@@ -65,3 +65,36 @@
 
 
 </div>
+
+<div class="row">
+  <mat-card *ngIf="chantier" class="smallcard">
+    <mat-card-header>
+      <mat-card-title class="title">Rallonger le chantier</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <mat-form-field>
+            <input #chantierEnd matInput [matDatepicker]="picker2" placeholder="Nouvelle date de fin">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </mat-list-item>
+        <h3 matSubheader> Heure de fin </h3>
+        <mat-list-item>
+          <mat-radio-group [(ngModel)]="heureFin">
+            <mat-radio-button class="example-margin" value="12">12h</mat-radio-button>
+            <mat-radio-button class="example-margin" value="18">18h</mat-radio-button>
+          </mat-radio-group>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-raised-button class = "send_button" color="accent" 
+          (click)="add(chantier.name_chantier, chantier.end, heureDeb, chantierEnd.value, heureFin, chantier.end);
+          chantierEnd.value=''">
+          Ajouter
+        </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>
