@@ -18,7 +18,7 @@ if __name__ == '__main__':
     declare_new_chantier({
         "name_chantier": "TEST",
         "start": "2020-10-10 08:00:00",
-        "end": "2020-11-12 18:00:00",
+        "end": "2020-10-12 18:00:00",
         "adress": "TEST",
     })
     
@@ -52,8 +52,8 @@ if __name__ == '__main__':
     
     print("\n-----------MODIFICATION------------")
     
-    modify_data("chantiers", "name_chantier", "TEST2", id_chant = 1)
-    modify_data("ouvriers", "name_ouvrier", "TEST2", id_ouv = 1)
+    # modify_data("chantiers", "name_chantier", "TEST2", id_chant = 1)
+    # modify_data("ouvriers", "name_ouvrier", "TEST2", id_ouv = 1)
     
     print("Table ouvriers")
     print(return_table("ouvriers"))
@@ -77,4 +77,5 @@ if __name__ == '__main__':
     print(get_info_from_id_chantier(1))
     print(return_cluster_chantiers(1))
     print(return_cluster_chantiers())
+    print("       ------        ")
     print(resume_chantiers())

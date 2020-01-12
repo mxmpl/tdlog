@@ -243,7 +243,16 @@ def resume_chantiers():
                     dico = {"id_ouvrier": ouvrier["id_ouvrier"], "id_chantier": chantier["id_chantier"]}
                     if dico in attribution:
                         dico["name_ouvrier"] = ouvrier["name_ouvrier"]
-                        dictionnaire_chantier["ouvriers"].append(dico)
+                        test = True
+                        for i in range(len(dictionnaire_chantier["ouvriers"])):
+                            dict = dictionnaire_chantier["ouvriers"][i]
+                            if "name_ouvrier" in dict.keys() and dico["name_ouvrier"] == dict["name_ouvrier"]:
+                                dictionnaire_chantier["ouvriers"][i]["id_chantier"].append(chantier["id_chantier"])
+                                test = False
+                                break
+                        if test:
+                            dico["id_chantier"] = [chantier["id_chantier"]]
+                            dictionnaire_chantier["ouvriers"].append(dico)
         # liste_chantier.append(dictionnaire_chantier)
         dictionnaire[name_chantier] = dictionnaire_chantier
     # return liste_chantier
