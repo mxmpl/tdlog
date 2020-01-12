@@ -1,26 +1,12 @@
+<mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled" (click)='toggleWeekends()'>
+  Enlever les weekends
+</mat-slide-toggle>
 <div>
-  <div>
-    <button (click)='toggleWeekends()'> Enlever les weekends</button>
-  </div>
-
-  <div>
-  	<script src='fullcalendar/fullcalendar.js'></script>
-  	<script src='fullcalendar/locale-all.js'></script>
-  	<full-calendar
-      #calendar
-      defaultView="dayGridMonth"
-      [editable]="true"
-      [locales]="calendarLocales"
-      [header]="{
+  <script src='fullcalendar/fullcalendar.js'></script>
+  <script src='fullcalendar/locale-all.js'></script>
+  <full-calendar #calendar defaultView="dayGridMonth" [editable]="true" [locales]="calendarLocales" [header]="{
         left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      }"
-      [plugins]="calendarPlugins"
-      [weekends]="calendarWeekends"
-      [events]="calendarEvents"
-      (eventClick)="handleEventClick($event)"
-    ></full-calendar>
-  </div>
-
+      }" [plugins]="calendarPlugins" [weekends]="calendarWeekends" [events]="calendarEvents" (eventClick)="handleEventClick($event)"></full-calendar>
 </div>

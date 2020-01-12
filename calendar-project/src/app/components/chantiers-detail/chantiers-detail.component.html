@@ -1,40 +1,31 @@
-<div class = "row">
-
-    <div *ngIf="chantier" class = "column">
-        <h2>Détails sur {{chantier.name_chantier | uppercase}}</h2>
-        <div><label>id: </label>{{chantier.id_chantier}}</div>
-        <div>
-            <label>Nom:
-                <input [(ngModel)]="chantier.name_chantier" placeholder="name_chantier"/>
-            </label>
-        </div>
-        <div>
-            <label> Dates: </label>
-            <div>Deb : {{chantier.start}} </div>
-            <div>Fin : {{chantier.end}} </div>
-        </div>
-
-        <div> 
-            <label> Adresse: </label> 
-            <div>{{chantier.adress}} </div>
-        </div>
-
-        <div>
-            <label>Ouvriers:</label>
-            <ul class="ouvriers">
-            <li *ngFor="let ouvrier of chantier.ouvriers">
-                <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
-                    <span class="badge">{{ouvrier.id_ouvrier}}</span> {{ouvrier.name_ouvrier}}
-                </a>
-            </li>
-            </ul>
-        </div>
-
-        <button (click)="goBack()">retour</button>
-        <!-- <button (click)="save()">save</button> -->
-    
-
-  
-</div>
-  
-  
+<div class="row">
+  <div *ngIf="chantier" class="column">
+    <h2>Détails sur {{chantier.name_chantier | uppercase}}</h2>
+    <div><label>id: </label>{{chantier.id_chantier}}</div>
+    <div>
+      <label>Nom:
+        <input [(ngModel)]="chantier.name_chantier" placeholder="name_chantier" />
+      </label>
+    </div>
+    <div>
+      <label> Dates: </label>
+      <div>Deb : {{chantier.start}} </div>
+      <div>Fin : {{chantier.end}} </div>
+    </div>
+    <div>
+      <label> Adresse: </label>
+      <div>{{chantier.adress}} </div>
+    </div>
+    <div>
+      <label>Ouvriers:</label>
+      <ul class="ouvriers">
+        <li *ngFor="let ouvrier of chantier.ouvriers">
+          <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
+            <span class="badge">{{ouvrier.id_ouvrier}}</span> {{ouvrier.name_ouvrier}}
+          </a>
+        </li>
+      </ul>
+    </div>
+    <button (click)="goBack()">retour</button>
+    <!-- <button (click)="save()">save</button> -->
+  </div>

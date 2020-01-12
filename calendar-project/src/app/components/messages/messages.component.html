@@ -1,8 +1,18 @@
-<div *ngIf="messageService.messages.length">
-
-  <h2>Messages</h2>
-  <button class="clear"
-          (click)="messageService.clear()">Effacer messages</button>
-  <div *ngFor='let message of messageService.messages'> {{message}} </div>
-
-</div>
+<mat-card *ngIf="messageService.messages.length" class="card">
+  <mat-card-header>
+    <mat-card-title class="title">
+      Messages
+      
+      </mat-card-title>
+      <button mat-icon-button (click)="messageService.clear()">
+        <mat-icon>delete</mat-icon>
+      </button>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor='let message of messageService.messages'>
+        <a matLine> {{message}} </a>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

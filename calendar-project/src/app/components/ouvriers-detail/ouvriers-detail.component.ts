@@ -61,6 +61,7 @@ export class OuvrierDetailComponent implements OnInit {
   }
 
   selectChantier(nom_chantier: string): void{
+    console.log('ok')
     this.show = true;
     this.nom_choisi = nom_chantier;
   }

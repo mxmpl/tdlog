@@ -1,25 +1,27 @@
-<h2>Nos ouvriers</h2>
-
-<div>
-  <label>Ajouter un ouvrier:
-    <input #ouvrierName placeholder="Entrez un nom à ajouter"/>
-  </label>
-  <button (click)="add(ouvrierName.value); ouvrierName.value=''">
-    OK
-  </button>
- <!--  <button (click)="ngOnInit()">
-    Mettre à jour
-  </button> -->
-</div>
-
-<ul class="ouvriers">
-  <li *ngFor="let ouvrier of ouvriers">
-    <a routerLink="/detail/{{ouvrier.id_ouvrier}}">
-      <span class="badge">{{ouvrier.id_ouvrier}}</span> {{ouvrier.name_ouvrier}}
-    </a>
-    <button class="delete" title="delete ouvrier"
-      (click)="delete(ouvrier)">x</button>
-  </li>
-</ul>
-
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title class="title">Nos ouvriers</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let ouvrier of ouvriers" routerLink="/detail/{{ouvrier.id_ouvrier}}">
+        <a matLine> {{ouvrier.name_ouvrier}} </a>
+        <button mat-icon-button (click)="delete(ouvrier)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-list-item>
+      <mat-list-item></mat-list-item>
+      <mat-list-item>
+        <a matLine>
+        <mat-form-field>
+          <input #ouvrierName matInput placeholder="Nom à ajouter">
+        </mat-form-field>
+      </a>
+        <button mat-icon-button (click)="add(ouvrierName.value); ouvrierName.value=''">
+          <mat-icon>done</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-card-content>
+</mat-card>
 <app-messages></app-messages>

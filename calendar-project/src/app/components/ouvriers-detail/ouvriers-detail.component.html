@@ -1,57 +1,69 @@
-<div class = "row">
-
-  <div *ngIf="ouvrier" class = "column">
-      <h2>Détails sur {{ouvrier.name_ouvrier | uppercase}}</h2>
-      <div><label>id: </label>{{ouvrier.id_ouvrier}}</div> 
-      <div>
-        <label>Nom:
-          <input [(ngModel)]="ouvrier.name_ouvrier" placeholder="name_ouvrier"/>
-        </label>
-      </div>
-      <div>
-        <label>Chantiers:</label>
-        <ul class="chantiers">
-          <li *ngFor="let chantier of ouvrier.chantiers">
-            <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
-            <button class="delete" (click)="deleteAttribution(chantier)">x</button>
-            <div>De : {{chantier.start}} </div>
-            <div>A : {{chantier.end}} </div>
-            <div>Adresse : {{chantier.adress}} </div>
-          </li>
-        </ul>
-      </div>
-      <button (click)="goBack()">Retour</button>
-      <button (click)="save()">Save</button>
-<!--       <button (click)="toggleChantiersDispos()">Assigner à un chantier</button>
- -->  </div>
-
-  <div class = "column">
-      <h2>Chantiers disponibles</h2>
-      <ul *ngIf="chantiers_dispos" class="noms_chantiers">
-        <li *ngFor="let name of getNames()">
-          <div (click)="selectChantier(name)">
-            <span class="badge">0</span> {{name}}
-          </div>
-        </li>
-      </ul>
+<div class="row">
+  <div *ngIf="ouvrier" class="column">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Détails sur {{ouvrier.name_ouvrier}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <h3 matSubheader>Identifiant</h3>
+          <mat-list-item> {{ouvrier.id_ouvrier}} </mat-list-item>
+          <mat-divider></mat-divider>
+          <h3 matSubheader>Nom</h3>
+          <mat-list-item>
+            <a matLine>
+              <mat-form-field>
+                <input matInput [(ngModel)]="ouvrier.name_ouvrier">
+              </mat-form-field>
+            </a>
+            <button mat-icon-button (click)="save()">
+              <mat-icon>done</mat-icon>
+            </button>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <h3 matSubheader> Chantiers</h3>
+          <mat-list-item *ngFor="let chantier of ouvrier.chantiers">
+            <h3 matLine> {{chantier.name_chantier}} </h3>
+            <p matLine> De : {{chantier.start}} </p>
+            <p matLine> A : {{chantier.end}}</p>
+            <p matLine> Adresse : {{chantier.adress}}</p>
+            <button mat-icon-button (click)="deleteAttribution(chantier)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
   </div>
-
-  <div *ngIf="show" class = "column">
-      <h2 *ngIf="nom_choisi">Dates à {{nom_choisi| uppercase}}</h2>
-      <div>
-        <label>Chantiers:</label>
-        <ul class="chantiers">
-          <li *ngFor="let chantier of chantiers_dispos[nom_choisi]">
-            <div (click)="addAttribution(chantier)">
-              <span class="badge">{{chantier.id_chantier}}</span> {{chantier.name_chantier}}
-            <div>De : {{chantier.start}} </div>
-            <div>A : {{chantier.end}} </div>
-            <div>Adresse : {{chantier.adress}} </div>
-          </div>
-          </li>
-        </ul>
-      </div>
+  <div class="column" *ngIf="chantiers_dispos">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Chantiers disponibles</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-nav-list>
+          <mat-list-item *ngFor="let name of getNames()" (click)="selectChantier(name)">
+            {{name}}
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
   </div>
-
+  <div *ngIf="show" class="column">
+    <mat-card *ngIf="nom_choisi" class="card">
+      <mat-card-header>
+        <mat-card-title class="title">Dates à {{nom_choisi}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-nav-list>
+          <mat-list-item *ngFor="let chantier of chantiers_dispos[nom_choisi]" (click)="addAttribution(chantier)">
+            <h3 matLine> {{chantier.name_chantier}} </h3>
+            <p matLine> De : {{chantier.start}} </p>
+            <p matLine> A : {{chantier.end}}</p>
+            <p matLine> Adresse : {{chantier.adress}}</p>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
-
