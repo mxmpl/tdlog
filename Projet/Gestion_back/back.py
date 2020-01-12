@@ -148,12 +148,23 @@ def declare_new_chantier(dict_new_chantier: dict):
     """
     Prend en argument un dictionnaire d'un chantier 
     tel que {"name_chantier": text, "start": text, "end": text, "adress": text}. 
-    Le chantier peut être étendue sur plusieurs journées, il est redécoupé
-    en demi-journées et enregistrer dans la base de données.
+    Le chantier peut être étendu sur plusieurs journées, il est redécoupé
+    en demi-journées et enregistré dans la base de données.
     """
     list_new_chantiers = decoup_new_chantier(dict_new_chantier)
     for chantier in list_new_chantiers:
         set_new_chantier(chantier)
+        
+def delete_chantier(name_chantier: str):
+    chantiers = return_table("chantiers")
+    attributions = return_table("attribution")
+    for chantier in chantiers:
+        if chantier["name_chantier"] == name_chantier:
+            id_chantier = chantier["id_chantier"]
+            for attribution in attributions:
+                if attribution["id_chantier"] == id_chantier:
+                    del_data("attribution", id_ouv = attribution["id_ouvrier"], id_chant = attribution["id_chantier"])
+            del_data("chantiers", id_ouv = None, id_chant = id_chantier)
         
 ########%% GET
 

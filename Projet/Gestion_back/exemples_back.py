@@ -59,6 +59,9 @@ if __name__ == '__main__':
     print(return_table("ouvriers"))
     print("Table chantiers")
     print(return_table("chantiers"))
+    print("Table chantiers supprimés")
+    delete_chantier("Paris")
+    print(return_table("chantiers"))
     print("Table attribution")
     print(return_table("attribution"))
     
@@ -74,7 +77,7 @@ if __name__ == '__main__':
     print("\n-----------GET INFO------------")
     
     print(get_info_from_id_ouvrier(1))
-    print(get_info_from_id_chantier(1))
+    print(get_info_from_id_chantier(2))
     print(return_cluster_chantiers(1))
     print(return_cluster_chantiers())
     print("       ------        ")
