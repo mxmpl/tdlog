@@ -439,6 +439,10 @@ ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
 
 insert_attribution(ATTRIBUTION)
 
+ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 1}
+
+insert_attribution(ATTRIBUTION)
+
 ###############%%
 
 #print(return_table_chantier())
