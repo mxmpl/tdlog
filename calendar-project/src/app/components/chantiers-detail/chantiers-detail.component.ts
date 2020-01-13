@@ -72,15 +72,11 @@ export class ChantierDetailComponent implements OnInit {
     this.chantierService.addChantier({ name_chantier,start,end,adress } as Chantier)
       .subscribe(_ => this.getChantier());
   }
-/* 
-  getHorairesOuvrier(): void {
-    const id = this.id_heure;
-    this.chantierService.getChantiersDispos(id)
-      .subscribe(chantiers_dispos => this.chantiers_dispos = chantiers_dispos)
-  } */
-/*   save(): void {
-    this.chantierService.updateChantier(this.chantier)
-      .subscribe(() => this.goBack());
-  } */
 
+  deleteAttribution(chantier: Chantier) {
+    if (confirm('Voulez-vous enlever '+this.ouvrier_choisi.name_ouvrier+' du chantier '+chantier.name_chantier+' ?')) {
+    this.chantierService.deleteAttribution(this.ouvrier_choisi, chantier)
+      .subscribe(_ => this.goBack());
+    }
+  } 
 }

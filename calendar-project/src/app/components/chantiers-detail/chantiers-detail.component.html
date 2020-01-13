@@ -57,6 +57,9 @@
             <h3 matLine> {{chantier.name_chantier}} </h3>
             <p matLine> De : {{chantier.start}} </p>
             <p matLine> A : {{chantier.end}}</p>
+            <button mat-icon-button (click)="deleteAttribution(chantier)">
+              <mat-icon>close</mat-icon>
+            </button>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
