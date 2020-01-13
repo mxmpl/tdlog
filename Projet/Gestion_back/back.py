@@ -160,6 +160,7 @@ def decoup_new_chantier(dict_new_chantier: dict):
     for i in range(1, 2 * NB_LIMITE_JOURS + 1):
         dic_chantier = copy.deepcopy(dict_new_chantier)
         if date_debut <= heure_debut_fin:
+            print("date_debut1", date_debut)
             dic_chantier["start"] = date_debut.strftime(FORMAT_DATE)
             if date_debut.hour == HEURES_DEBUT["debut_matin"].hour:
                 dic_chantier["end"] = (date_debut + duree_matin).strftime(FORMAT_DATE)
@@ -168,7 +169,8 @@ def decoup_new_chantier(dict_new_chantier: dict):
                 dic_chantier["end"] = (date_debut + duree_aprem).strftime(FORMAT_DATE)
                 date_debut += transition_aprem_matin
             list_dict_new_chantiers.append(dic_chantier)
-        break
+        else:
+            break
     if date_debut == heure_fin_fin:
         return list_dict_new_chantiers
     raise ex.overlimit_date(NB_LIMITE_JOURS)
