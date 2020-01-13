@@ -32,7 +32,8 @@ class overlimit_date(Exception):
     """
     Durée supérieure à la durée limite imposée.
     """
-    pass
+    def __str__(self):
+        return "Invalid date"
 
 def conformite_dict(dictionnaire: dict, champs):
     """
