@@ -2,9 +2,12 @@ class wrong_type(Exception):
     """
     Ce n'est pas le bon type d'argument.
     """
-    def __init__(self, typ, msg=None): 
+    def __init__(self, typ=None, msg=None): 
         if msg is None:
-            msg = "L'argument n'est pas du type requis : {}".format(typ)
+            if typ is None:
+                msg = "Mauvais type."
+            else:
+                msg = "L'argument n'est pas du type requis : {}".format(typ)
         self.msg = msg
     def __str__(self):
         return self.msg
@@ -13,9 +16,12 @@ class missing_or_bad_key(Exception):
     """
     Clef manquante dans un dictionnaire.
     """
-    def __init__(self, key, msg=None): 
+    def __init__(self, key=None, msg=None): 
         if msg is None:
-            msg = "La clef {} est manquante.".format(key)
+            if key is None:
+                msg = "Clef manquante ou erronée."
+            else:
+                msg = "La clef {} est manquante ou erronée.".format(key)
         self.msg = msg
     def __str__(self):
         return self.msg
@@ -34,13 +40,16 @@ class invalid_id(Exception):
     def __str__(self):
         return self.msg
 
-class id_ouvrier_not_available_for_assignation(Exception): 
+class impossible_assignation(Exception): 
     """
     L'ouvrier est indisponible.
     """
-    def __init__(self, id_ouvrier, id_chantier, msg=None):
+    def __init__(self, id_ouvrier=None, id_chantier=None, msg=None):
         if msg is None:
-            msg = "L'ouvrier {} n'est pas disponible pour être assigné au chantier {}.".format(id_ouvrier, id_chantier)
+            if id_ouvrier is None and id_chantier is None:
+                msg = "L'assignation n'est pas possible."
+            else:
+                msg = "L'ouvrier {} n'est pas disponible pour être assigné au chantier {}.".format(id_ouvrier, id_chantier)
         self.msg = msg
     def __str__(self):
         return self.msg
@@ -49,9 +58,12 @@ class invalid_dates(Exception):
     """
     Date invalide.
     """
-    def __init__(self, date, msg=None): 
+    def __init__(self, date=None, msg=None): 
         if msg is None:
-            msg = "La date {} n'est pas valide.".format(date)
+            if date is None:
+                msg = "Date invalide"
+            else:
+                msg = "La date {} n'est pas valide.".format(date)
         self.msg = msg
     def __str__(self):
         return self.msg
@@ -60,9 +72,12 @@ class overlimit_date(Exception):
     """
     Durée supérieure à la durée limite imposée.
     """
-    def __init__(self, limite_jours, msg=None): 
+    def __init__(self, limite_jours=None, msg=None): 
         if msg is None:
-            msg = "Le chantier dépasse la limite de jours établie à {} jours.".format(limite_jours)
+            if limite_jours is None:
+                msg = "La date est postérieure à la limite imposée."
+            else:
+                msg = "Le chantier dépasse la limite de jours établie à {} jours.".format(limite_jours)
         self.msg = msg
     def __str__(self):
         return self.msg

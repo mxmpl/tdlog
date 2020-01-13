@@ -17,11 +17,14 @@ import copy
 
 import sys
 
+"""
+DANS main.py 
 #############%% Module Flask
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from flask_restful import Api
+#from flask import Flask, request, jsonify
+#from flask_cors import CORS
+#from flask_restful import Api
+"""
 
 #############%% Import des bibliothèques utiles
 
@@ -29,10 +32,13 @@ sys.path.append("..")
 from Gestion_bdd import bdd
 from Gestion_bdd import exception as ex
 
+"""
+DANS main.py 
 #############%% Creation du site
-
-APP = Flask(__name__)
-CORS(APP)  # Creation du site
+#
+#APP = Flask(__name__)
+#CORS(APP)  # Creation du site
+"""
 
 #############%% Constantes
 
@@ -114,7 +120,7 @@ def del_data(name_table: str, id_ouv=None, id_chant=None):
     if bdd.id_in_table(name_table, id_ouv=id_ouv, id_chant=id_chant):
         bdd.del_data(name_table, id_ouv=id_ouv, id_chant=id_chant)
         return
-    raise ex.invalid_id("Il n'est pas possible de supprimer la donnée correspondante à cet/ces identifiant(s) car elle n'existe pas.")
+    raise ex.invalid_id(msg = "Il n'est pas possible de supprimer la donnée correspondante à cet/ces identifiant(s) car elle n'existe pas.")
 
 def decoup_new_chantier(dict_new_chantier: dict):
     """
@@ -138,17 +144,17 @@ def decoup_new_chantier(dict_new_chantier: dict):
     )  # correspond à la liste des dictionnaires du chantier découpé en demi-journées
     # Vérification de la conformité des entrées
     if date_debut >= date_fin:
-        raise ex.invalid_dates("La date de fin ne peut être antérieure à la date de fin.")
+        raise ex.invalid_dates(msg = "La date de fin ne peut être antérieure à la date de fin.")
     if (
             date_debut.hour != HEURES_DEBUT["debut_matin"].hour
             and date_debut.hour != HEURES_DEBUT["debut_aprem"].hour
     ):
-        raise ex.invalid_dates(date_debut.strftime(FORMAT_DATE))
+        raise ex.invalid_dates(date = date_debut.strftime(FORMAT_DATE))
     if (
             date_fin.hour != HEURES_FIN["fin_matin"].hour
             and date_fin.hour != HEURES_FIN["fin_aprem"].hour
     ):
-        raise ex.invalid_dates(date_fin.strftime(FORMAT_DATE))
+        raise ex.invalid_dates(date = date_fin.strftime(FORMAT_DATE))
     # On enregistre l'heure de début de la dernière matinée
     if date_fin.hour == HEURES_FIN["fin_matin"].hour:
         heure_debut_fin = date_fin - duree_matin
@@ -160,7 +166,6 @@ def decoup_new_chantier(dict_new_chantier: dict):
     for i in range(1, 2 * NB_LIMITE_JOURS + 1):
         dic_chantier = copy.deepcopy(dict_new_chantier)
         if date_debut <= heure_debut_fin:
-            print("date_debut1", date_debut)
             dic_chantier["start"] = date_debut.strftime(FORMAT_DATE)
             if date_debut.hour == HEURES_DEBUT["debut_matin"].hour:
                 dic_chantier["end"] = (date_debut + duree_matin).strftime(FORMAT_DATE)
@@ -173,7 +178,7 @@ def decoup_new_chantier(dict_new_chantier: dict):
             break
     if date_debut == heure_fin_fin:
         return list_dict_new_chantiers
-    raise ex.overlimit_date(NB_LIMITE_JOURS)
+    raise ex.overlimit_date(limite_jours = NB_LIMITE_JOURS)
 
 
 def declare_new_chantier(dict_new_chantier: dict):
@@ -406,30 +411,17 @@ def verif_dispo_horaire_ouvrier(
                 chantier["start"] == infos_chantier["start"]
                 and chantier["end"] == infos_chantier["end"]
         ):
-            raise ex.id_ouvrier_not_available_for_assignation(id_ouvrier, id_chantier)
+            raise ex.impossible_assignation(id_ouvrier = id_ouvrier, id_chantier = id_chantier)
     return True
 
-
-# if __name__ == "__main__":
-#    APP.debug = False
-#    APP.run()
-
-# À la fin de l'utilisation, on supprime les tables
-
-# bdd.suppression_table_chantiers()
-# bdd.suppression_table_ouvriers()
-# bdd.suppression_table_attribution()
-# bdd.reset_table("chantiers")
-# bdd.reset_table("ouvriers")
-# bdd.reset_table("attribution")
-
-#############%% Gestion du site
-
+"""
+DANS main.py 
+############%% Gestion du site
 
 @APP.route("/", methods=["GET"])
 def index():
     """
-   Page d'accueil.
+#   Page d'accueil.
    """
     return "Welcome"
 
@@ -455,7 +447,7 @@ def planning():
 @APP.route("/listeOuvriers/", methods=["GET", "POST", "DELETE", "PUT"])
 def liste_ouvriers():  # NOM A CHANGER
     """
-   Ajout d'un nouvel ouvrier.
+#   Ajout d'un nouvel ouvrier.
    """
     data = request.get_json()
     if request.method == "POST":
@@ -467,8 +459,8 @@ def liste_ouvriers():  # NOM A CHANGER
 @APP.route("/listeOuvriers/<id_ouvrier>", methods=["GET", "POST", "DELETE", "PUT"])
 def ouvrier_id(id_ouvrier: str):  # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
     """
-   Actions sur un ouvrier donné :
-   informations, modification du nom ou suppression.
+#   Actions sur un ouvrier donné :
+#   informations, modification du nom ou suppression.
    """
     if request.method == "GET":
         ouvrier = get_info_from_id_ouvrier(int(id_ouvrier))
@@ -491,8 +483,8 @@ def ouvrier_id(id_ouvrier: str):  # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
 )
 def chantiers_dispos_ouvrier_id(id_ouvrier: str):
     """
-   Actions sur un ouvrier donné :
-   affichage des noms des chantiers où il peut s'affilier
+#   Actions sur un ouvrier donné :
+#   affichage des noms des chantiers où il peut s'affilier
    """
     if request.method == "GET":
         chantiers_dispos = return_cluster_chantiers(id_ouvrier)
@@ -505,7 +497,7 @@ def chantiers_dispos_ouvrier_id(id_ouvrier: str):
 @APP.route("/attribution/", methods=["POST"])
 def nouvelles_attributions():
     """
-  Nouvelle attribution d'un ouvrier sur un chantier
+#  Nouvelle attribution d'un ouvrier sur un chantier
   """
     liste_attributions = request.get_json()
     for attribution in liste_attributions:
@@ -516,7 +508,7 @@ def nouvelles_attributions():
 @APP.route("/attribution/<id_ouvrier>/<id_chantier>", methods=["DELETE"])
 def delete_attribution(id_ouvrier: str, id_chantier: str):
     """
-  Supprime attribution d'un ouvrier sur un chantier
+#  Supprime attribution d'un ouvrier sur un chantier
   """
     del_data("attribution", id_ouv=int(id_ouvrier), id_chant=int(id_chantier))
     return jsonify(0)
@@ -525,7 +517,7 @@ def delete_attribution(id_ouvrier: str, id_chantier: str):
 @APP.route("/listeChantiers/", methods=["GET", "POST"])
 def liste_chantiers():
     """
-   Renvoie la liste des chantiers
+#   Renvoie la liste des chantiers
    """
     if request.method == "GET":
         chantiers = resume_chantiers()
@@ -559,8 +551,8 @@ def liste_chantiers():
 @APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
 def chantier_name(name_chantier: str):
     """
-   Action sur un chantier donné :
-   informations.
+#   Action sur un chantier donné :
+#   informations.
    """
     if request.method == "GET":
         chantier = resume_chantiers()[name_chantier]
@@ -579,7 +571,7 @@ def chantier_name(name_chantier: str):
 @APP.route("/addOuvriers/", methods=["POST"])
 def add_ouvrier():
     """
-    Attribue un ouvrier à un chantier.
+#    Attribue un ouvrier à un chantier.
     """
     data = request.get_json()
     new_evenement = {
@@ -594,3 +586,4 @@ def add_ouvrier():
 
 if __name__ == "__main__":
     APP.run(debug=True)
+"""
