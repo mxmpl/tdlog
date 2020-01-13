@@ -79,6 +79,7 @@ def conformite_dict(dictionnaire: dict, champs):
             raise missing_or_bad_key(clef)
         elif type(dictionnaire[clef]) != champs[clef]:
             raise wrong_type(type(dictionnaire[clef]))
+    return True
 
 if __name__ == '__main__':
     dico = {"name" : "Marcel", "age" : 20}
