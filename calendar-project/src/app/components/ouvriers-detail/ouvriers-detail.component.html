@@ -63,6 +63,10 @@
             <p matLine> Adresse : {{chantier.adress}}</p>
           </mat-list-item>
         </mat-nav-list>
+        <button mat-raised-button class="send_button" color="accent" (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value);
+          chantierName.value='';chantierStart.value='';chantierEnd.value='';chantierAdress.value=''">
+          Ajouter
+        </button>
       </mat-card-content>
     </mat-card>
   </div>
