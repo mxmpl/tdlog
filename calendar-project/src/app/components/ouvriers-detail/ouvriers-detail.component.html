@@ -55,8 +55,8 @@
         <mat-card-title class="title">Dates à {{nom_choisi}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-selection-list #chantiers_choisis>
-          <mat-list-option *ngFor="let chantier of chantiers_dispos[nom_choisi]">
+        <mat-selection-list [(ngModel)]="chantiers_choisis">
+          <mat-list-option *ngFor="let chantier of chantiers_dispos[nom_choisi]"  [value]="chantier">
             <h3 matLine> {{chantier.name_chantier}} </h3>
             <p matLine> De : {{chantier.start}} </p>
             <p matLine> A : {{chantier.end}}</p>

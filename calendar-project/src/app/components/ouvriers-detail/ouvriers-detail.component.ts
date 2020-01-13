@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import {MatListOption} from '@angular/material/list';
 
 import { Ouvrier }         from '../../ouvrier';
 import { Chantier }        from '../../chantier';
@@ -17,6 +18,7 @@ export class OuvrierDetailComponent implements OnInit {
   @Input() chantiers_dispos: Map<string,Chantier[]>;
   nom_choisi: string;
   show: boolean = false;
+  chantiers_choisis: Chantier[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -61,21 +63,13 @@ export class OuvrierDetailComponent implements OnInit {
   }
 
   selectChantier(nom_chantier: string): void{
-    console.log('ok')
     this.show = true;
     this.nom_choisi = nom_chantier;
   }
 
-  addAttributions(chantiers_choisis: Chantier[]): void {
+  addAttributions(): void {
     if (confirm('Voulez-vous ajouter '+this.ouvrier.name_ouvrier+' à ces chantiers ?')) {
-    this.chantierService.addAttributions(this.ouvrier, chantiers_choisis)
-    }
-    this.goBack();
-  }
-
-  addAttribution(chantier: Chantier): void {
-    if (confirm('Voulez-vous ajouter '+this.ouvrier.name_ouvrier+' au chantier '+chantier.name_chantier+' ?')) {
-    this.chantierService.addAttribution(this.ouvrier, chantier)
+    this.chantierService.addAttributions(this.ouvrier, this.chantiers_choisis)
       .subscribe(_ => this.goBack());
     }
   }
@@ -85,5 +79,5 @@ export class OuvrierDetailComponent implements OnInit {
     this.chantierService.deleteAttribution(this.ouvrier, chantier)
       .subscribe(_ => this.goBack());
     }
-  } 
+  }
 }
