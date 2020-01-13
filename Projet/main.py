@@ -4,7 +4,9 @@ Fichier principale du projet TDLOG 2019-2020.
 """
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-#from flask_restful import Api
+
+import sys
+sys.path.append('control/')
 
 from get import (get_info_from_id_ouvrier, 
                   get_info_from_id_chantier, 
