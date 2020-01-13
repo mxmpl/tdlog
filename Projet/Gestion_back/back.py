@@ -41,8 +41,17 @@ HEURES_DEBUT = {"debut_matin": datetime.datetime(1900, 1, 1, 8, 0), "debut_aprem
 HEURES_FIN = {"fin_matin": datetime.datetime(1900, 1, 1, 12, 0), "fin_aprem" : datetime.datetime(1900, 1, 1, 18, 0)}
 NB_LIMITE_JOURS = 25
 FORMAT_DATE = "%Y-%m-%d %H:%M:%S"
+FORMAT_DATE_ANGULAR = "%d/%m/%Y %H:%M:%S"
 
 #############%% Fonctions du back
+
+def convert_format_date(date_angular :str):
+    """
+    Convertit une date en format angular en format classique.
+    """
+    date_angular = datetime.datetime.strptime(date_angular, FORMAT_DATE_ANGULAR)
+    date_classique = datetime.datetime.strftime(date_angular, FORMAT_DATE)
+    return date_classique
 
 ########%% SET & DEL
 
@@ -436,8 +445,8 @@ def liste_chantiers():
        return jsonify(listeChantiers)
    elif request.method == "POST":
        data = request.get_json()
-       dateStart = data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
-       dateEnd = data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
+       dateStart = convert_format_date(data["start"]) #data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
+       dateEnd = convert_format_date(data["end"]) #data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
        declare_new_chantier({"name_chantier":data["name_chantier"],"start":dateStart,"end":dateEnd,"adress":data["adress"]})
    chantiers = resume_chantiers()
    return jsonify(chantiers)
