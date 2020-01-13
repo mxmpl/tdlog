@@ -38,7 +38,13 @@ class invalid_dates(Exception):
     """
     Date invalide.
     """
-    pass
+    def __init__(self, typ, msg=None): 
+        if msg is None:
+            # Set some default useful message
+            msg = "L'argument n'est pas du type requis : {}".format(typ)
+        self.msg = msg
+    def __str__(self):
+        return self.msg
 
 class overlimit_date(Exception): 
     """

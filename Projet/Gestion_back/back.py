@@ -141,17 +141,17 @@ def decoup_new_chantier(dict_new_chantier: dict):
     )  # correspond à la liste des dictionnaires du chantier découpé en demi-journées
     # Vérification de la conformité des entrées
     if date_debut >= date_fin:
-        raise ex.invalid_dates
+        raise ex.invalid_dates("Mauvaise date")
     if (
             date_debut.hour != HEURES_DEBUT["debut_matin"].hour
             and date_debut.hour != HEURES_DEBUT["debut_aprem"].hour
     ):
-        raise ex.invalid_dates
+        raise ex.invalid_dates("Mauvaise date")
     if (
             date_fin.hour != HEURES_FIN["fin_matin"].hour
             and date_fin.hour != HEURES_FIN["fin_aprem"].hour
     ):
-        raise ex.invalid_dates
+        raise ex.invalid_dates("Mauvaise date")
     # On enregistre l'heure de début de la dernière matinée
     if date_fin.hour == HEURES_FIN["fin_matin"].hour:
         heure_debut_fin = date_fin - duree_matin
