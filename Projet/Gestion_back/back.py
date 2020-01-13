@@ -367,10 +367,10 @@ def planning():
    Associe les chantiers aux ouvriers.
    """
    planning_chantiers = []
-   resume_chantiers = resume_chantiers()
-   for cle in resume_chantiers:
-       planning_chantiers.append({"title":cle,"start":resume_chantiers[cle]["start"],"end":resume_chantiers[cle]["end"]})
-   return jsonify(attribution)
+   chantiers = resume_chantiers()
+   for cle in chantiers:
+       planning_chantiers.append({"title":cle,"start":chantiers[cle]["start"],"end":chantiers[cle]["end"]})
+   return jsonify(planning_chantiers)
 
 @APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
 def liste_ouvriers(): # NOM A CHANGER
