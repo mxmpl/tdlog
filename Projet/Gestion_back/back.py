@@ -357,9 +357,10 @@ def planning():
    """
    Associe les chantiers aux ouvriers.
    """
-   attribution = get_planning()
-   for dico in attribution:
-       dico["title"] = dico["name_ouvrier"] + " a " + dico["name_chantier"]
+   planning_chantiers = []
+   resume_chantiers = resume_chantiers()
+   for cle in resume_chantiers:
+       planning_chantiers.append({"title":cle,"start":resume_chantiers[cle]["start"],"end":resume_chantiers[cle]["end"]})
    return jsonify(attribution)
 
 @APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
@@ -418,7 +419,6 @@ def delete_attribution(id_ouvrier: str, id_chantier: str):
   """
   Supprime attribution d'un ouvrier sur un chantier
   """
-  print("ok", id_ouvrier, id_chantier)
   del_data("attribution", id_ouv = id_ouvrier, id_chant = id_chantier)
   return jsonify(0)
 
