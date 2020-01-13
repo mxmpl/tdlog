@@ -504,13 +504,14 @@ def chantiers_dispos_ouvrier_id(id_ouvrier: str):
 
 
 @APP.route("/attribution/", methods=["POST"])
-def nouvelle_attribution():
+def nouvelles_attributions():
     """
   Nouvelle attribution d'un ouvrier sur un chantier
   """
-    attribution = request.get_json()
-    set_new_attribution(attribution)
-    return jsonify(attribution)
+    liste_attributions = request.get_json()
+    for attribution in liste_attributions:
+        set_new_attribution(attribution)
+    return jsonify(liste_attributions)
 
 
 @APP.route("/attribution/<id_ouvrier>/<id_chantier>", methods=["DELETE"])
@@ -518,7 +519,7 @@ def delete_attribution(id_ouvrier: str, id_chantier: str):
     """
   Supprime attribution d'un ouvrier sur un chantier
   """
-    del_data("attribution", id_ouv=id_ouvrier, id_chant=id_chantier)
+    del_data("attribution", id_ouv=int(id_ouvrier), id_chant=int(id_chantier))
     return jsonify(0)
 
 

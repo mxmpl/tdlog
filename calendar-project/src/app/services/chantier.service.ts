@@ -83,30 +83,19 @@ export class ChantierService {
     );
   } 
 
-  addAttribution(ouvrier: Ouvrier, chantier: Chantier): Observable<Ouvrier>  {
-    const id_ouvrier = ouvrier.id_ouvrier;
-    const id_chantier = chantier.id_chantier;
-    return this.http.post<Ouvrier>(this.attributionUrl, {id_ouvrier, id_chantier}, this.httpOptions).pipe(
-      tap((newOuvrier: Ouvrier) => this.log(`attribution ajoute`)),
-      catchError(this.handleError<Ouvrier>('addAttribution'))
-    );
-  }
-
-  addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]){
-    const id_ouvrier = ouvrier.id_ouvrier;
-    for (var chantier in chantiers_choisis){
-      const id_chantier = chantiers_choisis[chantier].id_chantier;
-      this.http.post<Ouvrier>(this.attributionUrl, {id_ouvrier, id_chantier}, this.httpOptions).pipe(
+  addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]): Observable<Ouvrier> {
+    var couples = [];
+    for (var i=0; i<chantiers_choisis.length; i++){
+      couples.push({"id_ouvrier":ouvrier.id_ouvrier, "id_chantier":chantiers_choisis[i].id_chantier})
+    }
+    return this.http.post<Ouvrier>(this.attributionUrl, couples, this.httpOptions).pipe(
         tap((newOuvrier: Ouvrier) => this.log(`attributions ajoutes`)),
         catchError(this.handleError<Ouvrier>('addAttribution'))
       );
-    }
   }
 
   deleteAttribution(ouvrier: Ouvrier, chantier: Chantier) {
-    const id_ouvrier = ouvrier.id_ouvrier;
-    const id_chantier = chantier.id_chantier;
-    const url = `${this.attributionUrl}${id_ouvrier}/${id_chantier}`;
+    const url = `${this.attributionUrl}${ouvrier.id_ouvrier}/${chantier.id_chantier}`;
     return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
       tap((newOuvrier: Ouvrier) => this.log(`attribution supprime`)),
       catchError(this.handleError<Ouvrier>('deleteAttribution'))
