@@ -3,9 +3,9 @@ Fonctions Set du back-end.
 @author: Maxime Brisinger, Margot Cosson, Raphaël Lasry, Maxime Poli
 """
 import sys
+import exception as ex
 sys.path.append("..")
 from data import bdd
-from data import exception as ex
 import datetime
 import copy
 

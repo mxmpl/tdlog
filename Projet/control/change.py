@@ -4,9 +4,9 @@ Fonctions Delete et Modify du back-end.
 """
 
 import sys
+import exception as ex
 sys.path.append("..")
 from data import bdd
-from data import exception as ex
 from get import return_table
 
 def del_data(name_table: str, id_ouv=None, id_chant=None):
