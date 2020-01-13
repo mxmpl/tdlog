@@ -5,7 +5,7 @@ Fonctions Get du back-end.
 
 import sys
 sys.path.append("..")
-from Gestion_bdd import bdd
+from data import bdd
 from put import verif_dispo_horaire_ouvrier
 
 def get_info_from_id_ouvrier(id_ouv: int):

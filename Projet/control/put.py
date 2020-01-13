@@ -4,8 +4,8 @@ Fonctions Set du back-end.
 """
 import sys
 sys.path.append("..")
-from Gestion_bdd import bdd
-from Gestion_bdd import exception as ex
+from data import bdd
+from data import exception as ex
 import datetime
 import copy
 

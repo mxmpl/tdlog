@@ -29,8 +29,8 @@ DANS main.py
 #############%% Import des bibliothèques utiles
 
 #sys.path.append("..")
-#from Gestion_bdd import bdd
-#from Gestion_bdd import exception as ex
+#from data import bdd
+#from data import exception as ex
 
 """
 DANS main.py 
