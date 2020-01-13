@@ -370,7 +370,7 @@ def planning():
    chantiers = resume_chantiers()
    for cle in resume_chantiers:
        planning_chantiers.append({"title":cle,"start":chantiers[cle]["start"],"end":chantiers[cle]["end"]})
-   return jsonify(attribution)
+   return jsonify(planning_chantiers)
 
 @APP.route("/listeOuvriers/", methods=['GET', 'POST', 'DELETE', 'PUT'])
 def liste_ouvriers(): # NOM A CHANGER
