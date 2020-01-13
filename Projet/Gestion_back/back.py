@@ -244,7 +244,7 @@ def resume_chantiers():
         dictionnaire_chantier = {}
         dictionnaire_chantier["adress"] = chantiers_possibles[name_chantier][0]["adress"]
         dictionnaire_chantier["start"] = sorted(chantiers_possibles[name_chantier], key = lambda element: element["start"])[0]["start"]
-                dictionnaire_chantier["end"] = sorted(chantiers_possibles[name_chantier], key = lambda element: element["end"])[-1]["end"]
+        dictionnaire_chantier["end"] = sorted(chantiers_possibles[name_chantier], key = lambda element: element["end"])[-1]["end"]
         dictionnaire_chantier["ouvriers"] = []
         for chantier in chantiers:
             if chantier["name_chantier"] == name_chantier:
