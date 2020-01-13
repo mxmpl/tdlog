@@ -2,13 +2,25 @@ class wrong_type(Exception):
     """
     Ce n'est pas le bon type d'argument.
     """
-    pass
+    def __init__(self, typ, msg=None): 
+        if msg is None:
+            # Set some default useful message
+            msg = "L'argument n'est pas du type requis : {}".format(typ)
+        self.msg = msg
+    def __str__(self):
+        return self.msg
 
 class missing_or_bad_key(Exception): 
     """
     Clef manquante dans un dictionnaire.
     """
-    pass
+    def __init__(self, key, msg=None): 
+        if msg is None:
+            # Set some default useful message
+            msg = "La clef {} est manquante.".format(key)
+        self.msg = msg
+    def __str__(self):
+        return self.msg
 
 class invalid_id(Exception): 
     """
@@ -40,18 +52,18 @@ def conformite_dict(dictionnaire: dict, champs):
     dictionnaire telle que {"name" : str, "id" : int,}
     """
     if type(dictionnaire) != dict:
-        raise wrong_type
+        raise wrong_type(dict)
     for clef in champs.keys():
         if clef not in dictionnaire.keys(): 
-            raise missing_or_bad_key
+            raise missing_or_bad_key(clef)
         elif type(dictionnaire[clef]) != champs[clef]:
-            raise wrong_type
+            raise wrong_type(type(dictionnaire[clef]))
 
-#if __name__ == '__main__':
-#    dico = {"name" : "Marcel", "age" : 20}
-#    liste = [1,2,3]
-#    champs = {"name" : str, "age": int}
-#    conformite_dict(liste,champs)
+if __name__ == '__main__':
+    dico = {"name" : "Marcel", "age" : 20}
+    liste = [1,2,3]
+    champs = {"name" : str, "age": int}
+    conformite_dict(dico, champs)
     
 
 """à faire : faire exception quand on essaye de get dans une table vide"""
