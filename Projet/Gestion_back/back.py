@@ -231,7 +231,7 @@ def return_cluster_chantiers(id_ouv = None):
 def resume_chantiers():
     """
     Revoie une liste de dictionnaires de la forme :
-    {"name_chantier": text, "adress": text, "start":"2016-10-10 08:00:00", "end":"2016-10-15 18:00:00", "ouvriers":[{ "name_ouvrier", "id_ouvrier": int, "id_chantier": int},]}
+    {"name_chantier": text, "adress": text, "start":"2016-10-10 08:00:00", "end":"2016-10-15 18:00:00", "ouvriers":[{ "name_ouvrier", "id_ouvrier": int, "id_chantier": [int]},]}
     """
     chantiers_possibles = return_cluster_chantiers(id_ouv = None)
     ouvriers = return_table("ouvriers")
@@ -243,10 +243,8 @@ def resume_chantiers():
         # dictionnaire_chantier["name_chantier"] = name_chantier
         dictionnaire_chantier = {}
         dictionnaire_chantier["adress"] = chantiers_possibles[name_chantier][0]["adress"]
-        start = sorted(chantiers_possibles[name_chantier], key = lambda element: element["start"])[0]["start"]
-        end = sorted(chantiers_possibles[name_chantier], key = lambda element: element["end"])[-1]["end"]
-        dictionnaire_chantier["start"] = start
-        dictionnaire_chantier["end"] = end
+        dictionnaire_chantier["start"] = sorted(chantiers_possibles[name_chantier], key = lambda element: element["start"])[0]["start"]
+                dictionnaire_chantier["end"] = sorted(chantiers_possibles[name_chantier], key = lambda element: element["end"])[-1]["end"]
         dictionnaire_chantier["ouvriers"] = []
         for chantier in chantiers:
             if chantier["name_chantier"] == name_chantier:
