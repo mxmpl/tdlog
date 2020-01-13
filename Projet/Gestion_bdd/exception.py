@@ -4,7 +4,6 @@ class wrong_type(Exception):
     """
     def __init__(self, typ, msg=None): 
         if msg is None:
-            # Set some default useful message
             msg = "L'argument n'est pas du type requis : {}".format(typ)
         self.msg = msg
     def __str__(self):
@@ -16,7 +15,6 @@ class missing_or_bad_key(Exception):
     """
     def __init__(self, key, msg=None): 
         if msg is None:
-            # Set some default useful message
             msg = "La clef {} est manquante.".format(key)
         self.msg = msg
     def __str__(self):
@@ -26,22 +24,34 @@ class invalid_id(Exception):
     """
     L'identifiant est incorrect.
     """
-    pass
+    def __init__(self, ide=None, msg=None): 
+        if msg is None:
+            if ide is None:
+                msg = "L'identifiant est invalide."
+            else:
+                msg = "L'identifiant {} est invalide.".format(ide)
+        self.msg = msg
+    def __str__(self):
+        return self.msg
 
 class id_ouvrier_not_available_for_assignation(Exception): 
     """
     L'ouvrier est indisponible.
     """
-    pass
+    def __init__(self, id_ouvrier, id_chantier, msg=None):
+        if msg is None:
+            msg = "L'ouvrier {} n'est pas disponible pour être assigné au chantier {}.".format(id_ouvrier, id_chantier)
+        self.msg = msg
+    def __str__(self):
+        return self.msg
 
 class invalid_dates(Exception):
     """
     Date invalide.
     """
-    def __init__(self, typ, msg=None): 
+    def __init__(self, date, msg=None): 
         if msg is None:
-            # Set some default useful message
-            msg = "L'argument n'est pas du type requis : {}".format(typ)
+            msg = "La date {} n'est pas valide.".format(date)
         self.msg = msg
     def __str__(self):
         return self.msg
@@ -50,8 +60,12 @@ class overlimit_date(Exception):
     """
     Durée supérieure à la durée limite imposée.
     """
+    def __init__(self, limite_jours, msg=None): 
+        if msg is None:
+            msg = "Le chantier dépasse la limite de jours établie à {} jours.".format(limite_jours)
+        self.msg = msg
     def __str__(self):
-        return "Invalid date"
+        return self.msg
 
 def conformite_dict(dictionnaire: dict, champs):
     """
