@@ -409,7 +409,17 @@ def nouvelle_attribution():
   """
   Nouvelle attribution d'un ouvrier sur un chantier
   """
-  set_new_attribution(request.get_json())
+  attribution = request.get_json()
+  set_new_attribution(attribution)
+  return jsonify(attribution)
+
+@APP.route("/attribution/<id_ouvrier>/<id_chantier>", methods=['DELETE'])
+def delete_attribution(id_ouvrier: str, id_chantier: str):
+  """
+  Supprime attribution d'un ouvrier sur un chantier
+  """
+  print("ok", id_ouvrier, id_chantier)
+  del_data("attribution", id_ouv = id_ouvrier, id_chant = id_chantier)
   return jsonify(0)
 
 @APP.route("/listeChantiers/", methods=['GET','POST'])
@@ -447,22 +457,21 @@ def chantier_name(name_chantier: str):
                dicoOuvrier["chantiers"].append(get_info_from_id_chantier(idChantier))
        return jsonify(chantier)
    elif request.method == "DELETE":
-       #del_data("ouvriers", id_ouv = int(id_ouvrier))
-       rien = []
+       delete_chantier(name_chantier)
    chantiers = return_table("chantiers")
    return jsonify(chantiers)
 
 
-# @APP.route("/addOuvriers/", methods = ['POST'])
-# def addOuvrier():
-#     """
-#     Attribue un ouvrier à un chantier.
-#     """
-#     data = request.get_json()
-#     new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
-#     global attribution
-#     attribution.append(new_evenement)
-#     return jsonify(attribution)
+@APP.route("/addOuvriers/", methods = ['POST'])
+def addOuvrier():
+    """
+    Attribue un ouvrier à un chantier.
+    """
+    data = request.get_json()
+    new_evenement = {"start":"2020-01-07", "title":data["nom"]+" est a Paris", "end":"2020-01-07"}
+    global attribution
+    attribution.append(new_evenement)
+    return jsonify(attribution)
 
 if __name__ == '__main__':
    APP.run(debug=True)

@@ -73,10 +73,10 @@ export class OuvrierDetailComponent implements OnInit {
     }
   }
 
-/*   deleteAttribution(chantier: Chantier) {
+   deleteAttribution(chantier: Chantier) {
     if (confirm('Voulez-vous enlever '+this.ouvrier.name_ouvrier+' du chantier '+chantier.name_chantier+' ?')) {
     this.chantierService.deleteAttribution(this.ouvrier, chantier)
       .subscribe(_ => this.goBack());
     }
-  } */
+  } 
 }

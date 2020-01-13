@@ -53,18 +53,6 @@ export class OuvrierService {
     );
   }
 
-  /* GET ouvriers whose name contains search term */
-  // searchOuvriers(term: string): Observable<Ouvrier[]> {
-  //   if (!term.trim()) {
-  //     // if not search term, return empty ouvrier array.
-  //     return of([]);
-  //   }
-  //   return this.http.get<Ouvrier[]>(`${this.listeOuvriersUrl}?name=${term}`).pipe(
-  //     tap(_ => this.log(`found ouvriers matching "${term}"`)),
-  //     catchError(this.handleError<Ouvrier[]>('searchHeroes', []))
-  //   );
-  // }
-
   //////// Save methods //////////
 
   /** POST: add a new ouvrier to the server */
