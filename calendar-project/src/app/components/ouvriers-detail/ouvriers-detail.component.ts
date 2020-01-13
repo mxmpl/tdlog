@@ -66,6 +66,13 @@ export class OuvrierDetailComponent implements OnInit {
     this.nom_choisi = nom_chantier;
   }
 
+  addAttributions(chantiers_choisis: Chantier[]): void {
+    if (confirm('Voulez-vous ajouter '+this.ouvrier.name_ouvrier+' à ces chantiers ?')) {
+    this.chantierService.addAttributions(this.ouvrier, chantiers_choisis)
+    }
+    this.goBack();
+  }
+
   addAttribution(chantier: Chantier): void {
     if (confirm('Voulez-vous ajouter '+this.ouvrier.name_ouvrier+' au chantier '+chantier.name_chantier+' ?')) {
     this.chantierService.addAttribution(this.ouvrier, chantier)

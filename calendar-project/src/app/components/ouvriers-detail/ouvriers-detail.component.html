@@ -55,16 +55,15 @@
         <mat-card-title class="title">Dates à {{nom_choisi}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-nav-list>
-          <mat-list-item *ngFor="let chantier of chantiers_dispos[nom_choisi]" (click)="addAttribution(chantier)">
+        <mat-selection-list #chantiers_choisis>
+          <mat-list-option *ngFor="let chantier of chantiers_dispos[nom_choisi]">
             <h3 matLine> {{chantier.name_chantier}} </h3>
             <p matLine> De : {{chantier.start}} </p>
             <p matLine> A : {{chantier.end}}</p>
             <p matLine> Adresse : {{chantier.adress}}</p>
-          </mat-list-item>
-        </mat-nav-list>
-        <button mat-raised-button class="send_button" color="accent" (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value);
-          chantierName.value='';chantierStart.value='';chantierEnd.value='';chantierAdress.value=''">
+          </mat-list-option>
+        </mat-selection-list>
+        <button mat-raised-button class="send_button" color="accent" (click)="addAttributions(chantiers_choisis)">
           Ajouter
         </button>
       </mat-card-content>

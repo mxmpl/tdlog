@@ -92,6 +92,17 @@ export class ChantierService {
     );
   }
 
+  addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]){
+    const id_ouvrier = ouvrier.id_ouvrier;
+    for (var chantier in chantiers_choisis){
+      const id_chantier = chantiers_choisis[chantier].id_chantier;
+      this.http.post<Ouvrier>(this.attributionUrl, {id_ouvrier, id_chantier}, this.httpOptions).pipe(
+        tap((newOuvrier: Ouvrier) => this.log(`attributions ajoutes`)),
+        catchError(this.handleError<Ouvrier>('addAttribution'))
+      );
+    }
+  }
+
   deleteAttribution(ouvrier: Ouvrier, chantier: Chantier) {
     const id_ouvrier = ouvrier.id_ouvrier;
     const id_chantier = chantier.id_chantier;
