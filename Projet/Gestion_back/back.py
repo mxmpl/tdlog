@@ -368,7 +368,7 @@ def planning():
    """
    planning_chantiers = []
    chantiers = resume_chantiers()
-   for cle in resume_chantiers:
+   for cle in chantiers:
        planning_chantiers.append({"title":cle,"start":chantiers[cle]["start"],"end":chantiers[cle]["end"]})
    return jsonify(planning_chantiers)
 
