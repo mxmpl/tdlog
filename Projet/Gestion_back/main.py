@@ -1,18 +1,31 @@
 """
-Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
-Maxime POLI, 2019-2020
-
-Le but de ce script python est de traiter la partie back du site.
-
-Fichier conforme à la norme PEP8.
+Fichier principale du projet TDLOG 2019-2020.
+@author: Maxime Brisinger, Margot Cosson, Raphaël Lasry, Maxime Poli
 """
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_restful import Api
+#from flask_restful import Api
 
-from back import (resume_chantiers, set_new_ouvrier, return_table_ouvrier_avec_chantiers, get_info_from_id_ouvrier,
-                  get_planning_individuel, modify_data, del_data, return_cluster_chantiers, set_new_attribution, convert_format_date,
-                  return_table, delete_chantier, get_info_from_id_chantier, declare_new_chantier)
+from get import (get_info_from_id_ouvrier, 
+                  get_info_from_id_chantier, 
+                  return_table, 
+                  return_table_ouvrier_avec_chantiers, 
+                  return_cluster_chantiers, 
+                  resume_chantiers,
+                  get_planning_individuel)
+
+from put import (convert_format_date, 
+                  set_new_ouvrier,
+                  set_new_attribution, 
+                  declare_new_chantier,
+                  FORMAT_DATE1,
+                  FORMAT_DATE2,
+                  FORMAT_DATE3)
+
+from change import(del_data,
+                   delete_chantier,
+                   modify_data)
+
 
 APP = Flask(__name__)
 CORS(APP)  # Creation du site
@@ -128,14 +141,10 @@ def liste_chantiers():
         return jsonify(liste_chantiers)
     elif request.method == "POST":
         data = request.get_json()
-        date_start = convert_format_date(
-            data["start"]
-        )  # data["start"][6:10] + "-" + data["start"][3:5] + "-" +
-            # data["start"][0:2] + data["start"][10:]
-        date_end = convert_format_date(
-            data["end"]
-        )  # data["end"][6:10] + "-" + data["end"][3:5] + "-"
-            # + data["end"][0:2] + data["end"][10:]
+        #date_start = convert_format_date(data["start"], FORMAT_DATE3, FORMAT_DATE1)
+        date_start = data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
+        #date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)  
+        date_end = data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
         declare_new_chantier(
             {
                 "name_chantier": data["name_chantier"],
