@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 import sys
-sys.path.append('control/')
+sys.path.append('control')
 
 from get import (get_info_from_id_ouvrier, 
                   get_info_from_id_chantier, 
@@ -21,8 +21,7 @@ from put import (convert_format_date,
                   set_new_attribution, 
                   declare_new_chantier,
                   FORMAT_DATE1,
-                  FORMAT_DATE2,
-                  FORMAT_DATE3)
+                  FORMAT_DATE2)
 
 from change import(del_data,
                    delete_chantier,
@@ -143,10 +142,10 @@ def liste_chantiers():
         return jsonify(liste_chantiers)
     elif request.method == "POST":
         data = request.get_json()
-        #date_start = convert_format_date(data["start"], FORMAT_DATE3, FORMAT_DATE1)
-        date_start = data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
-        #date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)  
-        date_end = data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
+        date_start = convert_format_date(data["start"], FORMAT_DATE2, FORMAT_DATE1)
+        #a supp : date_start = data["start"][6:10] + "-" + data["start"][3:5] + "-" + data["start"][0:2] + data["start"][10:]
+        date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)  
+        #a supp : date_end = data["end"][6:10] + "-" + data["end"][3:5] + "-" + data["end"][0:2] + data["end"][10:]
         declare_new_chantier(
             {
                 "name_chantier": data["name_chantier"],

@@ -22,7 +22,6 @@ HEURES_FIN = {
 NB_LIMITE_JOURS = 25
 FORMAT_DATE1 = "%Y-%m-%d %H:%M:%S"
 FORMAT_DATE2 = "%d/%m/%Y %H:%M:%S"
-FORMAT_DATE3 = "%d-%m-%Y %H:%M:%S"
 
 def convert_format_date(date: str, format1: str, format2: str):
     """
