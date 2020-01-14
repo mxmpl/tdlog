@@ -58,11 +58,11 @@ export class ChantierDetailComponent implements OnInit {
     console.log(start.substr(11,2))
     if (start.substr(11,2) == "12") {
       console.log(start)
-      start = start.substr(8,2) + "-" + start.substr(5,2) + "-" + start.substr(0,4) + " 14:00:00";
+      start = start.substr(8,2) + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " 14:00:00";
       console.log(start)
 
     } else {
-      start = (parseInt(start.substr(8,2))+1).toString() + "-" + start.substr(5,2) + "-" + start.substr(0,4) + " 08:00:00";
+      start = (parseInt(start.substr(8,2))+1).toString() + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " 08:00:00";
       console.log(start)
     }
     end = end + " " + endTime + ":00:00";
