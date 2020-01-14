@@ -24,10 +24,3 @@ os.system("pip install flask")
 os.system("pip install pysqlite3") # Normalement il est installé de base
 os.system("pip install doctest-cli")
 os.system("pip install pandas")
-
-############################ Telechargement des bibliothèques liées au front
-
-os.system("pip install django-angular")
-os.system("pip install nodejs")
-os.system("npm init")
-os.system("npm install angular --save")
