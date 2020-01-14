@@ -16,6 +16,7 @@ import os
 ############################ Telechargement des bibliothèques liées au back
 
 os.system("pip install flask")
+os.system("pip install flask_cors")
 # os.system("pip install render_template")
 # os.system("pip install request")
 
