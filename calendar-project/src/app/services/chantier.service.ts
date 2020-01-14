@@ -32,7 +32,6 @@ export class ChantierService {
   getChantiers (): Observable<Chantier[]> {
     return this.http.get<Chantier[]>(this.listeChantiersUrl)
       .pipe(
-        tap(_ => this.log('chantiers récupérés')),
         catchError(this.handleError<Chantier[]>('getChantiers', []))
       );
   }
@@ -41,7 +40,6 @@ export class ChantierService {
   getChantier(name_chantier: string): Observable<Chantier> {
     const url = `${this.listeChantiersUrl}${name_chantier}`;
     return this.http.get<Chantier>(url).pipe(
-      tap(_ => this.log(`fetched chantier name_chantier=${name_chantier}`)),
       catchError(this.handleError<Chantier>(`getChantier name_chantier=${name_chantier}`))
     );
   }
@@ -59,7 +57,6 @@ export class ChantierService {
   	const url = `${this.listeOuvriersUrl}${id_ouvrier}/chantiersdispos`;
     return this.http.get<Map<string,Chantier[]>>(url)
       .pipe(
-        tap(_ => this.log('chantiers dispos récupérés')),
         catchError(this.handleError<Map<string,Chantier[]>>('getChantiersDispos'))
       );
   }
@@ -67,7 +64,6 @@ export class ChantierService {
   /** POST: add a new chantier to the server */
   addChantier (chantier: Chantier): Observable<Chantier> {
     return this.http.post<Chantier>(this.listeChantiersUrl, chantier, this.httpOptions).pipe(
-      tap((newChantier: Chantier) => this.log(`chantier ajoute`)),//, w/ id_chantier=${newChantier.id_chantier}`)),
       catchError(this.handleError<Chantier>('addChantier'))
     );
   }
@@ -78,7 +74,6 @@ export class ChantierService {
     const url = `${this.listeChantiersUrl}${name}`;
 
     return this.http.delete<Chantier>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`deleted chantier name_chantier=${name}`)),
       catchError(this.handleError<Chantier>('deleteChantier'))
     );
   } 
@@ -89,7 +84,6 @@ export class ChantierService {
       couples.push({"id_ouvrier":ouvrier.id_ouvrier, "id_chantier":chantiers_choisis[i].id_chantier})
     }
     return this.http.post<Ouvrier>(this.attributionUrl, couples, this.httpOptions).pipe(
-        tap((newOuvrier: Ouvrier) => this.log(`attributions ajoutes`)),
         catchError(this.handleError<Ouvrier>('addAttribution'))
       );
   }
@@ -97,7 +91,6 @@ export class ChantierService {
   deleteAttribution(ouvrier: Ouvrier, chantier: Chantier) {
     const url = `${this.attributionUrl}${ouvrier.id_ouvrier}/${chantier.id_chantier}`;
     return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
-      tap((newOuvrier: Ouvrier) => this.log(`attribution supprime`)),
       catchError(this.handleError<Ouvrier>('deleteAttribution'))
     );
   }
@@ -111,14 +104,8 @@ export class ChantierService {
    */
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
+      console.error(error);
       this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }

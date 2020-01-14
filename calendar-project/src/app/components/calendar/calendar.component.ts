@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGrigPlugin from '@fullcalendar/timegrid';
@@ -22,12 +23,13 @@ export class CalendarComponent {
   };
   calendarLocales = [frLocale];
   
+  constructor(private router: Router) {}
 
   toggleWeekends() {
     this.calendarWeekends = !this.calendarWeekends;
   }
 
-  handleEventClick(arg) {
-      console.log('Evenement cliqué')
+  handleEventClick(event_info) {
+    this.router.navigate(['chantiers/detail/'+event_info.event.title])
   }
 }

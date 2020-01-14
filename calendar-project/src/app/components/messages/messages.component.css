@@ -1,6 +1,6 @@
 .card {
   max-width: 80%;
-  /*max-height: 300px;*/
+  max-height: 300px;
   overflow-y: auto;
   margin-top: 2em;
   margin-bottom: 2em;
@@ -8,5 +8,9 @@
 }
 
 .title {
-  color: #7C4DFF ;
+  color: #7C4DFF;
+}
+
+.mat-list-item {
+  color: #FF0000;
 }

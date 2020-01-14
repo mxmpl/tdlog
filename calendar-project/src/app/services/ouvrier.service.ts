@@ -25,7 +25,6 @@ export class OuvrierService {
   getOuvriers (): Observable<Ouvrier[]> {
     return this.http.get<Ouvrier[]>(this.listeOuvriersUrl)
       .pipe(
-        tap(_ => this.log('ouvriers récupérés')),
         catchError(this.handleError<Ouvrier[]>('getOuvriers', []))
       );
   }
@@ -48,7 +47,6 @@ export class OuvrierService {
   getOuvrier(id_ouvrier: number): Observable<Ouvrier> {
     const url = `${this.listeOuvriersUrl}${id_ouvrier}`;
     return this.http.get<Ouvrier>(url).pipe(
-      tap(_ => this.log(`fetched ouvrier id_ouvrier=${id_ouvrier}`)),
       catchError(this.handleError<Ouvrier>(`getOuvrier id_ouvrier=${id_ouvrier}`))
     );
   }
@@ -58,7 +56,6 @@ export class OuvrierService {
   /** POST: add a new ouvrier to the server */
   addOuvrier (ouvrier: Ouvrier): Observable<Ouvrier> {
     return this.http.post<Ouvrier>(this.listeOuvriersUrl, ouvrier, this.httpOptions).pipe(
-      tap((newOuvrier: Ouvrier) => this.log(`ouvrier ajoute`)),//, w/ id_ouvrier=${newOuvrier.id_ouvrier}`)),
       catchError(this.handleError<Ouvrier>('addOuvrier'))
     );
   }
@@ -69,7 +66,6 @@ export class OuvrierService {
     const url = `${this.listeOuvriersUrl}${id}`;
 
     return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`deleted ouvrier id_ouvrier=${id}`)),
       catchError(this.handleError<Ouvrier>('deleteOuvrier'))
     );
   }
@@ -79,7 +75,6 @@ export class OuvrierService {
     const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
     const url = `${this.listeOuvriersUrl}${id}`;
     return this.http.put(url, ouvrier, this.httpOptions).pipe(
-      tap(_ => this.log(`updated ouvrier id_ouvrier=${ouvrier.id_ouvrier}`)),
       catchError(this.handleError<any>('updateOuvrier'))
     );
   }
