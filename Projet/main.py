@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 import sys
-sys.path.append('control')
+sys.path.insert(0,'control')
 
 from get import (get_info_from_id_ouvrier, 
                   get_info_from_id_chantier, 
