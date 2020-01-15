@@ -1,0 +1,50 @@
+Projet/bdd
+Projet/data/__pycache__/
+Projet/control/__pycache__/
+calendar-project/src/python/control/__pycache__/
+calendar-project/src/python/data/__pycache__/
+
+# compiled output
+calendar-project/dist
+calendar-project/tmp
+calendar-project/out-tsc
+# Only exists if Bazel was run
+calendar-project/bazel-out
+
+# dependencies
+calendar-project/node_modules
+
+# profiling files
+calendar-project/chrome-profiler-events*.json
+calendar-project/speed-measure-plugin*.json
+
+# IDEs and editors
+calendar-project/.idea
+calendar-project/.project
+calendar-project/.classpath
+calendar-project/.c9/
+calendar-project/*.launch
+calendar-project/.settings/
+calendar-project/*.sublime-workspace
+
+# IDE - VSCode
+calendar-project/.vscode/*
+!calendar-project/.vscode/settings.json
+!calendar-project/.vscode/tasks.json
+!calendar-project/.vscode/launch.json
+!calendar-project/.vscode/extensions.json
+calendar-project/.history/*
+
+# misc
+calendar-project/.sass-cache
+calendar-project/connect.lock
+calendar-project/coverage
+calendar-project/libpeerconnection.log
+calendar-project/npm-debug.log
+calendar-project/yarn-error.log
+calendar-project/testem.log
+calendar-project/typings
+
+# System Files
+calendar-project/.DS_Store
+calendar-project/Thumbs.db
