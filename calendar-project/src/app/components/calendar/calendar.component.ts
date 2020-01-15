@@ -18,7 +18,7 @@ export class CalendarComponent {
   calendarWeekends = true;
   calendarEvents = {
   	url: 'http://127.0.0.1:5000/planning/',
-	color: 'yellow',
+	color: '#FFD740',
 	textColor: 'black'
   };
   calendarLocales = [frLocale];
