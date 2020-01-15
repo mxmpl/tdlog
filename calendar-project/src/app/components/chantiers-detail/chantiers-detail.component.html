@@ -47,13 +47,14 @@
           </mat-list-item>
           <h3 matSubheader> Heure de fin </h3>
           <mat-list-item>
-            <mat-radio-group [(ngModel)]="heureFin">
-              <mat-radio-button class="example-margin" value="12">12h</mat-radio-button>
-              <mat-radio-button class="example-margin" value="18">18h</mat-radio-button>
+            <mat-radio-group [(ngModel)]="heureFinChoisie">
+              <mat-radio-button class="example-margin" value={{heureFinMatin}}>12h</mat-radio-button>
+              <mat-radio-button class="example-margin" value={{heureFinAM}}>18h</mat-radio-button>
             </mat-radio-group>
           </mat-list-item>
           <mat-list-item>
-            <button mat-raised-button class="send_button" color="accent" (click)="add(chantier.name_chantier, chantier.end, heureDeb, chantierEnd.value, heureFin, chantier.end);
+            <button mat-raised-button class="send_button" color="accent" 
+            (click)="add(chantier.name_chantier, chantier.end, heureDeb, chantierEnd.value, heureFinChoisie, chantier.adress);
             chantierEnd.value=''">
               Ajouter
             </button>
@@ -62,16 +63,15 @@
       </mat-card-content>
     </mat-card>
     <div *ngIf="show">
-      <mat-card *ngIf="nom_choisi" class="card">
+      <mat-card *ngIf="nomChoisi" class="card">
         <mat-card-header>
-          <mat-card-title class="title">Dates de {{ouvrier_choisi.name_ouvrier}}</mat-card-title>
+          <mat-card-title class="title">Dates de {{ouvrierChoisi.name_ouvrier}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-list>
-            <mat-list-item *ngFor="let chantier of horaires">
-              <h3 matLine> {{chantier.name_chantier}} </h3>
+            <mat-list-item *ngFor="let chantier of ouvrierChoisi.chantiers">
               <p matLine> De : {{chantier.start}} </p>
-              <p matLine> A : {{chantier.end}}</p>
+              <p matLine> A : {{chantier.end}} </p>
               <button mat-icon-button (click)="deleteAttribution(chantier)">
                 <mat-icon>close</mat-icon>
               </button>

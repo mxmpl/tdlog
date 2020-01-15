@@ -46,21 +46,21 @@
           </mat-list-item>
           <h3 matSubheader> Heure de début </h3>
           <mat-list-item>
-            <mat-radio-group [(ngModel)]="heureDeb">
-              <mat-radio-button class="example-margin" value="08">8h</mat-radio-button>
-              <mat-radio-button class="example-margin" value="14">14h</mat-radio-button>
+            <mat-radio-group [(ngModel)]="heureDebChoisie">
+              <mat-radio-button class="example-margin" value={{heureDebMatin}}>8h</mat-radio-button>
+              <mat-radio-button class="example-margin" value={{heureDebAM}}>14h</mat-radio-button>
             </mat-radio-group>
           </mat-list-item>
           <h3 matSubheader> Heure de fin </h3>
           <mat-list-item>
-            <mat-radio-group [(ngModel)]="heureFin">
-              <mat-radio-button class="example-margin" value="12">12h</mat-radio-button>
-              <mat-radio-button class="example-margin" value="18">18h</mat-radio-button>
+            <mat-radio-group [(ngModel)]="heureFinChoisie">
+              <mat-radio-button class="example-margin" value={{heureFinMatin}}>12h</mat-radio-button>
+              <mat-radio-button class="example-margin" value={{heureFinAM}}>18h</mat-radio-button>
             </mat-radio-group>
           </mat-list-item>
           <mat-list-item>
             <button mat-raised-button class = "send_button" color="accent" 
-            (click)="add(chantierName.value, chantierStart.value, heureDeb, chantierEnd.value, heureFin, chantierAdress.value);
+            (click)="add(chantierName.value, chantierStart.value, heureDebChoisie, chantierEnd.value, heureFinChoisie, chantierAdress.value);
             chantierName.value='';chantierStart.value='';chantierEnd.value='';chantierAdress.value=''">
             Ajouter
           </button>

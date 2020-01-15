@@ -12,9 +12,15 @@ export class ChantiersComponent implements OnInit {
 
   chantiers: Chantier[]
 
-  heureDeb = "08";
-  heureFin = "12";
+  heureDebMatin = "08";
+  heureFinMatin = "12" ;
+  heureDebAM = "14" ;
+  heureFinAM = "18";
+  
+  heureDebChoisie = this.heureDebAM; //on initialise arbitraitement à 08
+  heureFinChoisie = this.heureFinAM;
 
+  
   constructor(private chantierService: ChantierService) { }
 
   ngOnInit() {
@@ -28,6 +34,7 @@ export class ChantiersComponent implements OnInit {
 
   add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
     name_chantier = name_chantier.trim();
+    name_chantier = name_chantier[0].toUpperCase() + name_chantier.slice(1);
     start = start + " " + startTime + ":00:00";
     end = end + " " + endTime + ":00:00";
   

@@ -15,10 +15,14 @@ export class ChantierDetailComponent implements OnInit {
 
   @Input() chantier: Chantier;
 
-  nom_choisi: string;
-  ouvrier_choisi: Ouvrier;
-  horaires: Chantier[];
+  nomChoisi: string;
+  ouvrierChoisi: Ouvrier;
   show: boolean = false;
+
+  heureDebMatin = "08";
+  heureFinMatin = "12" ;
+  heureDebAM = "14" ;
+  heureFinAM = "18";
 
   constructor(
     private route: ActivatedRoute,
@@ -45,28 +49,19 @@ export class ChantierDetailComponent implements OnInit {
   }
 
   selectOuvrier(ouvrier: Ouvrier): void{
-    console.log('ok')
     this.show = true;
-    this.nom_choisi = ouvrier.name_ouvrier;
-    this.ouvrier_choisi = ouvrier;
-    this.horaires = ouvrier.chantiers;
+    this.nomChoisi = ouvrier.name_ouvrier;
+    this.ouvrierChoisi = ouvrier;
   }
 
   add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
     name_chantier = name_chantier.trim();
-    
-    console.log(start.substr(11,2))
-    if (start.substr(11,2) == "12") {
-      console.log(start)
-      start = start.substr(8,2) + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " 14:00:00";
-      console.log(start)
-
+    if (start.substr(11,2) == this.heureFinAM) {
+      start = start.substr(8,2) + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " " + this.heureDebAM + ":00:00";
     } else {
-      start = (parseInt(start.substr(8,2))+1).toString() + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " 08:00:00";
-      console.log(start)
+      start = (parseInt(start.substr(8,2))+1).toString() + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " " + this.heureDebAM + ":00:00";
     }
     end = end + " " + endTime + ":00:00";
-
   
     if (!name_chantier) { return; }
     this.chantierService.addChantier({ name_chantier,start,end,adress } as Chantier)
@@ -74,8 +69,8 @@ export class ChantierDetailComponent implements OnInit {
   }
 
   deleteAttribution(chantier: Chantier) {
-    if (confirm('Voulez-vous enlever '+this.ouvrier_choisi.name_ouvrier+' du chantier '+chantier.name_chantier+' ?')) {
-    this.chantierService.deleteAttribution(this.ouvrier_choisi, chantier)
+    if (confirm('Voulez-vous enlever '+this.ouvrierChoisi.name_ouvrier+' du chantier '+chantier.name_chantier+' ?')) {
+    this.chantierService.deleteAttribution(this.ouvrierChoisi, chantier)
       .subscribe(_ => this.goBack());
     }
   } 

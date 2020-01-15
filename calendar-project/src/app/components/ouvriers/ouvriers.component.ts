@@ -25,6 +25,7 @@ export class OuvriersComponent implements OnInit {
 
   add(name_ouvrier: string): void {
     name_ouvrier = name_ouvrier.trim();
+    name_ouvrier = name_ouvrier[0].toUpperCase() + name_ouvrier.slice(1);
     if (!name_ouvrier) { return; }
     this.ouvrierService.addOuvrier({ name_ouvrier } as Ouvrier)
       .subscribe(_ => this.getOuvriers());
