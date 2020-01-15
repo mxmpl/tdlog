@@ -172,12 +172,12 @@ def chantier_name(name_chantier: str):
 
 @APP.route('/<path:path>', methods=['GET'])
 def static_proxy(path):
-  return send_from_directory('./', path)
+  return send_from_directory('front/', path)
 
 
 @APP.route('/')
 def root():
-  return send_from_directory('./', 'index.html')
+  return send_from_directory('front/', 'index.html')
 
 
 if __name__ == "__main__":
