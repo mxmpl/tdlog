@@ -51,7 +51,7 @@ def planning():
 
 
 @APP.route("/listeOuvriers/", methods=["GET", "POST", "DELETE", "PUT"])
-def liste_ouvriers():  # NOM A CHANGER
+def liste_ouvriers():
     """
    Ajout d'un nouvel ouvrier.
    """
@@ -63,7 +63,7 @@ def liste_ouvriers():  # NOM A CHANGER
 
 
 @APP.route("/listeOuvriers/<id_ouvrier>", methods=["GET", "POST", "DELETE", "PUT"])
-def ouvrier_id(id_ouvrier: str):  # MODIFIER ET PRENDRE UN INT + NOM A CHANGER
+def ouvrier_id(id_ouvrier: str):
     """
    Actions sur un ouvrier donné :
    informations, modification du nom ou suppression.
@@ -112,7 +112,7 @@ def nouvelles_attributions():
 
 
 @APP.route("/attribution/<id_ouvrier>/<id_chantier>", methods=["DELETE"])
-def delete_attribution(id_ouvrier: str, id_chantier: str):
+def supprimer_attribution(id_ouvrier: str, id_chantier: str):
     """
   Supprime attribution d'un ouvrier sur un chantier
   """
@@ -151,7 +151,7 @@ def liste_chantiers():
 
 
 @APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
-def chantier_name(name_chantier: str):
+def chantier_par_nom(name_chantier: str):
     """
    Action sur un chantier donné :
    informations.
@@ -177,8 +177,8 @@ def static_proxy(path):
 
 @APP.route('/')
 def root():
-  return send_from_directory('front/', 'index.html')
-
+ # return send_from_directory('front/', 'index.html')
+    pass
 
 if __name__ == "__main__":
     APP.run(host='127.0.0.1', port=5000, debug=True)
