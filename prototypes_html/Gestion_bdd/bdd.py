@@ -282,8 +282,42 @@ def return_table_attribution():
                     FROM attribution"""
     )
 
+#%% Fonction de suppression
+
+
+def suppression_table_chantiers():
+    """
+    Supprime la table chantiers, attention ne la reset pas seulement.
+    """
+    CURSOR.execute("""DROP TABLE IF EXISTS chantiers""")
+
+
+def suppression_table_ouvriers():
+    """
+    Supprime la table ouvriers, attention ne la reset pas seulement.
+    """
+    CURSOR.execute("""DROP TABLE IF EXISTS ouvriers""")
+
+
+def suppression_table_attribution():
+    """
+    Supprime la table attribution, attention ne la reset pas seulement.
+    """
+    CURSOR.execute("""DROP TABLE IF EXISTS attribution""")
+
+
+def reset_table(name_table: str):
+    """
+    Reset la table, attention ne la supprime pas.
+    """
+    CURSOR.execute("""DELETE FROM """ + name_table)
+
 #%%
-############################ A effacer dans le futur
+############################ Base de données "à la main"
+
+reset_table("ouvriers")
+reset_table("chantiers")
+reset_table("attribution")
 
 CHANTIER = ["Paris", "2016-10-09 08:00:00", "2016-10-09 12:00:00", "20 rue des lillas"]
 
@@ -340,38 +374,3 @@ insert_ouvrier(OUVRIER)
 OUVRIER = ["Raph", "élagueur", DISPONIBLE]
 
 insert_ouvrier(OUVRIER)
-
-#%% Fonction de suppression
-
-
-def suppression_table_chantiers():
-    """
-    Supprime la table chantiers, attention ne la reset pas seulement.
-    """
-    CURSOR.execute("""DROP TABLE IF EXISTS chantiers""")
-
-
-def suppression_table_ouvriers():
-    """
-    Supprime la table ouvriers, attention ne la reset pas seulement.
-    """
-    CURSOR.execute("""DROP TABLE IF EXISTS ouvriers""")
-
-
-def suppression_table_attribution():
-    """
-    Supprime la table attribution, attention ne la reset pas seulement.
-    """
-    CURSOR.execute("""DROP TABLE IF EXISTS attribution""")
-
-
-def reset_table(name_table: str):
-    """
-    Reset la table, attention ne la supprime pas.
-    """
-    CURSOR.execute("""DELETE FROM """ + name_table)
-
-
-# suppression_table_chantiers()
-# suppression_table_ouvriers()
-# suppression_table_attribution()
