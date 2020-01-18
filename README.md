@@ -1,12 +1,13 @@
-# Emploi du temps
+# Projet gestion de planning
 
-Feuille de route 
+Pour lancer le site, exécuter main.py dans le dossier Projet.
 
-## Prototype
-* Pouvoir ajouter/supprimer un chantier/ouvrier
-* Inclure des tests quand on essaie d’affecter un ouvrier à un chantier pour pas qu’il y ait un ouvrier a deux endroits en même temps par exemple.
-* Choisir ouvrirer dans page1, chantier dans page2, jour dans page3
+- Le dossier Projet contient:
+    - Un dossier control avec les fichiers python gérant le back end
+    - Un dossier data avec les fichiers python gérant la base de données
+    - Un dossier front contenant les fichiers build du projet Angular
+- Le dossier calendar-project est le projet Angular permettant de développer le front end.
+- Le dossier prototypes_html contient le premier prototype du site.
 
-## Version 2
-* Commencer avec Angular
+Le dossier prototype va être supprimé à terme.
 

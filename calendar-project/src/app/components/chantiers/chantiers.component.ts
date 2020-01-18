@@ -44,8 +44,10 @@ export class ChantiersComponent implements OnInit {
   }
 
    delete(chantier: Chantier): void {
-    this.chantiers = this.chantiers.filter(o => o !== chantier);
-    this.chantierService.deleteChantier(chantier).subscribe();
+    if (confirm('Voulez-vous supprimer le chantier '+chantier.name_chantier+' ?')) {
+      this.chantiers = this.chantiers.filter(o => o !== chantier);
+      this.chantierService.deleteChantier(chantier).subscribe();
+    }
   } 
 
   

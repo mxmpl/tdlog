@@ -1456,10 +1456,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "delete",
         value: function _delete(chantier) {
-          this.chantiers = this.chantiers.filter(function (o) {
-            return o !== chantier;
-          });
-          this.chantierService.deleteChantier(chantier).subscribe();
+          if (confirm('Voulez-vous supprimer le chantier ' + chantier.name_chantier + ' ?')) {
+            this.chantiers = this.chantiers.filter(function (o) {
+              return o !== chantier;
+            });
+            this.chantierService.deleteChantier(chantier).subscribe();
+          }
         }
       }]);
 
@@ -1893,9 +1895,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function save() {
           var _this9 = this;
 
-          this.ouvrierService.updateOuvrier(this.ouvrier).subscribe(function () {
-            return _this9.goBack();
-          });
+          if (confirm('Sauvegarder les changements ?')) {
+            this.ouvrierService.updateOuvrier(this.ouvrier).subscribe(function () {
+              return _this9.goBack();
+            });
+          }
         }
       }, {
         key: "toggleChantiersDispos",

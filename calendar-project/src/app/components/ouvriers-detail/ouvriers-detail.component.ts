@@ -53,8 +53,10 @@ export class OuvrierDetailComponent implements OnInit {
   }
 
   save(): void {
-    this.ouvrierService.updateOuvrier(this.ouvrier)
-      .subscribe(() => this.goBack());
+    if (confirm('Sauvegarder les changements ?')) {
+      this.ouvrierService.updateOuvrier(this.ouvrier)
+        .subscribe(() => this.goBack());
+    }
   }
 
   toggleChantiersDispos(): void {

@@ -745,8 +745,10 @@ let ChantiersComponent = class ChantiersComponent {
             .subscribe(_ => this.getChantiers());
     }
     delete(chantier) {
-        this.chantiers = this.chantiers.filter(o => o !== chantier);
-        this.chantierService.deleteChantier(chantier).subscribe();
+        if (confirm('Voulez-vous supprimer le chantier ' + chantier.name_chantier + ' ?')) {
+            this.chantiers = this.chantiers.filter(o => o !== chantier);
+            this.chantierService.deleteChantier(chantier).subscribe();
+        }
     }
 };
 ChantiersComponent.ctorParameters = () => [
@@ -985,8 +987,10 @@ let OuvrierDetailComponent = class OuvrierDetailComponent {
         this.location.back();
     }
     save() {
-        this.ouvrierService.updateOuvrier(this.ouvrier)
-            .subscribe(() => this.goBack());
+        if (confirm('Sauvegarder les changements ?')) {
+            this.ouvrierService.updateOuvrier(this.ouvrier)
+                .subscribe(() => this.goBack());
+        }
     }
     toggleChantiersDispos() {
         this.ouvrierService.updateOuvrier(this.ouvrier);
