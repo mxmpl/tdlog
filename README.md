@@ -9,5 +9,3 @@ Pour lancer le site, exécuter main.py dans le dossier Projet.
 - Le dossier calendar-project est le projet Angular permettant de développer le front end.
 - Le dossier prototypes_html contient le premier prototype du site.
 
-Le dossier prototype va être supprimé à terme.
-
