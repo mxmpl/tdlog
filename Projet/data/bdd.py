@@ -351,106 +351,106 @@ def reset_table(name_table: str):
     commit_condition("""DELETE FROM """ + name_table)
 
 
-reset_table("chantiers")
-reset_table("ouvriers")
-reset_table("attribution")
+#reset_table("chantiers")
+#reset_table("ouvriers")
+#reset_table("attribution")
 
 #############################%% BDD provisoire, à effacer dans le futur
 
-CHANTIER = {
-    "name_chantier": "Paris",
-    "start": "2020-01-09 08:00:00",
-    "end": "2020-01-09 12:00:00",
-    "adress": "20 rue des lillas",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Paris",
-    "start": "2020-01-09 14:00:00",
-    "end": "2020-01-09 18:00:00",
-    "adress": "20 rue des lillas",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Paris",
-    "start": "2020-01-10 08:00:00",
-    "end": "2020-01-10 12:00:00",
-    "adress": "20 rue des lillas",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Lille",
-    "start": "2020-01-09 08:00:00",
-    "end": "2020-01-09 12:00:00",
-    "adress": "20 rue des gres",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Marseille",
-    "start": "2020-01-13 08:00:00",
-    "end": "2020-01-13 12:00:00",
-    "adress": "20 rue des lillas",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Noisy",
-    "start": "2020-01-10 08:00:00",
-    "end": "2020-01-10 12:00:00",
-    "adress": "6-8 Avenue Blaise Pascal",
-}
-
-insert_chantier(CHANTIER)
-
-CHANTIER = {
-    "name_chantier": "Noisy",
-    "start": "2020-01-10 14:00:00",
-    "end": "2020-01-10 18:00:00",
-    "adress": "6-8 Avenue Blaise Pascal",
-}
-
-insert_chantier(CHANTIER)
-
-OUVRIER = {"name_ouvrier": "Leo"}
-
-insert_ouvrier(OUVRIER)
-
-OUVRIER = {"name_ouvrier": "Margot"}
-
-insert_ouvrier(OUVRIER)
-
-OUVRIER = {"name_ouvrier": "Raphael"}
-
-insert_ouvrier(OUVRIER)
-
-ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
-
-insert_attribution(ATTRIBUTION)
-
-ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 1}
-
-insert_attribution(ATTRIBUTION)
+#CHANTIER = {
+#    "name_chantier": "Paris",
+#    "start": "2020-01-09 08:00:00",
+#    "end": "2020-01-09 12:00:00",
+#    "adress": "20 rue des lillas",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#CHANTIER = {
+#    "name_chantier": "Paris",
+#    "start": "2020-01-09 14:00:00",
+#    "end": "2020-01-09 18:00:00",
+#    "adress": "20 rue des lillas",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#CHANTIER = {
+#    "name_chantier": "Paris",
+#    "start": "2020-01-10 08:00:00",
+#    "end": "2020-01-10 12:00:00",
+#    "adress": "20 rue des lillas",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#CHANTIER = {
+#    "name_chantier": "Lille",
+#    "start": "2020-01-09 08:00:00",
+#    "end": "2020-01-09 12:00:00",
+#    "adress": "20 rue des gres",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#CHANTIER = {
+#    "name_chantier": "Marseille",
+#    "start": "2020-01-13 08:00:00",
+#    "end": "2020-01-13 12:00:00",
+#    "adress": "20 rue des lillas",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#CHANTIER = {
+#    "name_chantier": "Noisy",
+#    "start": "2020-01-10 08:00:00",
+#    "end": "2020-01-10 12:00:00",
+#    "adress": "6-8 Avenue Blaise Pascal",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#CHANTIER = {
+#    "name_chantier": "Noisy",
+#    "start": "2020-01-10 14:00:00",
+#    "end": "2020-01-10 18:00:00",
+#    "adress": "6-8 Avenue Blaise Pascal",
+#}
+#
+#insert_chantier(CHANTIER)
+#
+#OUVRIER = {"name_ouvrier": "Leo"}
+#
+#insert_ouvrier(OUVRIER)
+#
+#OUVRIER = {"name_ouvrier": "Margot"}
+#
+#insert_ouvrier(OUVRIER)
+#
+#OUVRIER = {"name_ouvrier": "Raphael"}
+#
+#insert_ouvrier(OUVRIER)
+#
+#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
+#
+#insert_attribution(ATTRIBUTION)
+#
+#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
+#
+#insert_attribution(ATTRIBUTION)
+#
+#ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
+#
+#insert_attribution(ATTRIBUTION)
+#
+#ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
+#
+#insert_attribution(ATTRIBUTION)
+#
+#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 1}
+#
+#insert_attribution(ATTRIBUTION)
 
 ###############%%
 
