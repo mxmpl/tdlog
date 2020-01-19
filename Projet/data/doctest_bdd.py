@@ -9,7 +9,6 @@ Maxime POLI
 import doctest
 import sqlite3
 from bdd import (
-    print_condition,
     select_condition,
 )
 
@@ -50,9 +49,6 @@ TEST = ["Maxime BRISINGER", "Test pour vérifier la fonction select_condition"]
 
 insert_test(TEST)
 
-TEST = ["Maxime POLI", "Test pour vérifier la fonction print_condition"]
-
-insert_test(TEST)
 
 # Test des fonctions
 
@@ -92,21 +88,6 @@ def test_select():
     return donnee[0][0] == "Test pour vérifier la fonction select_condition"
 
 test_select()
-
-def test_print():
-    """
-    On va tester ici la fonction print_condition().
-
-    >>> test_print()
-    ['Maxime POLI']
-    """
-    print_condition(
-        """SELECT name
-                            FROM test
-                            WHERE data like "%print_condition%" """
-    )
-
-test_print()
 
 # Test
 
