@@ -1,16 +1,9 @@
-############################%%
-
 """
-Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
-Maxime POLI, 2019-2020
-
-Le but de ce script python est de traiter les bases de données
-(chantiers et ouvriers principalement).
-
-Fichier conforme à la norme PEP8.
+Script gerant les bases de données ainsi que les requetes SQL
+@author: Maxime BRISINGER, Margot COSSON, Raphael LASRY, Maxime POLI
 """
 
-############################%% Import des bibliothèques utiles
+# Import des bibliothèques utiles
 
 import sqlite3
 import threading
@@ -18,11 +11,12 @@ import sys
 sys.path.append("..")
 from control import exception as ex
 
-############################%% Création des bases de données
+# Création des bases de données
 
 DB = sqlite3.connect("bdd", check_same_thread=False)
-# La base de données avec 3 tables
-# (informations sur les chantiers, ouvriers et attributions)
+
+# La base de données avec 3 tables : chantiers, ouvriers et attribution
+
 CURSOR = DB.cursor()  # On se place sur cette bdd
 
 CURSOR.execute(
@@ -32,7 +26,8 @@ CURSOR.execute(
                                                     end TEXT,
                                                     adress TEXT)"""
 )
-# La table possède 4 arguments, la clef primaire, le nom du chantier,
+
+# La table chantiers possède 4 arguments, la clef primaire, le nom du chantier,
 # Le jour de début du chantier, le jour de sa fin,
 # Ainsi que l'adresse du chantier
 
@@ -41,6 +36,8 @@ CURSOR.execute(
                                                     name_ouvrier TEXT
                                                     )"""
 )
+
+# La table ouvriers possède 2 arguments, la clef primaire et le nom de l'ouvrier,
 
 CURSOR.execute(
     """CREATE TABLE IF NOT EXISTS attribution(id_ouvrier INTEGER,
@@ -53,21 +50,24 @@ CURSOR.execute(
                                                         """
 )
 
+# La table attribution ne possède que deux clefs étrangères, relatives aux tables
+# ouvriers et chantiers
+
 DB.commit()  # On termine de creer les tables
 
-############################%% Fonctions
+# Fonctions
 
-################%% REQUEST
-
+# REQUEST
 
 def commit_condition(command: str):
     """
-    Permet d'executer une commande.
+    Permet d'executer une commande SQL en prenant en paramètre la requête sous
+    forme de chaîne de caractères.
     """
     CURSOR.execute(command)
     DB.commit()
 
-lock = threading.Lock()
+LOCK = threading.Lock()
 def select_condition(
         command: str
 ):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
@@ -75,32 +75,19 @@ def select_condition(
     Permet à partir d'une commande d'enregistrer les informations
     correspondantes de la base de données.
     """
+    # Pour palier au problème d'accès multiples sur la base données
     try:
-        lock.acquire(True)
+        LOCK.acquire(True)
         commit_condition(command)
         rows = CURSOR.fetchall()
     finally:
-        lock.release()
+        LOCK.release()
     sortie = []  # Permet de ne pas obtenir une liste de tuple en sortie
     for row in rows:
         sortie.append(list(row[:]))
     return sortie
 
-
-def print_condition(command: str):
-    """
-    Permet à partir d'une commande d'afficher les informations correspondantes
-    de la base de données. A supprimer à la fin du projet en meme temps que
-    le fichier python exemples.
-    """
-    commit_condition(command)
-    rows = CURSOR.fetchall()
-    for row in rows:
-        print(list(row[:]))
-
-
-###############%% SET & DEL
-
+# SET & DEL
 
 def insert_chantier(new_chantier: dict):
     """
@@ -122,9 +109,8 @@ def insert_chantier(new_chantier: dict):
 
 def insert_ouvrier(new_ouvrier: dict):
     """
-    Permet d'inserer un nouveau ouvrier dans la base de données. Le format d'entrée
-    doit être un dictionnaire de la forme
-    {"name_ouvrier": text}.
+    Permet d'inserer un nouvel ouvrier dans la base de données. Le format d'entrée
+    doit être un dictionnaire de la forme {"name_ouvrier": text}.
     """
     CURSOR.execute(
         """INSERT INTO ouvriers(name_ouvrier)
@@ -143,57 +129,63 @@ def insert_attribution(new_attribution: dict):
         (new_attribution["id_ouvrier"], new_attribution["id_chantier"]),
     )
     DB.commit()
-    
+
 def create_commande(name_table: str, id_ouv: int, id_chant: int):
     """
-    Cree une commande utile pour d'autres fonctions.
+    Cree une commande utile pour d'autres fonctions. On crée ici une chaîne de
+    caractères de la forme "id_chantier = 3" par exemple.
     """
-    if id_ouv != None and id_chant != None and name_table == "attribution": # On veut alors effectuer une action sur une attribution
+    if id_ouv is not None and id_chant is not None and name_table == "attribution":
+        # On veut alors effectuer une action sur une attribution
         commande = """id_chantier = """ + str(id_chant) + """ AND id_ouvrier = """ + str(id_ouv)
-    elif id_ouv == None and name_table == "chantiers": # On veut alors effectuer une action sur un chantier
+    elif id_ouv is None and name_table == "chantiers":
+        # On veut alors effectuer une action sur un chantier
         commande = """id_chantier = """ + str(id_chant)
-    elif id_chant == None and name_table == "ouvriers": # On veut alors effectuer une action sur un ouvrier
+    elif id_chant is None and name_table == "ouvriers":
+        # On veut alors effectuer une action sur un ouvrier
         commande = """id_ouvrier = """ + str(id_ouv)
     else:
-        commande = None # Si on est dans aucun cas, par exemple id_ouv et "chantiers" en argument
+        commande = None
+        # Si on est dans aucun cas, par exemple id_ouv et "chantiers" en arguments
     return commande
 
-def del_data(name_table: str, id_ouv = None, id_chant = None):
+def del_data(name_table: str, id_ouv=None, id_chant=None):
     """
     Permet de supprimer un élément de la table à partir de son id.
     """
     commande = create_commande(name_table, id_ouv, id_chant)
-    if commande != None:
+    if commande is not None:
         commit_condition("""DELETE FROM """ + name_table + """ WHERE """ + commande)
 
-###############%% CHECK
-    
-def id_in_table(name_table: str, id_ouv = None, id_chant = None): 
+# CHECK
+
+def id_in_table(name_table: str, id_ouv=None, id_chant=None):
     """
     Pour savoir si un identifiant est dans la table.
     """
     commande = create_commande(name_table, id_ouv, id_chant)
-    if commande != None:
+    if commande is not None:
         if not select_condition("""SELECT COUNT(*)
                                 FROM """ + name_table +
-                                """ WHERE """ + commande)[0][0] > 0: 
-            raise ex.invalid_id(msg = "L'identifiant(s) considéré(s) n'existe(nt) pas dans la table.")
-        else :
-            return True
-    return False 
+                                """ WHERE """ + commande)[0][0] > 0:
+            raise ex.invalid_id(msg="L'identifiant(s) considéré(s) n'existe(nt) pas dans la table.")
+        return True
+    return False
 
-###############%% MODIFY
+# MODIFY
 
-def modify_data(name_table: str, champs: str, value: str, id_ouv = None, id_chant = None):
+def modify_data(name_table: str, champs: str, value: str, id_ouv=None, id_chant=None):
     """
-    Permet de modifier une donnée dans une table.
+    Permet de modifier une donnée dans une table. Champs est la valeur à modifier
+    value est la nouvelle valeur souhaitée.
     """
     commande = create_commande(name_table, id_ouv, id_chant)
-    if commande != None:
-        commit_condition(""" UPDATE """ + name_table + """ SET """ + champs + " = '" + value + "'" + """ WHERE """ + commande)
+    if commande is not None:
+        commit_condition(""" UPDATE """ + name_table +
+                         """ SET """ + champs + " = '" + value + "'" +
+                         """ WHERE """ + commande)
 
-###############%% GET
-
+# GET
 
 def get_info_from_id_chantier(id_chan: int):
     """
@@ -215,7 +207,6 @@ def get_info_from_id_chantier(id_chan: int):
         "adress": information[4],
     }
 
-
 def get_info_from_id_ouvrier(id_ouv: int):
     """
     Récupère toutes les informations d'un ouvrier à partir de son identifiant.
@@ -230,11 +221,10 @@ def get_info_from_id_ouvrier(id_ouv: int):
     )[0]
     return {"id_ouvrier": information[0], "name_ouvrier": information[1]}
 
-
 def get_all_attribution():
     """
     Renvoie toutes les attributions et les informations sur les ouvriers et
-    les chantiers correspondantes sous la forme d'une liste de dictionnaires
+    les chantiers correspondants sous la forme d'une liste de dictionnaires
     telle que [{"id_ouvrier": int, "name_ouvrier": text, "id_chantier": int,
     "name_chantier": text, "start": text, "end": text, "adress": text},]
     """
@@ -282,7 +272,6 @@ def get_planning_individuel(id_ouv: int):
         liste_attribution.append(get_info_from_id_chantier(attribution[0]))
     return liste_attribution
 
-
 def return_table_chantier():
     """
     Renvoie toute la table chantiers triés par date sous forme d'une liste de dictionnaire :
@@ -305,7 +294,6 @@ def return_table_chantier():
         )
     return table_chantier
 
-
 def return_table_ouvrier():
     """
     Renvoie toute la table ouvriers sous forme d'une liste de dictionnaire :
@@ -321,7 +309,6 @@ def return_table_ouvrier():
             {"id_ouvrier": information[0], "name_ouvrier": information[1]}
         )
     return table_ouvrier
-
 
 def return_table_attribution():
     """
@@ -340,15 +327,13 @@ def return_table_attribution():
     return table_attribution
 
 
-###############%% RESET & SUPRESS
-
+# RESET & SUPRESS
 
 def suppression_table(name_table: str):
     """
     Supprime la table, attention ne la reset pas seulement.
     """
     commit_condition("""DROP TABLE IF EXISTS """ + name_table)
-
 
 def reset_table(name_table: str):
     """
