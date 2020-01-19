@@ -2,6 +2,7 @@
 Fonctions Get du back-end.
 @author: Maxime Brisinger, Margot Cosson, Raphaël Lasry, Maxime Poli
 """
+
 from put import verif_dispo_horaire_ouvrier
 import sys
 sys.path.append("..")

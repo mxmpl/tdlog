@@ -51,7 +51,7 @@ def verif_dispo_horaire_ouvrier(
                 chantier["start"] == infos_chantier["start"]
                 and chantier["end"] == infos_chantier["end"]
         ):
-            raise ex.impossible_assignation(
+            raise ex.ImpossibleAssignation(
                 id_ouvrier=id_ouvrier, id_chantier=id_chantier
             )
     return True
@@ -124,19 +124,19 @@ def decoup_new_chantier(dict_new_chantier: dict):
     list_dict_new_chantiers = []
     # Vérification de la conformité des entrées
     if date_debut >= date_fin:
-        raise ex.invalid_dates(
+        raise ex.InvalidDates(
             msg="La date de fin ne peut être antérieure à la date de fin."
         )
     if (
             date_debut.hour != HEURES_DEBUT["debut_matin"].hour
             and date_debut.hour != HEURES_DEBUT["debut_aprem"].hour
     ):
-        raise ex.invalid_dates(date=date_debut.strftime(FORMAT_DATE1))
+        raise ex.InvalidDates(date=date_debut.strftime(FORMAT_DATE1))
     if (
             date_fin.hour != HEURES_FIN["fin_matin"].hour
             and date_fin.hour != HEURES_FIN["fin_aprem"].hour
     ):
-        raise ex.invalid_dates(date=date_fin.strftime(FORMAT_DATE1))
+        raise ex.InvalidDates(date=date_fin.strftime(FORMAT_DATE1))
     # On enregistre l'heure de début de la dernière matinée
     if date_fin.hour == HEURES_FIN["fin_matin"].hour:
         heure_debut_fin = date_fin - duree_matin
@@ -160,7 +160,7 @@ def decoup_new_chantier(dict_new_chantier: dict):
             break
     if date_debut == heure_fin_fin:
         return list_dict_new_chantiers
-    raise ex.overlimit_date(limite_jours=NB_LIMITE_JOURS)
+    raise ex.OverlimitDate(limite_jours=NB_LIMITE_JOURS)
 
 
 def declare_new_chantier(dict_new_chantier: dict):
