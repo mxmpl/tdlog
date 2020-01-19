@@ -122,6 +122,7 @@ test_print()
 ############################ Test
 
 if __name__ == "__main__":
-    doctest.testmod()
+    doctest.testmod(verbose=True)
 
 CURSOR.execute("""DROP TABLE IF EXISTS test""")  # Suppression
+DB.commit()
