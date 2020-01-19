@@ -168,7 +168,7 @@ def id_in_table(name_table: str, id_ouv=None, id_chant=None):
         if not select_condition("""SELECT COUNT(*)
                                 FROM """ + name_table +
                                 """ WHERE """ + commande)[0][0] > 0:
-            raise ex.invalid_id(msg="L'identifiant(s) considéré(s) n'existe(nt) pas dans la table.")
+            raise ex.InvalidId(msg="L'identifiant(s) considéré(s) n'existe(nt) pas dans la table.")
         return True
     return False
 
@@ -226,7 +226,7 @@ def get_all_attribution():
     Renvoie toutes les attributions et les informations sur les ouvriers et
     les chantiers correspondants sous la forme d'une liste de dictionnaires
     telle que [{"id_ouvrier": int, "name_ouvrier": text, "id_chantier": int,
-    "name_chantier": text, "start": text, "end": text, "adress": text},]
+    "name_chantier": text, "start": text, "end": text, "adress": text},].
     """
     attributions = select_condition(
         """ SELECT *
