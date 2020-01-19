@@ -1,5 +1,5 @@
 """
-Ce script permet de télécharger les bibliothèques utiles au projet.
+Ce script permet de télécharger les bibliothèques utiles pour lancer le projet.
 @author: Maxime BRISINGER, Margot COSSON, Raphael LASRY et Maxime POLI
 """
 
