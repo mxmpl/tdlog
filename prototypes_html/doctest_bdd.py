@@ -1,15 +1,10 @@
-############################
-
 """
-Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
-Maxime POLI, 2019-2020
-
-Le but de ce script python est de realiser quelques test sur nos fonctions.
-
-Fichier conforme à la norme PEP8.
+Fichier de tests sur les fonctions gestionnaires de la base de données
+du prototype.
+@author : Maxime BRISINGER, Margot COSSON, Raphael LASRY et Maxime POLI
 """
 
-############################ Modules et fonctions
+# Modules et fonctions
 
 import doctest
 import sqlite3
@@ -18,7 +13,7 @@ from bdd import (
     select_condition,
 )
 
-############################ Creation de la table test
+# Creation de la table test
 
 DB = sqlite3.connect("bdd_principale", check_same_thread=False)
 CURSOR = DB.cursor()
@@ -32,7 +27,7 @@ CURSOR.execute(
 # La table test va nous permettre d'effectuer des test sur nos requetes
 DB.commit()
 
-############################ Remplissage de la table test
+# Remplissage de la table test
 
 
 def insert_test(new_test: list):
@@ -59,7 +54,7 @@ TEST = ["Maxime POLI", "Test pour vérifier la fonction print_condition"]
 
 insert_test(TEST)
 
-############################ Test des fonctions
+# Test des fonctions
 
 
 def test_insert():
@@ -119,8 +114,7 @@ def test_print():
 
 test_print()
 
-############################ Test
-
+# Test
 if __name__ == "__main__":
     doctest.testmod()
 
