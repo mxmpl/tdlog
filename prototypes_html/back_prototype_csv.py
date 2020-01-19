@@ -1,29 +1,23 @@
-############################
-
 """
-Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
-Maxime POLI, 2019-2020
-
-Le but de ce script python est de traiter la partie back du site.
-Ce scrit gère uniquement le prototype du site en HTML-CSV.
-
-Fichier conforme à la norme PEP8.
+Script principal du prototype en HTML avec des fichiers CSV.
+@author : Maxime BRISINGER, Margot COSSON, Raphael LASRY et
+Maxime POLI
 """
 
-############################ Module Flask
+# Module Flask
 
 from flask import Flask, request, render_template  # Bibliothèque permettant de
 # génerer le site
 
-############################ Import des bibliothèques utiles
+# Import des bibliothèques utiles
 
 import pandas as pd  # Bibliothèque permettant de gérer les CSV
 
-############################ Creation du site
+# Creation du site
 
 APP = Flask(__name__)  # Creation du site
 
-############################ Utilisation de csv
+# Utilisation de csv
 
 DICTIONNAIRE_CHANTIERS = pd.read_csv(
     "csv/liste_chantiers.csv", index_col=None, sep=","
@@ -41,7 +35,7 @@ LISTE_OUVRIERS = []
 for index in DICTIONNAIRE_OUVRIERS["Index"]:
     LISTE_OUVRIERS.append(DICTIONNAIRE_OUVRIERS["Noms"][index])
 
-############################ Page principale
+# Page principale
 
 @APP.route("/")
 def home():
@@ -51,7 +45,7 @@ def home():
     user = {"username": "Bernard"}
     return render_template("bienvenue.html", user=user)
 
-############################ Page home
+# Page home
 
 @APP.route("/home")
 def editer():
@@ -60,7 +54,7 @@ def editer():
     """
     return render_template("home.html", chantiers=LISTE_CHANTIERS)
 
-############################ Page principale : affectation des ouvriers
+# Page principale : affectation des ouvriers
 
 def recup_chantiers():
     """
@@ -94,7 +88,7 @@ def assigner_chantier_a_ouvrier():
     chantiers.to_csv("csv/chantiers.csv", sep=",")
     return render_template("home.html", chantiers=LISTE_CHANTIERS)
 
-############################ Page d'affichage : on affiche le planning
+# Page d'affichage : on affiche le planning
 
 @APP.route("/affichage_planning")
 def affichage_planning():
@@ -104,7 +98,7 @@ def affichage_planning():
     chantiers = recup_chantiers()
     return chantiers.to_html()
 
-############################ Fonction pour réinitialiser le planning
+# Fonction pour réinitialiser le planning
 
 @APP.route("/reset")
 def reset():
@@ -117,7 +111,7 @@ def reset():
     chantiers.to_csv("csv/chantiers.csv", sep=",")
     return render_template("home.html", chantiers=LISTE_CHANTIERS)
 
-########################### Lancement du site
+# Lancement du site
 
 if __name__ == "__main__":
     APP.debug = False
