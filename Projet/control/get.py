@@ -2,11 +2,10 @@
 Fonctions Get du back-end.
 @author: Maxime Brisinger, Margot Cosson, Raphaël Lasry, Maxime Poli
 """
-
+from put import verif_dispo_horaire_ouvrier
 import sys
 sys.path.append("..")
 from data import bdd
-from put import verif_dispo_horaire_ouvrier
 
 def get_info_from_id_ouvrier(id_ouv: int):
     """
@@ -14,6 +13,8 @@ def get_info_from_id_ouvrier(id_ouv: int):
     Renvoie un dictionnaire de la forme
     {"id_ouvrier": int, "name_ouvrier": text}.
     """
+    # On vérifie si l'identifiant existe
+    bdd.id_in_table("ouvriers", id_ouv=id_ouv, id_chant=None)
     return bdd.get_info_from_id_ouvrier(id_ouv)
 
 
@@ -23,8 +24,9 @@ def get_info_from_id_chantier(id_chan: int):
     Renvoie un dictionnaire de la forme
     {"id_chantier": int, "name_chantier": text, "start": text, "end": text, "adress": text}.
     """
+    # On vérifie si l'identifiant existe
+    bdd.id_in_table("chantiers", id_ouv=None, id_chant=id_chan)
     return bdd.get_info_from_id_chantier(id_chan)
-
 
 def return_table(name_table: str):
     """
@@ -37,8 +39,7 @@ def return_table(name_table: str):
         return bdd.return_table_ouvrier()
     elif name_table == "attribution":
         return bdd.return_table_attribution()
-    # faire gestion d'erreur si ni chantiers, ni ouvriers, ni attribution
-
+    raise Exception("Nom de table erroné.")
 
 def return_table_ouvrier_avec_chantiers():
     """
@@ -49,7 +50,6 @@ def return_table_ouvrier_avec_chantiers():
     for ouvrier in ouvriers:
         ouvrier["chantiers"] = get_planning_individuel(ouvrier["id_ouvrier"])
     return ouvriers
-
 
 def return_cluster_chantiers(id_ouv=None):
     """
@@ -72,7 +72,6 @@ def return_cluster_chantiers(id_ouv=None):
             dictionnaire[chantier["name_chantier"]] = [chantier]
     return dictionnaire
 
-
 def resume_chantiers():
     """
     Revoie une liste de dictionnaires de la forme :
@@ -84,10 +83,8 @@ def resume_chantiers():
     ouvriers = return_table("ouvriers")
     chantiers = return_table("chantiers")
     attribution = return_table("attribution")
-    # liste_chantier = []
     dictionnaire = {}
     for name_chantier in chantiers_possibles:
-        # dictionnaire_chantier["name_chantier"] = name_chantier
         dictionnaire_chantier = {}
         dictionnaire_chantier["adress"] = chantiers_possibles[name_chantier][0][
             "adress"
@@ -110,10 +107,10 @@ def resume_chantiers():
                         dico["name_ouvrier"] = ouvrier["name_ouvrier"]
                         test = True
                         for i in range(len(dictionnaire_chantier["ouvriers"])):
-                            dict = dictionnaire_chantier["ouvriers"][i]
+                            dic = dictionnaire_chantier["ouvriers"][i]
                             if (
-                                    "name_ouvrier" in dict.keys()
-                                    and dico["name_ouvrier"] == dict["name_ouvrier"]
+                                    "name_ouvrier" in dic.keys()
+                                    and dico["name_ouvrier"] == dic["name_ouvrier"]
                             ):
                                 dictionnaire_chantier["ouvriers"][i][
                                     "id_chantier"
@@ -123,11 +120,8 @@ def resume_chantiers():
                         if test:
                             dico["id_chantier"] = [chantier["id_chantier"]]
                             dictionnaire_chantier["ouvriers"].append(dico)
-        # liste_chantier.append(dictionnaire_chantier)
         dictionnaire[name_chantier] = dictionnaire_chantier
-    # return liste_chantier
     return dictionnaire
-
 
 def return_chantiers_possibles(id_ouv: int):
     """
@@ -135,6 +129,7 @@ def return_chantiers_possibles(id_ouv: int):
     fonction des chantiers auxquels il a déjà été attribué
     (gestion des conflits horaires).
     """
+    bdd.id_in_table("ouvriers", id_ouv=id_ouv, id_chant=None)
     chantiers = return_table("chantiers")
     chantier_attribues = get_planning_individuel(id_ouv)
     liste_chantiers_possibles = []
@@ -151,7 +146,6 @@ def return_chantiers_possibles(id_ouv: int):
             pass
     return liste_chantiers_possibles
 
-
 def get_planning():
     """
     Renvoie toutes les attributions et les informations sur les ouvriers et
@@ -160,7 +154,6 @@ def get_planning():
     "name_chantier": text, "start": text, "end": text, "adress": text},]
     """
     return bdd.get_all_attribution()
-
 
 def get_planning_individuel(id_ouv: int):
     """
