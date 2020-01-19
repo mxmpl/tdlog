@@ -14,6 +14,9 @@ Fichier conforme à la norme PEP8.
 
 import sqlite3
 import threading
+import sys
+sys.path.append("..")
+from control import exception as ex
 
 ############################%% Création des bases de données
 
@@ -171,10 +174,13 @@ def id_in_table(name_table: str, id_ouv = None, id_chant = None):
     """
     commande = create_commande(name_table, id_ouv, id_chant)
     if commande != None:
-        return select_condition("""SELECT COUNT(*)
+        if not select_condition("""SELECT COUNT(*)
                                 FROM """ + name_table +
-                                """ WHERE """ + commande)[0][0] > 0
-    return False # Attention, on return False mais l'exception a lever n'est pas la meme.
+                                """ WHERE """ + commande)[0][0] > 0: 
+            raise ex.invalid_id(msg = "L'identifiant(s) considéré(s) n'existe(nt) pas dans la table.")
+        else :
+            return True
+    return False 
 
 ###############%% MODIFY
 
@@ -349,111 +355,3 @@ def reset_table(name_table: str):
     Reset la table, attention ne la supprime pas.
     """
     commit_condition("""DELETE FROM """ + name_table)
-
-
-#reset_table("chantiers")
-#reset_table("ouvriers")
-#reset_table("attribution")
-
-#############################%% BDD provisoire, à effacer dans le futur
-
-#CHANTIER = {
-#    "name_chantier": "Paris",
-#    "start": "2020-01-09 08:00:00",
-#    "end": "2020-01-09 12:00:00",
-#    "adress": "20 rue des lillas",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {
-#    "name_chantier": "Paris",
-#    "start": "2020-01-09 14:00:00",
-#    "end": "2020-01-09 18:00:00",
-#    "adress": "20 rue des lillas",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {
-#    "name_chantier": "Paris",
-#    "start": "2020-01-10 08:00:00",
-#    "end": "2020-01-10 12:00:00",
-#    "adress": "20 rue des lillas",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {
-#    "name_chantier": "Lille",
-#    "start": "2020-01-09 08:00:00",
-#    "end": "2020-01-09 12:00:00",
-#    "adress": "20 rue des gres",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {
-#    "name_chantier": "Marseille",
-#    "start": "2020-01-13 08:00:00",
-#    "end": "2020-01-13 12:00:00",
-#    "adress": "20 rue des lillas",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {
-#    "name_chantier": "Noisy",
-#    "start": "2020-01-10 08:00:00",
-#    "end": "2020-01-10 12:00:00",
-#    "adress": "6-8 Avenue Blaise Pascal",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#CHANTIER = {
-#    "name_chantier": "Noisy",
-#    "start": "2020-01-10 14:00:00",
-#    "end": "2020-01-10 18:00:00",
-#    "adress": "6-8 Avenue Blaise Pascal",
-#}
-#
-#insert_chantier(CHANTIER)
-#
-#OUVRIER = {"name_ouvrier": "Leo"}
-#
-#insert_ouvrier(OUVRIER)
-#
-#OUVRIER = {"name_ouvrier": "Margot"}
-#
-#insert_ouvrier(OUVRIER)
-#
-#OUVRIER = {"name_ouvrier": "Raphael"}
-#
-#insert_ouvrier(OUVRIER)
-#
-#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 3}
-#
-#insert_attribution(ATTRIBUTION)
-#
-#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 2}
-#
-#insert_attribution(ATTRIBUTION)
-#
-#ATTRIBUTION = {"id_ouvrier": 2, "id_chantier": 2}
-#
-#insert_attribution(ATTRIBUTION)
-#
-#ATTRIBUTION = {"id_ouvrier": 3, "id_chantier": 1}
-#
-#insert_attribution(ATTRIBUTION)
-#
-#ATTRIBUTION = {"id_ouvrier": 1, "id_chantier": 1}
-#
-#insert_attribution(ATTRIBUTION)
-
-###############%%
-
-#print(return_table_chantier())
-# modify_name_chantier(1, "St-Maur")
-# print(return_table_chantier())
