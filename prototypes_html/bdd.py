@@ -1,20 +1,15 @@
-############################
-
 """
-Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
-Maxime POLI, 2019-2020
+Script de gestion des bases de données du prototype.
 
-Le but de ce script python est de traiter les bases de données
-(chantiers et ouvriers principalement).
-
-Fichier conforme à la norme PEP8.
+@author : Maxime BRISINGER, Margot COSSON, Raphael LASRY et
+Maxime POLI
 """
 
-############################ Import des bibliothèques utiles
+# Import des bibliothèques utiles
 
 import sqlite3
 
-#%% Création des bases de données
+# Création des bases de données
 
 DB = sqlite3.connect("bdd_principale", check_same_thread=False)
 # La base de données avec 3 tables
@@ -55,9 +50,9 @@ CURSOR.execute(
 
 DB.commit()  # On termine de creer les tables
 
-#%% Fonctions
+# Fonctions
 
-#%% Fonctions de requetes
+# Fonctions de requetes
 
 
 def commit_condition(command: str):
@@ -94,9 +89,9 @@ def print_condition(command: str):
         print(list(row[:]))
 
 
-#%% Fonctions de set
+# Fonctions de set
 
-############################ Ajout d'un nouveau chantier à notre base de données
+# Ajout d'un nouveau chantier à notre base de données
 
 
 def insert_chantier(new_chantier: list):
@@ -112,7 +107,7 @@ def insert_chantier(new_chantier: list):
     DB.commit()
 
 
-############################ Ajout d'un nouveau ouvrier à notre base de données
+# Ajout d'un nouveau ouvrier à notre base de données
 
 
 def insert_ouvrier(new_ouvrier: list):
@@ -128,7 +123,7 @@ def insert_ouvrier(new_ouvrier: list):
     DB.commit()
 
 
-############################ Ajout d'un nouveau couple à notre base de données
+# Ajout d'un nouveau couple à notre base de données
 
 
 def insert_attribution(new_attribution: list):
@@ -156,20 +151,9 @@ def insert_attribution(new_attribution: list):
         )
     DB.commit()
 
-#%% FONCTIONS PROJET 
+#FONCTIONS PROTOTYPE
 
-def get_info_from_id_chantier(id_chantier: int):
-    """
-    
-    """
-    information = select_condition("""SELECT *
-                                                FROM chantiers
-                                                WHERE id = """ + str(id_chantier))
-    dict_infos = {"id" : information[0]}
-
-#%% FONCTIONS PROTOTYPE 
-
-#%% Fonctions de get
+# Fonctions de get
 
 
 def get_id_names_dates_chantiers():
@@ -270,7 +254,7 @@ def get_dates_from_id_chantier(id_chantier: int):
     )[0]
 
 
-#%% Fonction return table
+# Fonction return table
 
 
 def return_table_attribution():
@@ -282,7 +266,7 @@ def return_table_attribution():
                     FROM attribution"""
     )
 
-#%% Fonction de suppression
+# Fonction de suppression
 
 
 def suppression_table_chantiers():
@@ -312,8 +296,8 @@ def reset_table(name_table: str):
     """
     CURSOR.execute("""DELETE FROM """ + name_table)
 
-#%%
-############################ Base de données "à la main"
+
+# Base de données initialisée "à la main" pour tester le prototype
 
 reset_table("ouvriers")
 reset_table("chantiers")
