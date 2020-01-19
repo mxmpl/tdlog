@@ -1,9 +1,9 @@
 """
-Script gerant les bases de données ainsi que les requetes SQL
+Script gerant les bases de donnees ainsi que les requetes SQL
 @author: Maxime BRISINGER, Margot COSSON, Raphael LASRY, Maxime POLI
 """
 
-# Import des bibliothèques utiles
+# Import des bibliotheques utiles
 
 import sqlite3
 import threading
@@ -11,11 +11,11 @@ import sys
 sys.path.append("..")
 from control import exception as ex
 
-# Création des bases de données
+# Creation des bases de donnees
 
 DB = sqlite3.connect("bdd", check_same_thread=False)
 
-# La base de données avec 3 tables : chantiers, ouvriers et attribution
+# La base de donnees avec 3 tables : chantiers, ouvriers et attribution
 
 CURSOR = DB.cursor()  # On se place sur cette bdd
 
@@ -27,8 +27,8 @@ CURSOR.execute(
                                                     adress TEXT)"""
 )
 
-# La table chantiers possède 4 arguments, la clef primaire, le nom du chantier,
-# Le jour de début du chantier, le jour de sa fin,
+# La table chantiers possede 4 arguments, la clef primaire, le nom du chantier,
+# Le jour de debut du chantier, le jour de sa fin,
 # Ainsi que l'adresse du chantier
 
 CURSOR.execute(
@@ -37,7 +37,7 @@ CURSOR.execute(
                                                     )"""
 )
 
-# La table ouvriers possède 2 arguments, la clef primaire et le nom de l'ouvrier,
+# La table ouvriers possede 2 arguments, la clef primaire et le nom de l'ouvrier,
 
 CURSOR.execute(
     """CREATE TABLE IF NOT EXISTS attribution(id_ouvrier INTEGER,
@@ -50,7 +50,7 @@ CURSOR.execute(
                                                         """
 )
 
-# La table attribution ne possède que deux clefs étrangères, relatives aux tables
+# La table attribution ne possede que deux clefs etrangeres, relatives aux tables
 # ouvriers et chantiers
 
 DB.commit()  # On termine de creer les tables
@@ -61,8 +61,8 @@ DB.commit()  # On termine de creer les tables
 
 def commit_condition(command: str):
     """
-    Permet d'executer une commande SQL en prenant en paramètre la requête sous
-    forme de chaîne de caractères.
+    Permet d'executer une commande SQL en prenant en parametre la requete sous
+    forme de chaine de caracteres.
     """
     CURSOR.execute(command)
     DB.commit()
@@ -70,12 +70,12 @@ def commit_condition(command: str):
 LOCK = threading.Lock()
 def select_condition(
         command: str
-):  # On séléctionne les lignes demandées et on les récupère sous forme de liste
+):  # On selectionne les lignes demandees et on les recupere sous forme de liste
     """
-    Permet à partir d'une commande d'enregistrer les informations
-    correspondantes de la base de données.
+    Permet a partir d'une commande d'enregistrer les informations
+    correspondantes de la base de donnees.
     """
-    # Pour palier au problème d'accès multiples sur la base données
+    # Pour palier au probleme d'acces multiples sur la base donnees
     try:
         LOCK.acquire(True)
         commit_condition(command)
@@ -91,8 +91,8 @@ def select_condition(
 
 def insert_chantier(new_chantier: dict):
     """
-    Permet d'inserer un nouveau chantier dans la base de données. Le format d'entrée
-    doit être un dictionnaire de la forme
+    Permet d'inserer un nouveau chantier dans la base de donnees. Le format d'entree
+    doit etre un dictionnaire de la forme
     {"name_chantier": text, "start": text, "end": text, "adress": text}.
     """
     CURSOR.execute(
@@ -109,8 +109,8 @@ def insert_chantier(new_chantier: dict):
 
 def insert_ouvrier(new_ouvrier: dict):
     """
-    Permet d'inserer un nouvel ouvrier dans la base de données. Le format d'entrée
-    doit être un dictionnaire de la forme {"name_ouvrier": text}.
+    Permet d'inserer un nouvel ouvrier dans la base de donnees. Le format d'entree
+    doit etre un dictionnaire de la forme {"name_ouvrier": text}.
     """
     CURSOR.execute(
         """INSERT INTO ouvriers(name_ouvrier)
@@ -121,8 +121,8 @@ def insert_ouvrier(new_ouvrier: dict):
 
 def insert_attribution(new_attribution: dict):
     """
-    Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de données.
-    Format d'entrée : new_attribution = {"id_ouvrier": int, "id_chantier": int}
+    Permet d'inserer un couple d'id_ouvrier/id_chantier dans la base de donnees.
+    Format d'entree : new_attribution = {"id_ouvrier": int, "id_chantier": int}
     """
     CURSOR.execute(
         """INSERT INTO attribution(id_ouvrier, id_chantier) VALUES(?,?)""",
@@ -132,8 +132,8 @@ def insert_attribution(new_attribution: dict):
 
 def create_commande(name_table: str, id_ouv: int, id_chant: int):
     """
-    Cree une commande utile pour d'autres fonctions. On crée ici une chaîne de
-    caractères de la forme "id_chantier = 3" par exemple.
+    Cree une commande utile pour d'autres fonctions. On cree ici une chaine de
+    caracteres de la forme "id_chantier = 3" par exemple.
     """
     if id_ouv is not None and id_chant is not None and name_table == "attribution":
         # On veut alors effectuer une action sur une attribution
@@ -151,7 +151,7 @@ def create_commande(name_table: str, id_ouv: int, id_chant: int):
 
 def del_data(name_table: str, id_ouv=None, id_chant=None):
     """
-    Permet de supprimer un élément de la table à partir de son id.
+    Permet de supprimer un element de la table a partir de son id.
     """
     commande = create_commande(name_table, id_ouv, id_chant)
     if commande is not None:
@@ -169,7 +169,7 @@ def id_in_table(name_table: str, id_ouv=None, id_chant=None):
                                 FROM """ + name_table +
                                 """ WHERE """ + commande)[0][0] > 0:
             
-             ex.InvalidId(msg="L'identifiant(s) considéré(s) n'existe(nt) pas dans la table.")
+             ex.InvalidId(msg="L'identifiant(s) considere(s) n'existe(nt) pas dans la table.")
         return True
     return False
 
@@ -177,8 +177,8 @@ def id_in_table(name_table: str, id_ouv=None, id_chant=None):
 
 def modify_data(name_table: str, champs: str, value: str, id_ouv=None, id_chant=None):
     """
-    Permet de modifier une donnée dans une table. Champs est la valeur à modifier
-    value est la nouvelle valeur souhaitée.
+    Permet de modifier une donnee dans une table. Champs est la valeur a modifier
+    value est la nouvelle valeur souhaitee.
     """
     commande = create_commande(name_table, id_ouv, id_chant)
     if commande is not None:
@@ -190,7 +190,7 @@ def modify_data(name_table: str, champs: str, value: str, id_ouv=None, id_chant=
 
 def get_info_from_id_chantier(id_chan: int):
     """
-    Récupère toutes les informations d'un chantier à partir de son identifiant.
+    Recupere toutes les informations d'un chantier a partir de son identifiant.
     Renvoie un dictionnaire de la forme
     {"id_chantier": int, "name_chantier": text, "start": text, "end": text, "adress": text}.
     """
@@ -210,7 +210,7 @@ def get_info_from_id_chantier(id_chan: int):
 
 def get_info_from_id_ouvrier(id_ouv: int):
     """
-    Récupère toutes les informations d'un ouvrier à partir de son identifiant.
+    Recupere toutes les informations d'un ouvrier a partir de son identifiant.
     Renvoie un dictionnaire de la forme
     {"id_ouvrier": int, "name_ouvrier": text}.
     """
@@ -255,7 +255,7 @@ def get_list_of_names_chantiers():
 
 def get_planning_individuel(id_ouv: int):
     """
-    Renvoie toutes les attributions d'un ouvrier (à partir de son index) sous
+    Renvoie toutes les attributions d'un ouvrier (a partir de son index) sous
     la forme d'une liste de dictionnaires telle que
     [{"id_chantier": int, "name_chantier": text, "start": text, "end": text,
     "adress": text},]
@@ -275,7 +275,7 @@ def get_planning_individuel(id_ouv: int):
 
 def return_table_chantier():
     """
-    Renvoie toute la table chantiers triés par date sous forme d'une liste de dictionnaire :
+    Renvoie toute la table chantiers tries par date sous forme d'une liste de dictionnaire :
     [{"id_chantier": int, "name_chantier": text, "start": text, "end": text, "adress": text},].
     """
     informations = select_condition(
