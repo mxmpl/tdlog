@@ -4,23 +4,22 @@ Fonctions Delete et Modify du back-end.
 """
 
 import sys
-import exception as ex
+from get import return_table
 sys.path.append("..")
 from data import bdd
-from get import return_table
 
 def del_data(name_table: str, id_ouv=None, id_chant=None):
     """
     Permet de supprimer un élément de la table à partir de son id.
     """
-    if bdd.id_in_table(name_table, id_ouv=id_ouv, id_chant=id_chant):
-        bdd.del_data(name_table, id_ouv=id_ouv, id_chant=id_chant)
-        return
-    raise ex.invalid_id(msg = "Il n'est pas possible de supprimer la donnée correspondante à cet/ces identifiant(s) car elle n'existe pas.")
+    # On vérifie d'abord que cette donnée existe
+    bdd.id_in_table(name_table, id_ouv=id_ouv, id_chant=id_chant)
+    bdd.del_data(name_table, id_ouv=id_ouv, id_chant=id_chant)
 
 def delete_chantier(name_chantier: str):
     """
-    Permet de supprimer un chantier au sens du nom.
+    Permet de supprimer des chantiers (qui correspondent à une demi-journée)
+    qui partagent le même nom.
     """
     chantiers = return_table("chantiers")
     attributions = return_table("attribution")
@@ -40,6 +39,4 @@ def modify_data(name_table: str, champs: str, value: str, id_ouv=None, id_chant=
     """
     Permet de modifier une donnée dans une table.
     """
-    # Gestion d'erreur à faire : vérifier que champs est bien un champs
     bdd.modify_data(name_table, champs, value, id_ouv, id_chant)
-
