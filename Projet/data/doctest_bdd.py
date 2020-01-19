@@ -1,15 +1,10 @@
-############################
-
 """
-Projet TDLOG réalisé par Maxime BRISINGER, Margot COSSON, Raphael LASRY et
-Maxime POLI, 2019-2020
-
-Le but de ce script python est de realiser quelques test sur nos fonctions.
-
-Fichier conforme à la norme PEP8.
+Script de doctest pour tester les fonctions basiques de la base données.
+@author: Maxime BRISINGER, Margot COSSON, Raphael LASRY et
+Maxime POLI
 """
 
-############################ Modules et fonctions
+# Modules et fonctions
 
 import doctest
 import sqlite3
@@ -18,7 +13,7 @@ from bdd import (
     select_condition,
 )
 
-############################ Creation de la table test
+# Creation de la table test
 
 DB = sqlite3.connect("bdd", check_same_thread=False)
 CURSOR = DB.cursor()
@@ -30,10 +25,10 @@ CURSOR.execute(
 )
 
 # La table test va nous permettre d'effectuer des test sur nos requetes
+
 DB.commit()
 
-############################ Remplissage de la table test
-
+# Remplissage de la table test
 
 def insert_test(new_test: list):
     """
@@ -59,12 +54,11 @@ TEST = ["Maxime POLI", "Test pour vérifier la fonction print_condition"]
 
 insert_test(TEST)
 
-############################ Test des fonctions
-
+# Test des fonctions
 
 def test_insert():
     """
-    On va tester ici la fonction insert_test.
+    On va tester ici la fonction insert_test().
 
     >>> test_insert()
     True
@@ -81,13 +75,11 @@ def test_insert():
     )
     return nombre_elements_final[0][0] == nombre_elements_initial[0][0] + 1
 
-
 test_insert()
-
 
 def test_select():
     """
-    On va tester ici la fonction select_condition.
+    On va tester ici la fonction select_condition().
 
     >>> test_select()
     True
@@ -99,13 +91,11 @@ def test_select():
     )
     return donnee[0][0] == "Test pour vérifier la fonction select_condition"
 
-
 test_select()
-
 
 def test_print():
     """
-    On va tester ici la fonction print_condition.
+    On va tester ici la fonction print_condition().
 
     >>> test_print()
     ['Maxime POLI']
@@ -116,10 +106,9 @@ def test_print():
                             WHERE data like "%print_condition%" """
     )
 
-
 test_print()
 
-############################ Test
+# Test
 
 if __name__ == "__main__":
     doctest.testmod(verbose=True)
