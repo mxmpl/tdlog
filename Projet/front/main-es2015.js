@@ -1339,39 +1339,33 @@ let ChantierService = class ChantierService {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json' })
         };
     }
-    /** GET chantiers from the server */
+    /** GET les chantiers du serveur */
     getChantiers() {
         return this.http.get(this.listeChantiersUrl)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('getChantiers', [])));
     }
-    /** GET chantier by name. Will 404 if id not found */
+    /** GET un chantier suivant le nom */
     getChantier(name_chantier) {
         const url = `${this.listeChantiersUrl}${name_chantier}`;
         return this.http.get(url).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError(`getChantier name_chantier=${name_chantier}`)));
     }
-    /*   GET chantier by id. Will 404 if id not found
-      getChantierHoraire(id_chantier: number): Observable<Chantier> {
-        const url = `${this.listeChantiersHorairesUrl}${id_chantier}`;
-        return this.http.get<Chantier>(url).pipe(
-          tap(_ => this.log(`fetched chantier name_chantier=${id_chantier}`)),
-          catchError(this.handleError<Chantier>(`getChantier name_chantier=${id_chantier}`))
-        );
-      } */
+    /** GET les chantiers ou un ouvrier d'identifiant donne est disponible du serveur */
     getChantiersDispos(id_ouvrier) {
         const url = `${this.listeOuvriersUrl}${id_ouvrier}/chantiersdispos`;
         return this.http.get(url)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('getChantiersDispos')));
     }
-    /** POST: add a new chantier to the server */
+    /** POST: ajoute un chantier au serveur */
     addChantier(chantier) {
         return this.http.post(this.listeChantiersUrl, chantier, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('addChantier')));
     }
-    /** DELETE: delete the chantier from the server */
+    /** DELETE: supprime un chantier du serveur */
     deleteChantier(chantier) {
         const name = typeof chantier === 'string' ? chantier : chantier.name_chantier;
         const url = `${this.listeChantiersUrl}${name}`;
         return this.http.delete(url, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('deleteChantier')));
     }
+    /** POST: ajoute une nouvelle attribution au serveur */
     addAttributions(ouvrier, chantiers_choisis) {
         var couples = [];
         for (var i = 0; i < chantiers_choisis.length; i++) {
@@ -1379,16 +1373,11 @@ let ChantierService = class ChantierService {
         }
         return this.http.post(this.attributionUrl, couples, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('addAttribution')));
     }
+    /** DELETE: supprime une attribution du serveur */
     deleteAttribution(ouvrier, chantier) {
         const url = `${this.attributionUrl}${ouvrier.id_ouvrier}/${chantier.id_chantier}`;
         return this.http.delete(url, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('deleteAttribution')));
     }
-    /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
     handleError(operation = 'operation', result) {
         return (error) => {
             console.error(error);
@@ -1396,7 +1385,6 @@ let ChantierService = class ChantierService {
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(result);
         };
     }
-    /** Log a OuvrierService message with the MessageService */
     log(message) {
         this.messageService.add(`OuvrierService: ${message}`);
     }
@@ -1479,60 +1467,39 @@ let OuvrierService = class OuvrierService {
             headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json' })
         };
     }
-    /** GET ouvriers from the server */
+    /** GET les ouvriers du serveur */
     getOuvriers() {
         return this.http.get(this.listeOuvriersUrl)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('getOuvriers', [])));
     }
-    /** GET ouvriers by id. Return `undefined` when id not found */
-    getOuvrierNo404(id) {
-        const url = `${this.listeOuvriersUrl}?id=${id}`;
-        return this.http.get(url)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(ouvriers => ouvriers[0]), // returns a {0|1} element array
-        Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(h => {
-            const outcome = h ? `récupéré` : `pas trouvé`;
-            this.log(`${outcome} ouvrier id=${id}`);
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError(`getOuvrier id=${id}`)));
-    }
-    /** GET ouvrier by id. Will 404 if id not found */
+    /** GET ouvrier par id */
     getOuvrier(id_ouvrier) {
         const url = `${this.listeOuvriersUrl}${id_ouvrier}`;
         return this.http.get(url).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError(`getOuvrier id_ouvrier=${id_ouvrier}`)));
     }
-    //////// Save methods //////////
-    /** POST: add a new ouvrier to the server */
+    /** POST: ajoute un nouvel ouvrier au serveur */
     addOuvrier(ouvrier) {
         return this.http.post(this.listeOuvriersUrl, ouvrier, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('addOuvrier')));
     }
-    /** DELETE: delete the ouvrier from the server */
+    /** DELETE: supprime un ouvrier du serveur */
     deleteOuvrier(ouvrier) {
         const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
         const url = `${this.listeOuvriersUrl}${id}`;
         return this.http.delete(url, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('deleteOuvrier')));
     }
-    /** PUT: update the ouvrier on the server */
+    /** PUT: met a jour l'ouvrier sur le serveur */
     updateOuvrier(ouvrier) {
         const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
         const url = `${this.listeOuvriersUrl}${id}`;
         return this.http.put(url, ouvrier, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('updateOuvrier')));
     }
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
     handleError(operation = 'operation', result) {
         return (error) => {
-            // TODO: send the error to remote logging infrastructure
-            console.error(error); // log to console instead
-            // TODO: better job of transforming error for user consumption
+            console.error(error);
             this.log(`${operation} failed: ${error.message}`);
-            // Let the app keep running by returning an empty result.
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(result);
         };
     }
-    /** Log a OuvrierService message with the MessageService */
     log(message) {
         this.messageService.add(`OuvrierService: ${message}`);
     }
