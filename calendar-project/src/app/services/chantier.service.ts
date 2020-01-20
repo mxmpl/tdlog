@@ -27,8 +27,7 @@ export class ChantierService {
     private http: HttpClient,
     private messageService: MessageService) { }
 
-
-  /** GET chantiers from the server */
+  /** GET les chantiers du serveur */
   getChantiers (): Observable<Chantier[]> {
     return this.http.get<Chantier[]>(this.listeChantiersUrl)
       .pipe(
@@ -36,7 +35,7 @@ export class ChantierService {
       );
   }
 
-  /** GET chantier by name. Will 404 if id not found */
+  /** GET un chantier suivant le nom */
   getChantier(name_chantier: string): Observable<Chantier> {
     const url = `${this.listeChantiersUrl}${name_chantier}`;
     return this.http.get<Chantier>(url).pipe(
@@ -44,15 +43,7 @@ export class ChantierService {
     );
   }
 
-/*   GET chantier by id. Will 404 if id not found 
-  getChantierHoraire(id_chantier: number): Observable<Chantier> {
-    const url = `${this.listeChantiersHorairesUrl}${id_chantier}`;
-    return this.http.get<Chantier>(url).pipe(
-      tap(_ => this.log(`fetched chantier name_chantier=${id_chantier}`)),
-      catchError(this.handleError<Chantier>(`getChantier name_chantier=${id_chantier}`))
-    );
-  } */
-
+  /** GET les chantiers ou un ouvrier d'identifiant donne est disponible du serveur */
   getChantiersDispos(id_ouvrier: number): Observable<Map<string,Chantier[]>> {
   	const url = `${this.listeOuvriersUrl}${id_ouvrier}/chantiersdispos`;
     return this.http.get<Map<string,Chantier[]>>(url)
@@ -61,15 +52,15 @@ export class ChantierService {
       );
   }
 
-  /** POST: add a new chantier to the server */
+  /** POST: ajoute un chantier au serveur */
   addChantier (chantier: Chantier): Observable<Chantier> {
     return this.http.post<Chantier>(this.listeChantiersUrl, chantier, this.httpOptions).pipe(
       catchError(this.handleError<Chantier>('addChantier'))
     );
   }
 
-  /** DELETE: delete the chantier from the server */
-   deleteChantier (chantier: Chantier | string): Observable<Chantier> {
+  /** DELETE: supprime un chantier du serveur */
+  deleteChantier (chantier: Chantier | string): Observable<Chantier> {
     const name = typeof chantier === 'string' ? chantier : chantier.name_chantier;
     const url = `${this.listeChantiersUrl}${name}`;
 
@@ -78,6 +69,7 @@ export class ChantierService {
     );
   } 
 
+  /** POST: ajoute une nouvelle attribution au serveur */
   addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]): Observable<Ouvrier> {
     var couples = [];
     for (var i=0; i<chantiers_choisis.length; i++){
@@ -88,6 +80,7 @@ export class ChantierService {
       );
   }
 
+  /** DELETE: supprime une attribution du serveur */
   deleteAttribution(ouvrier: Ouvrier, chantier: Chantier) {
     const url = `${this.attributionUrl}${ouvrier.id_ouvrier}/${chantier.id_chantier}`;
     return this.http.delete<Ouvrier>(url, this.httpOptions).pipe(
@@ -95,13 +88,6 @@ export class ChantierService {
     );
   }
 
-
-    /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
@@ -110,7 +96,6 @@ export class ChantierService {
     };
   }
 
-  /** Log a OuvrierService message with the MessageService */
   private log(message: string) {
     this.messageService.add(`OuvrierService: ${message}`);
   }

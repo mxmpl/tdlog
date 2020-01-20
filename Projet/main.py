@@ -34,6 +34,7 @@ from change import(del_data,
 APP = Flask(__name__)
 CORS(APP)  # Creation du site
 
+
 @APP.route("/planning/", methods=["GET"])
 def planning():
     """
@@ -120,30 +121,27 @@ def liste_chantiers():
     """
     Renvoie la liste des chantiers.
     """
-    try:
-        if request.method == "GET":
-            chantiers = resume_chantiers()
-            liste_des_chantiers = []
-            for cle in chantiers:
-                chantiers[cle]["name_chantier"] = str(cle)
-                liste_des_chantiers.append(chantiers[cle])
-            return jsonify(liste_des_chantiers)
-        elif request.method == "POST":
-            data = request.get_json()
-            date_start = convert_format_date(data["start"], FORMAT_DATE2, FORMAT_DATE1)
-            date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)
-            declare_new_chantier(
-                {
-                    "name_chantier": data["name_chantier"],
-                    "start": date_start,
-                    "end": date_end,
-                    "adress": data["adress"],
-                }
-            )
+    if request.method == "GET":
         chantiers = resume_chantiers()
-        return jsonify(chantiers)
-    except Exception as e:
-        return e.__str__()
+        liste_des_chantiers = []
+        for cle in chantiers:
+            chantiers[cle]["name_chantier"] = str(cle)
+            liste_des_chantiers.append(chantiers[cle])
+        return jsonify(liste_des_chantiers)
+    elif request.method == "POST":
+        data = request.get_json()
+        date_start = convert_format_date(data["start"], FORMAT_DATE2, FORMAT_DATE1)
+        date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)
+        declare_new_chantier(
+            {
+                "name_chantier": data["name_chantier"],
+                "start": date_start,
+                "end": date_end,
+                "adress": data["adress"],
+            }
+        )
+    chantiers = resume_chantiers()
+    return jsonify(chantiers)
     
 @APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
 def chantier_par_nom(name_chantier: str):
@@ -176,6 +174,10 @@ def root():
     Permet d'exporter dans le fichier index.html qui se trouve dans le dossier front.
     """
     return send_from_directory('front/', 'index.html')
+
+@APP.errorhandler(Exception)
+def handle_invalid_usage(error):
+    return error.msg,400
 
 if __name__ == "__main__":
     APP.run(host='127.0.0.1', port=5000, debug=True)

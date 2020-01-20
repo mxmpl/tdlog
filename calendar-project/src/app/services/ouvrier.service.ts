@@ -21,7 +21,7 @@ export class OuvrierService {
     private http: HttpClient,
     private messageService: MessageService) { }
 
-  /** GET ouvriers from the server */
+  /** GET les ouvriers du serveur */
   getOuvriers (): Observable<Ouvrier[]> {
     return this.http.get<Ouvrier[]>(this.listeOuvriersUrl)
       .pipe(
@@ -29,21 +29,7 @@ export class OuvrierService {
       );
   }
 
-  /** GET ouvriers by id. Return `undefined` when id not found */
-  getOuvrierNo404<Data>(id: number): Observable<Ouvrier> {
-    const url = `${this.listeOuvriersUrl}?id=${id}`;
-    return this.http.get<Ouvrier[]>(url)
-      .pipe(
-        map(ouvriers => ouvriers[0]), // returns a {0|1} element array
-        tap(h => {
-          const outcome = h ? `récupéré` : `pas trouvé`;
-          this.log(`${outcome} ouvrier id=${id}`);
-        }),
-        catchError(this.handleError<Ouvrier>(`getOuvrier id=${id}`))
-      );
-  }
-
-  /** GET ouvrier by id. Will 404 if id not found */
+  /** GET ouvrier par id */
   getOuvrier(id_ouvrier: number): Observable<Ouvrier> {
     const url = `${this.listeOuvriersUrl}${id_ouvrier}`;
     return this.http.get<Ouvrier>(url).pipe(
@@ -51,16 +37,14 @@ export class OuvrierService {
     );
   }
 
-  //////// Save methods //////////
-
-  /** POST: add a new ouvrier to the server */
+  /** POST: ajoute un nouvel ouvrier au serveur */
   addOuvrier (ouvrier: Ouvrier): Observable<Ouvrier> {
     return this.http.post<Ouvrier>(this.listeOuvriersUrl, ouvrier, this.httpOptions).pipe(
       catchError(this.handleError<Ouvrier>('addOuvrier'))
     );
   }
 
-  /** DELETE: delete the ouvrier from the server */
+  /** DELETE: supprime un ouvrier du serveur */
   deleteOuvrier (ouvrier: Ouvrier | number): Observable<Ouvrier> {
     const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
     const url = `${this.listeOuvriersUrl}${id}`;
@@ -70,7 +54,7 @@ export class OuvrierService {
     );
   }
 
-  /** PUT: update the ouvrier on the server */
+  /** PUT: met a jour l'ouvrier sur le serveur */
   updateOuvrier (ouvrier: Ouvrier): Observable<any> {
     const id = typeof ouvrier === 'number' ? ouvrier : ouvrier.id_ouvrier;
     const url = `${this.listeOuvriersUrl}${id}`;
@@ -79,27 +63,14 @@ export class OuvrierService {
     );
   }
 
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
+      console.error(error);
       this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
 
-  /** Log a OuvrierService message with the MessageService */
   private log(message: string) {
     this.messageService.add(`OuvrierService: ${message}`);
   }
