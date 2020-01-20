@@ -125,7 +125,7 @@ def decoup_new_chantier(dict_new_chantier: dict):
     # Vérification de la conformité des entrées
     if date_debut >= date_fin:
         raise ex.InvalidDates(
-            msg="La date de fin ne peut être antérieure à la date de fin."
+            msg="La date de fin ne peut être antérieure à la date de début."
         )
     if (
             date_debut.hour != HEURES_DEBUT["debut_matin"].hour
