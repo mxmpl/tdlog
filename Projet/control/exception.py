@@ -112,7 +112,7 @@ class OverlimitDate(Exception):
 
 def conformite_dict(dictionnaire: dict, champs: dict):
     """
-    champs doit être un dictionnaire des types des values du 
+    champs doit être un dictionnaire des types des values du
     dictionnaire telle que {"name" : str, "id" : int,}
     """
     if not isinstance(dictionnaire, dict):
@@ -120,6 +120,6 @@ def conformite_dict(dictionnaire: dict, champs: dict):
     for clef in champs.keys():
         if clef not in dictionnaire.keys():
             raise MissingBadKey(clef)
-        elif not isinstance(dictionnaire[clef],champs[clef]):
+        elif not isinstance(dictionnaire[clef], champs[clef]):
             raise WrongType(type(dictionnaire[clef]))
     return True
