@@ -120,28 +120,31 @@ def liste_chantiers():
     """
     Renvoie la liste des chantiers.
     """
-    if request.method == "GET":
+    try:
+        if request.method == "GET":
+            chantiers = resume_chantiers()
+            liste_des_chantiers = []
+            for cle in chantiers:
+                chantiers[cle]["name_chantier"] = str(cle)
+                liste_des_chantiers.append(chantiers[cle])
+            return jsonify(liste_des_chantiers)
+        elif request.method == "POST":
+            data = request.get_json()
+            date_start = convert_format_date(data["start"], FORMAT_DATE2, FORMAT_DATE1)
+            date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)
+            declare_new_chantier(
+                {
+                    "name_chantier": data["name_chantier"],
+                    "start": date_start,
+                    "end": date_end,
+                    "adress": data["adress"],
+                }
+            )
         chantiers = resume_chantiers()
-        liste_des_chantiers = []
-        for cle in chantiers:
-            chantiers[cle]["name_chantier"] = str(cle)
-            liste_des_chantiers.append(chantiers[cle])
-        return jsonify(liste_des_chantiers)
-    elif request.method == "POST":
-        data = request.get_json()
-        date_start = convert_format_date(data["start"], FORMAT_DATE2, FORMAT_DATE1)
-        date_end = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)
-        declare_new_chantier(
-            {
-                "name_chantier": data["name_chantier"],
-                "start": date_start,
-                "end": date_end,
-                "adress": data["adress"],
-            }
-        )
-    chantiers = resume_chantiers()
-    return jsonify(chantiers)
-
+        return jsonify(chantiers)
+    except Exception as e:
+        return e.__str__()
+    
 @APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
 def chantier_par_nom(name_chantier: str):
     """
