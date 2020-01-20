@@ -177,7 +177,7 @@ def root():
 
 @APP.errorhandler(Exception)
 def handle_invalid_usage(error):
-    return error.msg,400
+    return error.msg, 400
 
 if __name__ == "__main__":
     APP.run(host='127.0.0.1', port=5000, debug=True)

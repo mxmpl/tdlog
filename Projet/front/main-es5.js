@@ -2583,7 +2583,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return function (error) {
             console.error(error);
 
-            _this15.log("".concat(operation, " failed: ").concat(error.message));
+            _this15.log("".concat(operation, " failed: ").concat(error.error));
 
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(result);
           };
@@ -2796,7 +2796,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return function (error) {
             console.error(error);
 
-            _this16.log("".concat(operation, " failed: ").concat(error.message));
+            _this16.log("".concat(operation, " failed: ").concat(error.error));
 
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(result);
           };
