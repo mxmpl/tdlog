@@ -9,6 +9,7 @@ class WrongType(Exception):
     """
 
     def __init__(self, typ=None, msg=None):
+        super().__init__()
         if msg is None:
             if typ is None:
                 msg = "Mauvais type."
@@ -26,6 +27,7 @@ class MissingBadKey(Exception):
     """
 
     def __init__(self, key=None, msg=None):
+        super().__init__()
         if msg is None:
             if key is None:
                 msg = "Clef manquante ou erronée."
@@ -43,6 +45,7 @@ class InvalidId(Exception):
     """
 
     def __init__(self, ide=None, msg=None):
+        super().__init__()
         if msg is None:
             if ide is None:
                 msg = "L'identifiant est invalide."
@@ -58,6 +61,7 @@ class ImpossibleAssignation(Exception):
     L'ouvrier est indisponible.
     """
     def __init__(self, id_ouvrier=None, id_chantier=None, msg=None):
+        super().__init__()
         if msg is None:
             if id_ouvrier is None and id_chantier is None:
                 msg = "L'assignation n'est pas possible."
@@ -76,6 +80,7 @@ class InvalidDates(Exception):
     """
 
     def __init__(self, date=None, msg=None):
+        super().__init__()
         if msg is None:
             if date is None:
                 msg = "Date invalide"
@@ -92,6 +97,7 @@ class OverlimitDate(Exception):
     """
 
     def __init__(self, limite_jours=None, msg=None):
+        super().__init__()
         if msg is None:
             if limite_jours is None:
                 msg = "La date est postérieure à la limite imposée."
@@ -106,7 +112,7 @@ class OverlimitDate(Exception):
 
 def conformite_dict(dictionnaire: dict, champs: dict):
     """
-    champs doit être un dictionnaire des types des values du 
+    champs doit être un dictionnaire des types des values du
     dictionnaire telle que {"name" : str, "id" : int,}
     """
     if not isinstance(dictionnaire, dict):
@@ -114,6 +120,6 @@ def conformite_dict(dictionnaire: dict, champs: dict):
     for clef in champs.keys():
         if clef not in dictionnaire.keys():
             raise MissingBadKey(clef)
-        elif not isinstance(dictionnaire[clef],champs[clef]):
+        elif not isinstance(dictionnaire[clef], champs[clef]):
             raise WrongType(type(dictionnaire[clef]))
     return True
