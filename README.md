@@ -11,3 +11,4 @@ L'architecture du projet est la suivante :
 - Un dossier ui contenant les fichiers build du front-end Angular 
 - Un dossier front_angular contenant les fichiers de développement Angular permettant de modifier la partie front-end du projet
 
+Cette branche contient le dossier prototypes_html avec les prototypes
