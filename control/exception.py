@@ -3,7 +3,16 @@ Script pour la création des exceptions du projet.
 @author: Maxime Brisinger, Margot Cosson, Raphaël Lasry, Maxime Poli
 """
 
-class WrongType(Exception):
+class WrongRequest(Exception):
+    def __init__(self):
+        super().__init__()
+        self.msg = "Mauvaise requête"
+
+    def __str__(self):
+        return self.msg
+
+
+class WrongType(WrongRequest):
     """
     Ce n'est pas le bon type d'argument.
     """
@@ -21,7 +30,7 @@ class WrongType(Exception):
         return self.msg
 
 
-class MissingBadKey(Exception):
+class MissingBadKey(WrongRequest):
     """
     Clef manquante dans un dictionnaire.
     """
@@ -39,7 +48,7 @@ class MissingBadKey(Exception):
         return self.msg
 
 
-class InvalidId(Exception):
+class InvalidId(WrongRequest):
     """
     L'identifiant est incorrect.
     """
@@ -56,7 +65,7 @@ class InvalidId(Exception):
     def __str__(self):
         return self.msg
 
-class ImpossibleAssignation(Exception):
+class ImpossibleAssignation(WrongRequest):
     """
     L'ouvrier est indisponible.
     """
@@ -74,7 +83,7 @@ class ImpossibleAssignation(Exception):
     def __str__(self):
         return self.msg
 
-class InvalidDates(Exception):
+class InvalidDates(WrongRequest):
     """
     Date invalide.
     """
@@ -91,7 +100,7 @@ class InvalidDates(Exception):
     def __str__(self):
         return self.msg
 
-class OverlimitDate(Exception):
+class OverlimitDate(WrongRequest):
     """
     Durée supérieure à la durée limite imposée.
     """

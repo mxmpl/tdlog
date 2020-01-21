@@ -1,49 +1,49 @@
-Projet/data/__pycache__/
-Projet/control/__pycache__/
-calendar-project/src/python/control/__pycache__/
-calendar-project/src/python/data/__pycache__/
+data/__pycache__/
+control/__pycache__/
+front_angular/src/python/control/__pycache__/
+front_angular/src/python/data/__pycache__/
 
 # compiled output
-calendar-project/dist
-calendar-project/tmp
-calendar-project/out-tsc
+front_angular/dist
+front_angular/tmp
+front_angular/out-tsc
 # Only exists if Bazel was run
-calendar-project/bazel-out
+front_angular/bazel-out
 
 # dependencies
-calendar-project/node_modules
+front_angular/node_modules
 
 # profiling files
-calendar-project/chrome-profiler-events*.json
-calendar-project/speed-measure-plugin*.json
+front_angular/chrome-profiler-events*.json
+front_angular/speed-measure-plugin*.json
 
 # IDEs and editors
-calendar-project/.idea
-calendar-project/.project
-calendar-project/.classpath
-calendar-project/.c9/
-calendar-project/*.launch
-calendar-project/.settings/
-calendar-project/*.sublime-workspace
+front_angular/.idea
+front_angular/.project
+front_angular/.classpath
+front_angular/.c9/
+front_angular/*.launch
+front_angular/.settings/
+front_angular/*.sublime-workspace
 
 # IDE - VSCode
-calendar-project/.vscode/*
-!calendar-project/.vscode/settings.json
-!calendar-project/.vscode/tasks.json
-!calendar-project/.vscode/launch.json
-!calendar-project/.vscode/extensions.json
-calendar-project/.history/*
+front_angular/.vscode/*
+!front_angular/.vscode/settings.json
+!front_angular/.vscode/tasks.json
+!front_angular/.vscode/launch.json
+!front_angular/.vscode/extensions.json
+front_angular/.history/*
 
 # misc
-calendar-project/.sass-cache
-calendar-project/connect.lock
-calendar-project/coverage
-calendar-project/libpeerconnection.log
-calendar-project/npm-debug.log
-calendar-project/yarn-error.log
-calendar-project/testem.log
-calendar-project/typings
+front_angular/.sass-cache
+front_angular/connect.lock
+front_angular/coverage
+front_angular/libpeerconnection.log
+front_angular/npm-debug.log
+front_angular/yarn-error.log
+front_angular/testem.log
+front_angular/typings
 
 # System Files
-calendar-project/.DS_Store
-calendar-project/Thumbs.db
+front_angular/.DS_Store
+front_angular/Thumbs.db

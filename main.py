@@ -30,6 +30,8 @@ from change import(del_data,
                    delete_chantier,
                    modify_data)
 
+from exception import WrongRequest
+
 
 APP = Flask(__name__)
 CORS(APP)  # Creation du site
@@ -164,18 +166,18 @@ def chantier_par_nom(name_chantier: str):
 @APP.route('/<path:path>', methods=['GET'])
 def static_proxy(path):
     """
-    Permet d'exporter dans le fichier qui se trouve dans le dossier front.
+    Permet d'exporter dans le fichier qui se trouve dans le dossier ui.
     """
-    return send_from_directory('front/', path)
+    return send_from_directory('ui/', path)
 
 @APP.route('/')
 def root():
     """
-    Permet d'exporter dans le fichier index.html qui se trouve dans le dossier front.
+    Permet d'exporter dans le fichier index.html qui se trouve dans le dossier ui.
     """
-    return send_from_directory('front/', 'index.html')
+    return send_from_directory('ui/', 'index.html')
 
-@APP.errorhandler(Exception)
+@APP.errorhandler(WrongRequest)
 def handle_invalid_usage(error):
     return error.msg, 400
 
