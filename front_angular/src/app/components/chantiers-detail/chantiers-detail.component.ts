@@ -24,6 +24,8 @@ export class ChantierDetailComponent implements OnInit {
   heureDebAM = "14" ;
   heureFinAM = "18";
 
+  heureFinChoisie = this.heureFinMatin ;
+
   constructor(
     private route: ActivatedRoute,
     private chantierService: ChantierService,
