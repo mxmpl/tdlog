@@ -69,7 +69,7 @@ export class ChantierService {
     );
   } 
 
-  /** POST: ajoute une nouvelle attribution au serveur */
+  /** POST: ajoute des nouvelles attributions au serveur */
   addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]): Observable<Ouvrier> {
     var couples = [];
     for (var i=0; i<chantiers_choisis.length; i++){
