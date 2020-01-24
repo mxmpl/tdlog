@@ -178,7 +178,7 @@ def root():
     return send_from_directory('ui/', 'index.html')
 
 @APP.errorhandler(WrongRequest)
-def handle_invalid_usage(error):
+def handle_invalid_request(error):
     return error.msg, 400
 
 if __name__ == "__main__":
