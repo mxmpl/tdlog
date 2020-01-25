@@ -54,7 +54,7 @@ def planning():
         )
     return jsonify(planning_chantiers)
 
-@APP.route("/listeOuvriers/", methods=["GET", "POST", "DELETE", "PUT"])
+@APP.route("/listeOuvriers/", methods=["GET", "POST"])
 def liste_ouvriers():
     """
     Ajout d'un nouvel ouvrier.
@@ -65,7 +65,7 @@ def liste_ouvriers():
     ouvriers = return_table_ouvrier_avec_chantiers()
     return jsonify(ouvriers)
 
-@APP.route("/listeOuvriers/<id_ouvrier>", methods=["GET", "POST", "DELETE", "PUT"])
+@APP.route("/listeOuvriers/<id_ouvrier>", methods=["GET", "DELETE", "PUT"])
 def ouvrier_id(id_ouvrier: str):
     """
     Actions sur un ouvrier donné :
@@ -87,7 +87,7 @@ def ouvrier_id(id_ouvrier: str):
 
 @APP.route(
     "/listeOuvriers/<id_ouvrier>/chantiersdispos",
-    methods=["GET", "POST", "DELETE", "PUT"],
+    methods=["GET"],
 )
 def chantiers_dispos_ouvrier_id(id_ouvrier: str):
     """
@@ -97,8 +97,7 @@ def chantiers_dispos_ouvrier_id(id_ouvrier: str):
     if request.method == "GET":
         chantiers_dispos = return_cluster_chantiers(id_ouvrier)
         return jsonify(chantiers_dispos)
-    ouvriers = return_table_ouvrier_avec_chantiers()
-    return jsonify(ouvriers)
+    return jsonify(0)
 
 @APP.route("/attribution/", methods=["POST"])
 def nouvelles_attributions():
@@ -121,7 +120,7 @@ def supprimer_attribution(id_ouvrier: str, id_chantier: str):
 @APP.route("/listeChantiers/", methods=["GET", "POST"])
 def liste_chantiers():
     """
-    Renvoie la liste des chantiers.
+    Permet de renvoyer la liste des chantiers ou d'en créer un nouveau.
     """
     if request.method == "GET":
         chantiers = resume_chantiers()
@@ -145,10 +144,11 @@ def liste_chantiers():
     chantiers = resume_chantiers()
     return jsonify(chantiers)
 
-@APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
+@APP.route("/listeChantiers/<name_chantier>", methods=["GET", "DELETE"])
 def chantier_par_nom(name_chantier: str):
     """
-    Action sur un chantier donné : informations.
+    Actions sur un chantier donné :
+    informations, suppression.
     """
     if request.method == "GET":
         chantier = resume_chantiers()[name_chantier]
