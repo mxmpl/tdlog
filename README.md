@@ -11,3 +11,7 @@ L'architecture du projet est la suivante :
 - Un dossier ui contenant les fichiers build du front-end Angular 
 - Un dossier front_angular contenant les fichiers de développement Angular permettant de modifier la partie front-end du projet
 
+Pour faire des modifications sur la partie front-end:
+- Faire les changements souhaités dans front_angular
+- Exécuter la commande 'ng build' avec Angular CLI
+- Remplacer le contenu du dossier ui par celui de front_angular/dist
