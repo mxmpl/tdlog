@@ -54,7 +54,7 @@ def planning():
         )
     return jsonify(planning_chantiers)
 
-@APP.route("/listeOuvriers/", methods=["GET", "POST", "DELETE", "PUT"])
+@APP.route("/listeOuvriers/", methods=["GET", "POST"])
 def liste_ouvriers():
     """
     Ajout d'un nouvel ouvrier.
@@ -62,10 +62,12 @@ def liste_ouvriers():
     data = request.get_json()
     if request.method == "POST":
         set_new_ouvrier({"name_ouvrier": data["name_ouvrier"]})
-    ouvriers = return_table_ouvrier_avec_chantiers()
-    return jsonify(ouvriers)
+    elif request.method == "GET":
+        ouvriers = return_table_ouvrier_avec_chantiers()
+        return jsonify(ouvriers)
+    return jsonify(0)
 
-@APP.route("/listeOuvriers/<id_ouvrier>", methods=["GET", "POST", "DELETE", "PUT"])
+@APP.route("/listeOuvriers/<id_ouvrier>", methods=["GET", "DELETE", "PUT"])
 def ouvrier_id(id_ouvrier: str):
     """
     Actions sur un ouvrier donné :
@@ -82,23 +84,19 @@ def ouvrier_id(id_ouvrier: str):
         )
     elif request.method == "DELETE":
         del_data("ouvriers", id_ouv=int(id_ouvrier))
-    ouvriers = return_table_ouvrier_avec_chantiers()
-    return jsonify(ouvriers)
+    return jsonify(0)
 
 @APP.route(
     "/listeOuvriers/<id_ouvrier>/chantiersdispos",
-    methods=["GET", "POST", "DELETE", "PUT"],
+    methods=["GET"],
 )
 def chantiers_dispos_ouvrier_id(id_ouvrier: str):
     """
     Actions sur un ouvrier donné :
     affichage des noms des chantiers où il peut être affecté.
     """
-    if request.method == "GET":
-        chantiers_dispos = return_cluster_chantiers(id_ouvrier)
-        return jsonify(chantiers_dispos)
-    ouvriers = return_table_ouvrier_avec_chantiers()
-    return jsonify(ouvriers)
+    chantiers_dispos = return_cluster_chantiers(id_ouvrier)
+    return jsonify(chantiers_dispos)
 
 @APP.route("/attribution/", methods=["POST"])
 def nouvelles_attributions():
@@ -108,7 +106,7 @@ def nouvelles_attributions():
     liste_attributions = request.get_json()
     for attribution in liste_attributions:
         set_new_attribution(attribution)
-    return jsonify(liste_attributions)
+    return jsonify(0)
 
 @APP.route("/attribution/<id_ouvrier>/<id_chantier>", methods=["DELETE"])
 def supprimer_attribution(id_ouvrier: str, id_chantier: str):
@@ -121,7 +119,7 @@ def supprimer_attribution(id_ouvrier: str, id_chantier: str):
 @APP.route("/listeChantiers/", methods=["GET", "POST"])
 def liste_chantiers():
     """
-    Renvoie la liste des chantiers.
+    Permet de renvoyer la liste des chantiers ou d'en créer un nouveau.
     """
     if request.method == "GET":
         chantiers = resume_chantiers()
@@ -142,13 +140,13 @@ def liste_chantiers():
                 "adress": data["adress"],
             }
         )
-    chantiers = resume_chantiers()
-    return jsonify(chantiers)
-    
-@APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
+    return jsonify(0)
+
+@APP.route("/listeChantiers/<name_chantier>", methods=["GET", "DELETE"])
 def chantier_par_nom(name_chantier: str):
     """
-    Action sur un chantier donné : informations.
+    Actions sur un chantier donné :
+    informations, suppression.
     """
     if request.method == "GET":
         chantier = resume_chantiers()[name_chantier]
@@ -160,15 +158,17 @@ def chantier_par_nom(name_chantier: str):
         return jsonify(chantier)
     elif request.method == "DELETE":
         delete_chantier(name_chantier)
-    chantiers = return_table("chantiers")
-    return jsonify(chantiers)
+    return jsonify(0)
 
 @APP.route('/<path:path>', methods=['GET'])
 def static_proxy(path):
     """
     Permet d'exporter dans le fichier qui se trouve dans le dossier ui.
     """
-    return send_from_directory('ui/', path)
+    try:
+        return send_from_directory('ui/', path)
+    except:
+        return send_from_directory('ui/', 'index.html')
 
 @APP.route('/')
 def root():
@@ -178,7 +178,7 @@ def root():
     return send_from_directory('ui/', 'index.html')
 
 @APP.errorhandler(WrongRequest)
-def handle_invalid_usage(error):
+def handle_invalid_request(error):
     return error.msg, 400
 
 if __name__ == "__main__":

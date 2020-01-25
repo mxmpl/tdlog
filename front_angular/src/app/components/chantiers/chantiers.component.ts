@@ -17,8 +17,8 @@ export class ChantiersComponent implements OnInit {
   heureDebAM = "14" ;
   heureFinAM = "18";
   
-  heureDebChoisie = this.heureDebAM; //on initialise arbitraitement à 08
-  heureFinChoisie = this.heureFinAM;
+  heureDebChoisie = this.heureDebMatin; //on initialise arbitraitement à 08
+  heureFinChoisie = this.heureFinMatin;
 
   
   constructor(private chantierService: ChantierService) { }

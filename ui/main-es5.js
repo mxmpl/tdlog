@@ -1241,6 +1241,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.heureFinMatin = "12";
         this.heureDebAM = "14";
         this.heureFinAM = "18";
+        this.heureFinChoisie = this.heureFinMatin;
       }
 
       _createClass(ChantierDetailComponent, [{
@@ -1411,9 +1412,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.heureFinMatin = "12";
         this.heureDebAM = "14";
         this.heureFinAM = "18";
-        this.heureDebChoisie = this.heureDebAM; //on initialise arbitraitement à 08
+        this.heureDebChoisie = this.heureDebMatin; //on initialise arbitraitement à 08
 
-        this.heureFinChoisie = this.heureFinAM;
+        this.heureFinChoisie = this.heureFinMatin;
       }
 
       _createClass(ChantiersComponent, [{
@@ -2549,7 +2550,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var url = "".concat(this.listeChantiersUrl).concat(name);
           return this.http.delete(url, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('deleteChantier')));
         }
-        /** POST: ajoute une nouvelle attribution au serveur */
+        /** POST: ajoute des nouvelles attributions au serveur */
 
       }, {
         key: "addAttributions",
@@ -2946,7 +2947,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! /home/maxime/Documents/DepotsGit/tdlog/calendar-project/src/main.ts */
+    /*! /home/maxime/Documents/DepotsGit/tdlog/front_angular/src/main.ts */
     "./src/main.ts");
     /***/
   }

@@ -17,8 +17,7 @@ export class ChantierService {
   private attributionUrl = 'http://127.0.0.1:5000/attribution/';
   private listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
   private listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/';
-  private listeChantiersHorairesUrl = 'http://127.0.0.1:5000/listeChantiers/horaires'
-
+  
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -69,7 +68,7 @@ export class ChantierService {
     );
   } 
 
-  /** POST: ajoute une nouvelle attribution au serveur */
+  /** POST: ajoute des nouvelles attributions au serveur */
   addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]): Observable<Ouvrier> {
     var couples = [];
     for (var i=0; i<chantiers_choisis.length; i++){

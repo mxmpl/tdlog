@@ -625,6 +625,7 @@ let ChantierDetailComponent = class ChantierDetailComponent {
         this.heureFinMatin = "12";
         this.heureDebAM = "14";
         this.heureFinAM = "18";
+        this.heureFinChoisie = this.heureFinMatin;
     }
     ngOnInit() {
         this.getChantier();
@@ -723,8 +724,8 @@ let ChantiersComponent = class ChantiersComponent {
         this.heureFinMatin = "12";
         this.heureDebAM = "14";
         this.heureFinAM = "18";
-        this.heureDebChoisie = this.heureDebAM; //on initialise arbitraitement à 08
-        this.heureFinChoisie = this.heureFinAM;
+        this.heureDebChoisie = this.heureDebMatin; //on initialise arbitraitement à 08
+        this.heureFinChoisie = this.heureFinMatin;
     }
     ngOnInit() {
         this.getChantiers();
@@ -1365,7 +1366,7 @@ let ChantierService = class ChantierService {
         const url = `${this.listeChantiersUrl}${name}`;
         return this.http.delete(url, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('deleteChantier')));
     }
-    /** POST: ajoute une nouvelle attribution au serveur */
+    /** POST: ajoute des nouvelles attributions au serveur */
     addAttributions(ouvrier, chantiers_choisis) {
         var couples = [];
         for (var i = 0; i < chantiers_choisis.length; i++) {
@@ -1584,7 +1585,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_3__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/maxime/Documents/DepotsGit/tdlog/calendar-project/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/maxime/Documents/DepotsGit/tdlog/front_angular/src/main.ts */"./src/main.ts");
 
 
 /***/ })
