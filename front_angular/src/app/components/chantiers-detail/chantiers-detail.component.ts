@@ -56,11 +56,14 @@ export class ChantierDetailComponent implements OnInit {
     this.ouvrierChoisi = ouvrier;
   }
 
+  //Pour rallonger un chantier
   add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
     name_chantier = name_chantier.trim();
     if (start.substr(11,2) == this.heureFinAM) {
+      //Si le chantier se terminait en fin d'apres-midi
       start = start.substr(8,2) + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " " + this.heureDebAM + ":00:00";
     } else {
+      // Si le chantier se terminait en fin de matinee
       start = (parseInt(start.substr(8,2))+1).toString() + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " " + this.heureDebAM + ":00:00";
     }
     end = end + " " + endTime + ":00:00";
