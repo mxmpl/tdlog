@@ -1275,7 +1275,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.show = true;
           this.nomChoisi = ouvrier.name_ouvrier;
           this.ouvrierChoisi = ouvrier;
-        }
+        } //Pour rallonger un chantier
+
       }, {
         key: "add",
         value: function add(name_chantier, start, startTime, end, endTime, adress) {
@@ -1284,8 +1285,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           name_chantier = name_chantier.trim();
 
           if (start.substr(11, 2) == this.heureFinAM) {
+            //Si le chantier se terminait en fin d'apres-midi
             start = start.substr(8, 2) + "/" + start.substr(5, 2) + "/" + start.substr(0, 4) + " " + this.heureDebAM + ":00:00";
           } else {
+            // Si le chantier se terminait en fin de matinee
             start = (parseInt(start.substr(8, 2)) + 1).toString() + "/" + start.substr(5, 2) + "/" + start.substr(0, 4) + " " + this.heureDebAM + ":00:00";
           }
 
@@ -2503,7 +2506,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.attributionUrl = 'http://127.0.0.1:5000/attribution/';
         this.listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
         this.listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/';
-        this.listeChantiersHorairesUrl = 'http://127.0.0.1:5000/listeChantiers/horaires';
         this.httpOptions = {
           headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
             'Content-Type': 'application/json'
