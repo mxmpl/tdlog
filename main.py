@@ -168,7 +168,10 @@ def static_proxy(path):
     """
     Permet d'exporter dans le fichier qui se trouve dans le dossier ui.
     """
-    return send_from_directory('ui/', path)
+    try:
+        return send_from_directory('ui/', path)
+    except:
+        return send_from_directory('ui/', 'index.html')
 
 @APP.route('/')
 def root():
