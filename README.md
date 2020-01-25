@@ -15,3 +15,5 @@ Pour faire des modifications sur la partie front-end:
 - Faire les changements souhaités dans front_angular
 - Exécuter la commande 'ng build' avec Angular CLI
 - Remplacer le contenu du dossier ui par celui de front_angular/dist
+
+Cette branche contient les prototypes dans le dossier prototypes_html.
