@@ -144,7 +144,7 @@ def liste_chantiers():
         )
     chantiers = resume_chantiers()
     return jsonify(chantiers)
-    
+
 @APP.route("/listeChantiers/<name_chantier>", methods=["GET", "POST", "DELETE", "PUT"])
 def chantier_par_nom(name_chantier: str):
     """
