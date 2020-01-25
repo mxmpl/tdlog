@@ -4,6 +4,9 @@ Script pour la création des exceptions du projet.
 """
 
 class WrongRequest(Exception):
+    """
+    Ce n'est pas la bonne requête.
+    """
     def __init__(self):
         super().__init__()
         self.msg = "Mauvaise requête"
