@@ -138,6 +138,10 @@ def create_commande(name_table: str, id_ouv: int, id_chant: int):
     if id_ouv is not None and id_chant is not None and name_table == "attribution":
         # On veut alors effectuer une action sur une attribution
         commande = """id_chantier = """ + str(id_chant) + """ AND id_ouvrier = """ + str(id_ouv)
+    elif name_table == "attribution" and id_ouv is not None and id_chant is None:
+        commande = """ id_ouvrier = """ + str(id_ouv)
+    elif name_table == "attribution" and id_chant is not None and id_ouv is None:
+        commande = """ id_chantier = """ + str(id_chant)        
     elif id_ouv is None and name_table == "chantiers":
         # On veut alors effectuer une action sur un chantier
         commande = """id_chantier = """ + str(id_chant)

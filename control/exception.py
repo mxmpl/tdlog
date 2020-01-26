@@ -127,6 +127,7 @@ def conformite_dict(dictionnaire: dict, champs: dict):
     champs doit être un dictionnaire des types des values du
     dictionnaire telle que {"name" : str, "id" : int,}
     """
+    print(dictionnaire)
     if not isinstance(dictionnaire, dict):
         raise WrongType(dict)
     for clef in champs.keys():

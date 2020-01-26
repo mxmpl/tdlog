@@ -14,6 +14,10 @@ def del_data(name_table: str, id_ouv=None, id_chant=None):
     """
     # On vérifie d'abord que cette donnée existe
     bdd.id_in_table(name_table, id_ouv=id_ouv, id_chant=id_chant)
+    if name_table == "ouvriers":
+        bdd.del_data("attribution", id_ouv=id_ouv, id_chant=None)
+    elif name_table == "chantiers":
+        bdd.del_data("attribution", id_ouv=None, id_chant=id_chant)
     bdd.del_data(name_table, id_ouv=id_ouv, id_chant=id_chant)
 
 def delete_chantier(name_chantier: str):
