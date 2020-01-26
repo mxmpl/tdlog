@@ -13,7 +13,6 @@ sys.path.insert(0, 'control')
 
 from get import (get_info_from_id_ouvrier,
                  get_info_from_id_chantier,
-                 return_table,
                  return_table_ouvrier_avec_chantiers,
                  return_cluster_chantiers,
                  resume_chantiers,

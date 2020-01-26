@@ -121,13 +121,31 @@ class OverlimitDate(WrongRequest):
 
     def __str__(self):
         return self.msg
+    
+class NameAlreadyExists(WrongRequest):
+    """
+    Un nom qui existe déjà dans la base de données.
+    """
+
+    def __init__(self, name=None, msg=None):
+        super().__init__()
+        if msg is None:
+            if name is None:
+                msg = "Le nom saisi est déjà attribué."
+            else:
+                msg = "Le nom {} est déjà attribué.".format(
+                    name
+                )
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
 
 def conformite_dict(dictionnaire: dict, champs: dict):
     """
     champs doit être un dictionnaire des types des values du
     dictionnaire telle que {"name" : str, "id" : int,}
     """
-    print(dictionnaire)
     if not isinstance(dictionnaire, dict):
         raise WrongType(dict)
     for clef in champs.keys():

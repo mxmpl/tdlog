@@ -173,9 +173,25 @@ def id_in_table(name_table: str, id_ouv=None, id_chant=None):
                                 FROM """ + name_table +
                                 """ WHERE """ + commande)[0][0] > 0:
 
-            ex.InvalidId(msg="L'identifiant(s) considere(s) n'existe(nt) pas dans la table.")
+            raise ex.InvalidId(msg="L'identifiant(s) considere(s) n'existe(nt) pas dans la table.")
         return True
     return False
+
+def name_in_table(name_table: str, name: str):
+    """
+    Pour savoir si un nom existe déjà dans la table.
+    """
+    if name_table == "chantiers":
+        champs = "name_chantier"
+    elif name_table == "ouvriers":
+        champs = "name_ouvrier"
+    else:
+        raise ex.WrongRequest()
+    if select_condition("""SELECT COUNT(*)
+                                FROM """ + name_table +
+                                """ WHERE """ + champs + " = '" + name + "'")[0][0] > 0:
+        raise ex.NameAlreadyExists(name=name)
+    return True
 
 # MODIFY
 
