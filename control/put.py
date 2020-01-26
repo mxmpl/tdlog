@@ -176,6 +176,7 @@ def declare_new_chantier(dict_new_chantier: dict):
         dict_new_chantier,
         {"name_chantier": str, "start": str, "end": str, "adress": str},
     )
+    # Faire une fonction qui vérifie que le nom n'existe pas déjà et que le nom ne soit pas un champs vide
     list_new_chantiers = decoup_new_chantier(dict_new_chantier)
     for chantier in list_new_chantiers:
         set_new_chantier(chantier)
