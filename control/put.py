@@ -176,8 +176,8 @@ def declare_new_chantier(dict_new_chantier: dict):
         dict_new_chantier,
         {"name_chantier": str, "start": str, "end": str, "adress": str},
     )
-    # On vérifie que le nom ne soit pas déjà utilisé par un autre chantier
     try:
+        # On vérifie que le nom ne soit pas déjà utilisé par un autre chantier
         bdd.name_in_table("chantiers", dict_new_chantier["name_chantier"])
         list_new_chantiers = decoup_new_chantier(dict_new_chantier)
         for chantier in list_new_chantiers:
