@@ -178,6 +178,9 @@ def root():
 
 @APP.errorhandler(WrongRequest)
 def handle_invalid_request(error):
+    """
+    Permet de gerer l'erreur "invalid request".
+    """
     return error.msg, 400
 
 if __name__ == "__main__":

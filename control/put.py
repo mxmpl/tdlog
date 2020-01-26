@@ -29,12 +29,12 @@ def convert_format_date(date: str, format1: str, format2: str):
     """
     Convertit une date en format1 vers le format2.
     """
-    try :
+    try:
         date_format1 = datetime.datetime.strptime(date, format1)
         date_format2 = datetime.datetime.strftime(date_format1, format2)
         return date_format2
-    except : 
-        raise ex.InvalidDates(date = date)
+    except:
+        raise ex.InvalidDates(date=date)
 
 def verif_dispo_horaire_ouvrier(
         id_ouvrier: int, id_chantier: int, planning=None, infos_chantier=None

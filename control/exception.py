@@ -121,7 +121,7 @@ class OverlimitDate(WrongRequest):
 
     def __str__(self):
         return self.msg
-    
+
 class NameAlreadyExists(WrongRequest):
     """
     Un nom qui existe déjà dans la base de données.

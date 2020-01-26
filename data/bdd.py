@@ -141,7 +141,7 @@ def create_commande(name_table: str, id_ouv: int, id_chant: int):
     elif name_table == "attribution" and id_ouv is not None and id_chant is None:
         commande = """ id_ouvrier = """ + str(id_ouv)
     elif name_table == "attribution" and id_chant is not None and id_ouv is None:
-        commande = """ id_chantier = """ + str(id_chant)        
+        commande = """ id_chantier = """ + str(id_chant)
     elif id_ouv is None and name_table == "chantiers":
         # On veut alors effectuer une action sur un chantier
         commande = """id_chantier = """ + str(id_chant)
@@ -189,7 +189,7 @@ def name_in_table(name_table: str, name: str):
         raise ex.WrongRequest()
     if select_condition("""SELECT COUNT(*)
                                 FROM """ + name_table +
-                                """ WHERE """ + champs + " = '" + name + "'")[0][0] > 0:
+                        """ WHERE """ + champs + " = '" + name + "'")[0][0] > 0:
         raise ex.NameAlreadyExists(name=name)
     return True
 
