@@ -158,13 +158,11 @@ def chantier_par_nom(name_chantier: str):
         delete_chantier(name_chantier)
     return jsonify(0)
 
-@APP.route("/rallongeChantier", methods=["POST"])
+@APP.route("/rallongeChantier", methods=["POST", "GET"])
 def rallonge_chantier():
     data = request.get_json()
-    nom_chantier = data["chantier"]["name_chantier"]
-    nouvelle_date_fin = convert_format_date(data["end"], FORMAT_DATE2, FORMAT_DATE1)
-    print(nom_chantier)
-    print(nouvelle_date_fin)
+    nom_chantier = data["chantier"]
+    nouvelle_date_fin = data["end"]
     prolonge_chantier(nom_chantier, nouvelle_date_fin)
     return jsonify(0)
 
@@ -183,7 +181,7 @@ def root():
     """
     Permet d'exporter dans le fichier index.html qui se trouve dans le dossier ui.
     """
-    #return send_from_directory('ui/', 'index.html')
+    return send_from_directory('ui/', 'index.html')
 
 @APP.errorhandler(WrongRequest)
 def handle_invalid_request(error):
