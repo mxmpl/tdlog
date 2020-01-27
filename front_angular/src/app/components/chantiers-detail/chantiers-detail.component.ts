@@ -57,9 +57,10 @@ export class ChantierDetailComponent implements OnInit {
   }
 
   //Pour rallonger un chantier
-  rallongeChantier(chantier: Chantier, heureFinChoisie: string): void {
+  rallongeChantier(chantier: Chantier, dateFin : string, heureFin: string): void {
+    dateFin = dateFin + ' ' + heureFin + ':00:00'
     if (confirm('Voulez-vous rallonger le chantier '+chantier.name_chantier+' ?')) {
-    this.chantierService.rallongeChantier(chantier.name_chantier, heureFinChoisie)
+    this.chantierService.rallongeChantier(chantier.name_chantier, dateFin)
       .subscribe(_ => this.getChantier());
     }
   }

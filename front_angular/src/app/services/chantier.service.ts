@@ -70,8 +70,8 @@ export class ChantierService {
   } 
 
   /** POST: rallonge un chantier */
-  rallongeChantier (chantier: string, heureFinChoisie: string): Observable<Chantier> {
-    return this.http.post<Chantier>(this.rallongeChantierUrl, {'chantier': chantier, 'heureFinChoisie': heureFinChoisie}, this.httpOptions).pipe(
+  rallongeChantier (chantier: string, dateFin : string): Observable<Chantier> {
+    return this.http.post<Chantier>(this.rallongeChantierUrl, {'chantier': chantier, 'end' : dateFin}, this.httpOptions).pipe(
       catchError(this.handleError<Chantier>('rallongeChantier'))
       );
   }
