@@ -6,6 +6,7 @@ import datetime
 import copy
 import sys
 import exception as ex
+
 sys.path.append("..")
 from data import bdd
 
@@ -27,6 +28,7 @@ TR_APREM_MATIN = datetime.timedelta(days=1) - TR_MATIN_APREM
 DUREE_MATIN = HEURES_FIN["fin_matin"] - HEURES_DEBUT["debut_matin"]
 DUREE_APREM = HEURES_FIN["fin_aprem"] - HEURES_DEBUT["debut_aprem"]
 
+
 def convert_format_date(date: str, format1: str, format2: str):
     """
     Convertit une date en format1 vers le format2.
@@ -37,6 +39,7 @@ def convert_format_date(date: str, format1: str, format2: str):
         return date_format2
     except:
         raise ex.InvalidDates(date=date)
+
 
 def verif_dispo_horaire_ouvrier(
         id_ouvrier: int, id_chantier: int, planning=None, infos_chantier=None
@@ -121,7 +124,7 @@ def decoup_new_chantier(dict_new_chantier: dict):
     date_fin = datetime.datetime.strptime(dict_new_chantier["end"], FORMAT_DATE1)
     # Liste de dictionnaires du chantier découpé en demi-journées renvoyée à la fin
     list_dict_new_chantiers = []
-    # Vérification de la conformité des entrées   
+    # Vérification de la conformité des entrées
     if date_debut >= date_fin:
         raise ex.InvalidDates(
             msg="La date de fin ne peut être antérieure à la date de début."
@@ -177,6 +180,7 @@ def declare_new_chantier(dict_new_chantier: dict):
     for chantier in list_new_chantiers:
         set_new_chantier(chantier)
 
+
 def prolonge_chantier(name_chantier: int, new_date_fin: str):
     """
     Permet de prolonger un chantier. Prend une date sous le format Angular.
@@ -189,19 +193,23 @@ def prolonge_chantier(name_chantier: int, new_date_fin: str):
         if chantier["name_chantier"] == name_chantier:
             notre_chantier.append(chantier)
     # On cherche la dernière demi-journée du chantier en question
-    last_demi_journee = sorted(
-            notre_chantier, key=lambda element: element["end"]
-        )[-1]
-    last_demi_journee["start"] = datetime.datetime.strptime(last_demi_journee["start"], FORMAT_DATE1)
-    last_demi_journee["end"] = datetime.datetime.strptime(last_demi_journee["end"], FORMAT_DATE1)
+    last_demi_journee = sorted(notre_chantier, key=lambda element: element["end"])[-1]
+    last_demi_journee["start"] = datetime.datetime.strptime(
+        last_demi_journee["start"], FORMAT_DATE1
+    )
+    last_demi_journee["end"] = datetime.datetime.strptime(
+        last_demi_journee["end"], FORMAT_DATE1
+    )
     # On calcule l'heure début de la prolongation
     if last_demi_journee["end"].hour == HEURES_FIN["fin_matin"].hour:
         heure_debut_suite = last_demi_journee["start"] + TR_MATIN_APREM
     elif last_demi_journee["end"].hour == HEURES_FIN["fin_aprem"].hour:
         heure_debut_suite = last_demi_journee["start"] + TR_APREM_MATIN
     # On déclare ces nouvelles demi-journées
-    dict_new_chantier ={"name_chantier": name_chantier, 
-                        "start": heure_debut_suite.strftime(FORMAT_DATE1), 
-                        "end": new_date_fin, "adress": last_demi_journee["adress"]}
+    dict_new_chantier = {
+        "name_chantier": name_chantier,
+        "start": heure_debut_suite.strftime(FORMAT_DATE1),
+        "end": new_date_fin,
+        "adress": last_demi_journee["adress"],
+    }
     declare_new_chantier(dict_new_chantier)
-    
