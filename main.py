@@ -13,7 +13,6 @@ sys.path.insert(0, 'control')
 
 from get import (get_info_from_id_ouvrier,
                  get_info_from_id_chantier,
-                 return_table,
                  return_table_ouvrier_avec_chantiers,
                  return_cluster_chantiers,
                  resume_chantiers,
@@ -23,6 +22,7 @@ from put import (convert_format_date,
                  set_new_ouvrier,
                  set_new_attribution,
                  declare_new_chantier,
+                 prolonge_chantier,
                  FORMAT_DATE1,
                  FORMAT_DATE2)
 
@@ -32,10 +32,8 @@ from change import(del_data,
 
 from exception import WrongRequest
 
-
 APP = Flask(__name__)
 CORS(APP)  # Creation du site
-
 
 @APP.route("/planning/", methods=["GET"])
 def planning():
@@ -160,6 +158,14 @@ def chantier_par_nom(name_chantier: str):
         delete_chantier(name_chantier)
     return jsonify(0)
 
+@APP.route("/rallongeChantier", methods=["POST", "GET"])
+def rallonge_chantier():
+    data = request.get_json()
+    nom_chantier = data["chantier"]
+    nouvelle_date_fin = data["end"]
+    prolonge_chantier(nom_chantier, nouvelle_date_fin)
+    return jsonify(0)
+
 @APP.route('/<path:path>', methods=['GET'])
 def static_proxy(path):
     """
@@ -179,6 +185,9 @@ def root():
 
 @APP.errorhandler(WrongRequest)
 def handle_invalid_request(error):
+    """
+    Permet de gerer l'erreur "invalid request".
+    """
     return error.msg, 400
 
 if __name__ == "__main__":

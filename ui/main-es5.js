@@ -91,7 +91,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"row\">\n  <div *ngIf=\"chantier\" class=\"column\">\n    <mat-card class=\"card\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Détails sur {{chantier.name_chantier}}</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-list>\n          <h3 matSubheader>Nom</h3>\n          <mat-list-item> {{chantier.name_chantier}} </mat-list-item>\n          <mat-divider></mat-divider>\n          <h3 matSubheader>Adresse</h3>\n          <mat-list-item> {{chantier.adress}} </mat-list-item>\n          <mat-divider></mat-divider>\n          <h3 matSubheader>Dates</h3>\n          <mat-list-item>{{chantier.start}} </mat-list-item>\n          <mat-list-item>{{chantier.end}} </mat-list-item>\n          <mat-divider></mat-divider>\n        </mat-list>\n        <mat-divider></mat-divider>\n        <mat-nav-list>\n          <h3 matSubheader> Ouvriers</h3>\n          <mat-list-item *ngFor=\"let ouvrier of chantier.ouvriers\" (click)=\"selectOuvrier(ouvrier)\">\n            <a matLine> {{ouvrier.name_ouvrier}} </a>\n            <button mat-icon-button routerLink=\"/detail/{{ouvrier.id_ouvrier}}\">\n              <mat-icon>assignment</mat-icon>\n            </button>\n          </mat-list-item>\n        </mat-nav-list>\n      </mat-card-content>\n    </mat-card>\n    <app-messages></app-messages>\n  </div>\n  <div class=\"column\">\n    <mat-card *ngIf=\"chantier\" class=\"smallcard\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Rallonger le chantier</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-list>\n          <mat-list-item>\n            <mat-form-field>\n              <input #chantierEnd matInput [matDatepicker]=\"picker2\" placeholder=\"Nouvelle date de fin\">\n              <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n              <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n          </mat-list-item>\n          <h3 matSubheader> Heure de fin </h3>\n          <mat-list-item>\n            <mat-radio-group [(ngModel)]=\"heureFinChoisie\">\n              <mat-radio-button class=\"example-margin\" value={{heureFinMatin}}>12h</mat-radio-button>\n              <mat-radio-button class=\"example-margin\" value={{heureFinAM}}>18h</mat-radio-button>\n            </mat-radio-group>\n          </mat-list-item>\n          <mat-list-item>\n            <button mat-raised-button class=\"send_button\" color=\"accent\" \n            (click)=\"add(chantier.name_chantier, chantier.end, heureDeb, chantierEnd.value, heureFinChoisie, chantier.adress);\n            chantierEnd.value=''\">\n              Ajouter\n            </button>\n          </mat-list-item>\n        </mat-list>\n      </mat-card-content>\n    </mat-card>\n    <div *ngIf=\"show\">\n      <mat-card *ngIf=\"nomChoisi\" class=\"card\">\n        <mat-card-header>\n          <mat-card-title class=\"title\">Dates de {{ouvrierChoisi.name_ouvrier}}</mat-card-title>\n        </mat-card-header>\n        <mat-card-content>\n          <mat-list>\n            <mat-list-item *ngFor=\"let chantier of ouvrierChoisi.chantiers\">\n              <p matLine> De : {{chantier.start}} </p>\n              <p matLine> A : {{chantier.end}} </p>\n              <button mat-icon-button (click)=\"deleteAttribution(chantier)\">\n                <mat-icon>close</mat-icon>\n              </button>\n            </mat-list-item>\n          </mat-list>\n        </mat-card-content>\n      </mat-card>\n    </div>\n  </div>\n</div>";
+    __webpack_exports__["default"] = "<div class=\"row\">\n  <div *ngIf=\"chantier\" class=\"column\">\n    <mat-card class=\"card\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Détails sur {{chantier.name_chantier}}</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-list>\n          <h3 matSubheader>Nom</h3>\n          <mat-list-item> {{chantier.name_chantier}} </mat-list-item>\n          <mat-divider></mat-divider>\n          <h3 matSubheader>Adresse</h3>\n          <mat-list-item> {{chantier.adress}} </mat-list-item>\n          <mat-divider></mat-divider>\n          <h3 matSubheader>Dates</h3>\n          <mat-list-item>{{chantier.start}} </mat-list-item>\n          <mat-list-item>{{chantier.end}} </mat-list-item>\n          <mat-divider></mat-divider>\n        </mat-list>\n        <mat-divider></mat-divider>\n        <mat-nav-list>\n          <h3 matSubheader> Ouvriers</h3>\n          <mat-list-item *ngFor=\"let ouvrier of chantier.ouvriers\" (click)=\"selectOuvrier(ouvrier)\">\n            <a matLine> {{ouvrier.name_ouvrier}} </a>\n            <button mat-icon-button routerLink=\"/detail/{{ouvrier.id_ouvrier}}\">\n              <mat-icon>assignment</mat-icon>\n            </button>\n          </mat-list-item>\n        </mat-nav-list>\n      </mat-card-content>\n    </mat-card>\n    <app-messages></app-messages>\n  </div>\n  <div class=\"column\">\n    <mat-card *ngIf=\"chantier\" class=\"smallcard\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Rallonger le chantier</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-list>\n          <mat-list-item>\n            <mat-form-field>\n              <input #chantierEnd matInput [matDatepicker]=\"picker2\" placeholder=\"Nouvelle date de fin\">\n              <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n              <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n          </mat-list-item>\n          <h3 matSubheader> Heure de fin </h3>\n          <mat-list-item>\n            <mat-radio-group [(ngModel)]=\"heureFinChoisie\">\n              <mat-radio-button class=\"example-margin\" value={{heureFinMatin}}>12h</mat-radio-button>\n              <mat-radio-button class=\"example-margin\" value={{heureFinAM}}>18h</mat-radio-button>\n            </mat-radio-group>\n          </mat-list-item>\n          <mat-list-item>\n            <button mat-raised-button class=\"send_button\" color=\"accent\" \n            (click)=\"rallongeChantier(chantier, chantierEnd.value, heureFinChoisie);\n            chantierEnd.value=''\">\n              Ajouter\n            </button>\n          </mat-list-item>\n        </mat-list>\n      </mat-card-content>\n    </mat-card>\n    <div *ngIf=\"show\">\n      <mat-card *ngIf=\"nomChoisi\" class=\"card\">\n        <mat-card-header>\n          <mat-card-title class=\"title\">Dates de {{ouvrierChoisi.name_ouvrier}}</mat-card-title>\n        </mat-card-header>\n        <mat-card-content>\n          <mat-list>\n            <mat-list-item *ngFor=\"let chantier of ouvrierChoisi.chantiers\">\n              <p matLine> De : {{chantier.start}} </p>\n              <p matLine> A : {{chantier.end}} </p>\n              <button mat-icon-button (click)=\"deleteAttribution(chantier)\">\n                <mat-icon>close</mat-icon>\n              </button>\n            </mat-list-item>\n          </mat-list>\n        </mat-card-content>\n      </mat-card>\n    </div>\n  </div>\n</div>";
     /***/
   },
 
@@ -111,7 +111,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"row\">\n  <div *ngIf=\"chantiers\" class=\"column\">\n    <mat-card class=\"card\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Nos chantiers</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-nav-list>\n          <mat-list-item *ngFor=\"let chantier of chantiers\" routerLink=\"/chantiers/detail/{{chantier.name_chantier}}\">\n            <a matLine> {{chantier.name_chantier}} </a>\n            <button mat-icon-button (click)=\"delete(chantier)\">\n              <mat-icon>close</mat-icon>\n            </button>\n          </mat-list-item>\n        </mat-nav-list>\n      </mat-card-content>\n    </mat-card>\n    <app-messages></app-messages>\n  </div>\n  <div *ngIf=\"chantiers\" class=\"column\">\n    <mat-card class=\"card\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Ajouter un chantier</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-list>\n          <mat-list-item>\n            <mat-form-field>\n              <input #chantierName matInput placeholder=\"Lieu\">\n            </mat-form-field>\n            <mat-form-field>\n              <input #chantierAdress matInput placeholder=\"Adresse\">\n            </mat-form-field>\n          </mat-list-item>\n          <mat-list-item>\n            <mat-form-field>\n              <input #chantierStart matInput [matDatepicker]=\"picker1\" placeholder=\"Date de début\">\n              <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n              <mat-datepicker #picker1></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field>\n              <input #chantierEnd matInput [matDatepicker]=\"picker2\" placeholder=\"Date de fin\">\n              <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n              <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n          </mat-list-item>\n          <h3 matSubheader> Heure de début </h3>\n          <mat-list-item>\n            <mat-radio-group [(ngModel)]=\"heureDebChoisie\">\n              <mat-radio-button class=\"example-margin\" value={{heureDebMatin}}>8h</mat-radio-button>\n              <mat-radio-button class=\"example-margin\" value={{heureDebAM}}>14h</mat-radio-button>\n            </mat-radio-group>\n          </mat-list-item>\n          <h3 matSubheader> Heure de fin </h3>\n          <mat-list-item>\n            <mat-radio-group [(ngModel)]=\"heureFinChoisie\">\n              <mat-radio-button class=\"example-margin\" value={{heureFinMatin}}>12h</mat-radio-button>\n              <mat-radio-button class=\"example-margin\" value={{heureFinAM}}>18h</mat-radio-button>\n            </mat-radio-group>\n          </mat-list-item>\n          <mat-list-item>\n            <button mat-raised-button class = \"send_button\" color=\"accent\" \n            (click)=\"add(chantierName.value, chantierStart.value, heureDebChoisie, chantierEnd.value, heureFinChoisie, chantierAdress.value);\n            chantierName.value='';chantierStart.value='';chantierEnd.value='';chantierAdress.value=''\">\n            Ajouter\n          </button>\n          </mat-list-item>\n        </mat-list>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n\n";
+    __webpack_exports__["default"] = "<div class=\"row\">\n  <div *ngIf=\"chantiers\" class=\"column\">\n    <mat-card class=\"card\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Nos chantiers</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-nav-list>\n          <mat-list-item *ngFor=\"let chantier of chantiers\" routerLink=\"/chantiers/detail/{{chantier.name_chantier}}\">\n            <a matLine> {{chantier.name_chantier}} </a>\n            <button mat-icon-button (click)=\"delete(chantier)\">\n              <mat-icon>close</mat-icon>\n            </button>\n          </mat-list-item>\n        </mat-nav-list>\n      </mat-card-content>\n    </mat-card>\n    <app-messages></app-messages>\n  </div>\n  <div *ngIf=\"chantiers\" class=\"column\">\n    <mat-card class=\"card\">\n      <mat-card-header>\n        <mat-card-title class=\"title\">Ajouter un chantier</mat-card-title>\n      </mat-card-header>\n      <mat-card-content>\n        <mat-list>\n          <mat-list-item>\n            <mat-form-field>\n              <input #chantierName matInput placeholder=\"Nom\">\n            </mat-form-field>\n            <mat-form-field>\n              <input #chantierAdress matInput placeholder=\"Adresse\">\n            </mat-form-field>\n          </mat-list-item>\n          <mat-list-item>\n            <mat-form-field>\n              <input #chantierStart matInput [matDatepicker]=\"picker1\" placeholder=\"Date de début\">\n              <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n              <mat-datepicker #picker1></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field>\n              <input #chantierEnd matInput [matDatepicker]=\"picker2\" placeholder=\"Date de fin\">\n              <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n              <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n          </mat-list-item>\n          <h3 matSubheader> Heure de début </h3>\n          <mat-list-item>\n            <mat-radio-group [(ngModel)]=\"heureDebChoisie\">\n              <mat-radio-button class=\"example-margin\" value={{heureDebMatin}}>8h</mat-radio-button>\n              <mat-radio-button class=\"example-margin\" value={{heureDebAM}}>14h</mat-radio-button>\n            </mat-radio-group>\n          </mat-list-item>\n          <h3 matSubheader> Heure de fin </h3>\n          <mat-list-item>\n            <mat-radio-group [(ngModel)]=\"heureFinChoisie\">\n              <mat-radio-button class=\"example-margin\" value={{heureFinMatin}}>12h</mat-radio-button>\n              <mat-radio-button class=\"example-margin\" value={{heureFinAM}}>18h</mat-radio-button>\n            </mat-radio-group>\n          </mat-list-item>\n          <mat-list-item>\n            <button mat-raised-button class = \"send_button\" color=\"accent\" \n            (click)=\"add(chantierName.value, chantierStart.value, heureDebChoisie, chantierEnd.value, heureFinChoisie, chantierAdress.value);\n            chantierName.value='';chantierStart.value='';chantierEnd.value='';chantierAdress.value=''\">\n            Ajouter\n          </button>\n          </mat-list-item>\n        </mat-list>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n\n";
     /***/
   },
 
@@ -1275,34 +1275,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.show = true;
           this.nomChoisi = ouvrier.name_ouvrier;
           this.ouvrierChoisi = ouvrier;
-        }
+        } //Pour rallonger un chantier
+
       }, {
-        key: "add",
-        value: function add(name_chantier, start, startTime, end, endTime, adress) {
+        key: "rallongeChantier",
+        value: function rallongeChantier(chantier, dateFin, heureFin) {
           var _this2 = this;
 
-          name_chantier = name_chantier.trim();
+          dateFin = dateFin + ' ' + heureFin + ':00:00';
 
-          if (start.substr(11, 2) == this.heureFinAM) {
-            start = start.substr(8, 2) + "/" + start.substr(5, 2) + "/" + start.substr(0, 4) + " " + this.heureDebAM + ":00:00";
-          } else {
-            start = (parseInt(start.substr(8, 2)) + 1).toString() + "/" + start.substr(5, 2) + "/" + start.substr(0, 4) + " " + this.heureDebAM + ":00:00";
+          if (confirm('Voulez-vous rallonger le chantier ' + chantier.name_chantier + ' ?')) {
+            this.chantierService.rallongeChantier(chantier.name_chantier, dateFin).subscribe(function (_) {
+              return _this2.getChantier();
+            });
           }
-
-          end = end + " " + endTime + ":00:00";
-
-          if (!name_chantier) {
-            return;
-          }
-
-          this.chantierService.addChantier({
-            name_chantier: name_chantier,
-            start: start,
-            end: end,
-            adress: adress
-          }).subscribe(function (_) {
-            return _this2.getChantier();
-          });
         }
       }, {
         key: "deleteAttribution",
@@ -2503,7 +2489,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.attributionUrl = 'http://127.0.0.1:5000/attribution/';
         this.listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
         this.listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/';
-        this.listeChantiersHorairesUrl = 'http://127.0.0.1:5000/listeChantiers/horaires';
+        this.rallongeChantierUrl = 'http://127.0.0.1:5000/rallongeChantier';
         this.httpOptions = {
           headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
             'Content-Type': 'application/json'
@@ -2549,6 +2535,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var name = typeof chantier === 'string' ? chantier : chantier.name_chantier;
           var url = "".concat(this.listeChantiersUrl).concat(name);
           return this.http.delete(url, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('deleteChantier')));
+        }
+        /** POST: rallonge un chantier */
+
+      }, {
+        key: "rallongeChantier",
+        value: function rallongeChantier(chantier, dateFin) {
+          return this.http.post(this.rallongeChantierUrl, {
+            'chantier': chantier,
+            'end': dateFin
+          }, this.httpOptions).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError('rallongeChantier')));
         }
         /** POST: ajoute des nouvelles attributions au serveur */
 
