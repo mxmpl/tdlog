@@ -57,20 +57,11 @@ export class ChantierDetailComponent implements OnInit {
   }
 
   //Pour rallonger un chantier
-  add(name_chantier: string, start: string, startTime:string, end: string, endTime:string, adress: string): void {
-    name_chantier = name_chantier.trim();
-    if (start.substr(11,2) == this.heureFinAM) {
-      //Si le chantier se terminait en fin d'apres-midi
-      start = start.substr(8,2) + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " " + this.heureDebAM + ":00:00";
-    } else {
-      // Si le chantier se terminait en fin de matinee
-      start = (parseInt(start.substr(8,2))+1).toString() + "/" + start.substr(5,2) + "/" + start.substr(0,4) + " " + this.heureDebAM + ":00:00";
-    }
-    end = end + " " + endTime + ":00:00";
-  
-    if (!name_chantier) { return; }
-    this.chantierService.addChantier({ name_chantier,start,end,adress } as Chantier)
+  rallongeChantier(chantier: Chantier, heureFinChoisie: string): void {
+    if (confirm('Voulez-vous rallonger le chantier '+chantier.name_chantier+' ?')) {
+    this.chantierService.rallongeChantier(chantier.name_chantier, heureFinChoisie)
       .subscribe(_ => this.getChantier());
+    }
   }
 
   deleteAttribution(chantier: Chantier) {

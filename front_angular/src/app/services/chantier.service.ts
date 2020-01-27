@@ -17,7 +17,8 @@ export class ChantierService {
   private attributionUrl = 'http://127.0.0.1:5000/attribution/';
   private listeOuvriersUrl = 'http://127.0.0.1:5000/listeOuvriers/';
   private listeChantiersUrl = 'http://127.0.0.1:5000/listeChantiers/';
-  
+  private rallongeChantierUrl = 'http://127.0.0.1:5000/rallongeChantier';
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -67,6 +68,13 @@ export class ChantierService {
       catchError(this.handleError<Chantier>('deleteChantier'))
     );
   } 
+
+  /** POST: rallonge un chantier */
+  rallongeChantier (chantier: string, heureFinChoisie: string): Observable<Chantier> {
+    return this.http.post<Chantier>(this.rallongeChantierUrl, {'chantier': chantier, 'heureFinChoisie': heureFinChoisie}, this.httpOptions).pipe(
+      catchError(this.handleError<Chantier>('rallongeChantier'))
+      );
+  }
 
   /** POST: ajoute des nouvelles attributions au serveur */
   addAttributions(ouvrier: Ouvrier, chantiers_choisis: Chantier[]): Observable<Ouvrier> {

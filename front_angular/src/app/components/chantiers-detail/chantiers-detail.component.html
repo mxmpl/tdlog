@@ -54,7 +54,7 @@
           </mat-list-item>
           <mat-list-item>
             <button mat-raised-button class="send_button" color="accent" 
-            (click)="add(chantier.name_chantier, chantier.end, heureDeb, chantierEnd.value, heureFinChoisie, chantier.adress);
+            (click)="rallongeChantier(chantier, heureFinChoisie);
             chantierEnd.value=''">
               Ajouter
             </button>
