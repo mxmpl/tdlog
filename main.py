@@ -160,6 +160,9 @@ def chantier_par_nom(name_chantier: str):
 
 @APP.route("/rallongeChantier", methods=["POST", "GET"])
 def rallonge_chantier():
+    """
+    Permet de rallonger un chantier.
+    """
     data = request.get_json()
     nom_chantier = data["chantier"]
     nouvelle_date_fin = data["end"]
