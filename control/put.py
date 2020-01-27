@@ -9,7 +9,6 @@ import exception as ex
 sys.path.append("..")
 from data import bdd
 
-
 HEURES_DEBUT = {
     "debut_matin": datetime.datetime(1900, 1, 1, 8, 0),
     "debut_aprem": datetime.datetime(1900, 1, 1, 14, 0),
@@ -23,7 +22,10 @@ HEURES_FIN = {
 NB_LIMITE_JOURS = 25  # Nombre limite de jours pour un chantier
 FORMAT_DATE1 = "%Y-%m-%d %H:%M:%S"
 FORMAT_DATE2 = "%d/%m/%Y %H:%M:%S"
-
+TR_MATIN_APREM = HEURES_DEBUT["debut_aprem"] - HEURES_DEBUT["debut_matin"]
+TR_APREM_MATIN = datetime.timedelta(days=1) - TR_MATIN_APREM
+DUREE_MATIN = HEURES_FIN["fin_matin"] - HEURES_DEBUT["debut_matin"]
+DUREE_APREM = HEURES_FIN["fin_aprem"] - HEURES_DEBUT["debut_aprem"]
 
 def convert_format_date(date: str, format1: str, format2: str):
     """
@@ -115,16 +117,11 @@ def decoup_new_chantier(dict_new_chantier: dict):
         dict_new_chantier,
         {"name_chantier": str, "start": str, "end": str, "adress": str},
     )
-    # Dates ou durées utiles
-    transition_matin_aprem = HEURES_DEBUT["debut_aprem"] - HEURES_DEBUT["debut_matin"]
-    transition_aprem_matin = datetime.timedelta(days=1) - transition_matin_aprem
-    duree_matin = HEURES_FIN["fin_matin"] - HEURES_DEBUT["debut_matin"]
-    duree_aprem = HEURES_FIN["fin_aprem"] - HEURES_DEBUT["debut_aprem"]
     date_debut = datetime.datetime.strptime(dict_new_chantier["start"], FORMAT_DATE1)
     date_fin = datetime.datetime.strptime(dict_new_chantier["end"], FORMAT_DATE1)
     # Liste de dictionnaires du chantier découpé en demi-journées renvoyée à la fin
     list_dict_new_chantiers = []
-    # Vérification de la conformité des entrées
+    # Vérification de la conformité des entrées   
     if date_debut >= date_fin:
         raise ex.InvalidDates(
             msg="La date de fin ne peut être antérieure à la date de début."
@@ -141,22 +138,22 @@ def decoup_new_chantier(dict_new_chantier: dict):
         raise ex.InvalidDates(date=date_fin.strftime(FORMAT_DATE1))
     # On enregistre l'heure de début de la dernière matinée
     if date_fin.hour == HEURES_FIN["fin_matin"].hour:
-        heure_debut_fin = date_fin - duree_matin
-        heure_fin_fin = heure_debut_fin + transition_matin_aprem
+        heure_debut_fin = date_fin - DUREE_MATIN
+        heure_fin_fin = heure_debut_fin + TR_MATIN_APREM
     elif date_fin.hour == HEURES_FIN["fin_aprem"].hour:
-        heure_debut_fin = date_fin - duree_aprem
-        heure_fin_fin = heure_debut_fin + transition_aprem_matin
+        heure_debut_fin = date_fin - DUREE_APREM
+        heure_fin_fin = heure_debut_fin + TR_APREM_MATIN
     # On découpe
     for i in range(1, 2 * NB_LIMITE_JOURS + 1):
         dic_chantier = copy.deepcopy(dict_new_chantier)
         if date_debut <= heure_debut_fin:
             dic_chantier["start"] = date_debut.strftime(FORMAT_DATE1)
             if date_debut.hour == HEURES_DEBUT["debut_matin"].hour:
-                dic_chantier["end"] = (date_debut + duree_matin).strftime(FORMAT_DATE1)
-                date_debut += transition_matin_aprem
+                dic_chantier["end"] = (date_debut + DUREE_MATIN).strftime(FORMAT_DATE1)
+                date_debut += TR_MATIN_APREM
             elif date_debut.hour == HEURES_DEBUT["debut_aprem"].hour:
-                dic_chantier["end"] = (date_debut + duree_aprem).strftime(FORMAT_DATE1)
-                date_debut += transition_aprem_matin
+                dic_chantier["end"] = (date_debut + DUREE_APREM).strftime(FORMAT_DATE1)
+                date_debut += TR_APREM_MATIN
             list_dict_new_chantiers.append(dic_chantier)
         else:
             break
@@ -179,3 +176,32 @@ def declare_new_chantier(dict_new_chantier: dict):
     list_new_chantiers = decoup_new_chantier(dict_new_chantier)
     for chantier in list_new_chantiers:
         set_new_chantier(chantier)
+
+def prolonge_chantier(name_chantier: int, new_date_fin: str):
+    """
+    Permet de prolonger un chantier. Prend une date sous le format Angular.
+    """
+    new_date_fin = convert_format_date(new_date_fin, FORMAT_DATE2, FORMAT_DATE1)
+    # On stocke dans la liste notre_chantier tous les chantiers du nom donné
+    chantiers = bdd.return_table_chantier()
+    notre_chantier = []
+    for chantier in chantiers:
+        if chantier["name_chantier"] == name_chantier:
+            notre_chantier.append(chantier)
+    # On cherche la dernière demi-journée du chantier en question
+    last_demi_journee = sorted(
+            notre_chantier, key=lambda element: element["end"]
+        )[-1]
+    last_demi_journee["start"] = datetime.datetime.strptime(last_demi_journee["start"], FORMAT_DATE1)
+    last_demi_journee["end"] = datetime.datetime.strptime(last_demi_journee["end"], FORMAT_DATE1)
+    # On calcule l'heure début de la prolongation
+    if last_demi_journee["end"].hour == HEURES_FIN["fin_matin"].hour:
+        heure_debut_suite = last_demi_journee["start"] + TR_MATIN_APREM
+    elif last_demi_journee["end"].hour == HEURES_FIN["fin_aprem"].hour:
+        heure_debut_suite = last_demi_journee["start"] + TR_APREM_MATIN
+    # On déclare ces nouvelles demi-journées
+    dict_new_chantier ={"name_chantier": name_chantier, 
+                        "start": heure_debut_suite.strftime(FORMAT_DATE1), 
+                        "end": new_date_fin, "adress": last_demi_journee["adress"]}
+    declare_new_chantier(dict_new_chantier)
+    

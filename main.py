@@ -22,6 +22,7 @@ from put import (convert_format_date,
                  set_new_ouvrier,
                  set_new_attribution,
                  declare_new_chantier,
+                 prolonge_chantier,
                  FORMAT_DATE1,
                  FORMAT_DATE2)
 
@@ -31,10 +32,8 @@ from change import(del_data,
 
 from exception import WrongRequest
 
-
 APP = Flask(__name__)
 CORS(APP)  # Creation du site
-
 
 @APP.route("/planning/", methods=["GET"])
 def planning():
