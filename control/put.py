@@ -183,7 +183,7 @@ def declare_new_chantier(dict_new_chantier: dict):
 
 def prolonge_chantier(name_chantier: int, new_date_fin: str):
     """
-    Permet de prolonger un chantier. Prend une date sous le format Angular.
+    Permet de prolonger un chantier. Prend une date sous le format Angular (FORMAT_DATE2).
     """
     new_date_fin = convert_format_date(new_date_fin, FORMAT_DATE2, FORMAT_DATE1)
     # On stocke dans la liste notre_chantier tous les chantiers du nom donné
